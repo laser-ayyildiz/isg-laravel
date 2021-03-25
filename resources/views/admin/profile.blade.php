@@ -9,11 +9,13 @@
                 <p class="text-primary m-0 font-weight-bold">Profil Resmi</p>
             </div>
             <div class="card-body text-center shadow">
-                <img class="img-thumbnail mb-3 mt-4" src="assets/users/" width="160" height="160">
-                <form action="/admin/profile" method="POST" enctype="multipart/form-data">
-                    <input class="btn btn-dark" type="file" name="file" id="file" style="width:300px;" />
-                    <input class="btn btn-primary" type="submit" style="height:44px;width:300px;" value="Kaydet"
-                        name="save_image" />
+                <img class="img-thumbnail mb-3 mt-4" src="/uploads/profile_pictures/{{auth()->user()->profile_photo_path}}" width="160" height="160">
+
+                <form action="{{ route('profile') }}" method="POST" enctype="multipart/form-data">
+                    <label>Profil Resmi Yükle</label>
+                    <input type="file" name="avatar">
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    <input type="submit" class="pull-right btn btn-sm btn-primary" value="Değiştir">
                 </form>
             </div>
         </div>

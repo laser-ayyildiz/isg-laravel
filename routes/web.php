@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthenticateController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OsgbEmployeeController;
@@ -7,6 +8,7 @@ use App\Http\Controllers\CoopCompaniesController;
 use App\Http\Controllers\ChangeValidateController;
 use App\Http\Controllers\DeletedCompaniesController;
 use App\Http\Controllers\DeletedEmployeesController;
+use App\Http\Controllers\ProfileController;
 
 require __DIR__ . '/auth.php';
 
@@ -44,10 +46,10 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
 
     Route::get('/deleted_employees', [DeletedEmployeesController::class, 'index'])->name('deleted_employees');
 
+    Route::get('/authentication', [AuthenticateController::class, 'index'])->name('authentication');
 
-    Route::get('/authentication', function () {
-        return view('admin/authentication');
-    })->name('authentication');
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+    Route::post('/profile', [ProfileController::class, 'updatePicture'])->name('profile');
 
     Route::get('/messages', function () {
         return view('admin/messages');

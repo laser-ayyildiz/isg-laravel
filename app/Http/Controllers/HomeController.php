@@ -27,6 +27,7 @@ class HomeController extends Controller
     {
         $comp_count = CoopCompanies::count();
         $emp_count = CoopEmployees::count();
+
         return view(
             'admin.home',
             [

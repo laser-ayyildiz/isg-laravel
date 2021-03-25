@@ -127,8 +127,8 @@
             <li class="nav-item">
                 <div class="nav-item">
                     <a href="{{ route('profile') }}" class="nav-link" title="Profil">
-                        <span style="color:black;" class="d-none d-lg-inline mr-2 text-600"></span><img
-                            class="rounded-circle img-profile" src=""></a>
+                        <span style="color:black;" class="d-none d-lg-inline mr-2 text-600">{{auth()->user()->name}}</span><img
+                            class="rounded-circle img-profile" src="/uploads/profile_pictures/{{auth()->user()->profile_photo_path}}"></a>
             </li>
             <div class="d-none d-sm-block topbar-divider"></div>
             <form method="POST" action="{{ route('logout') }}">

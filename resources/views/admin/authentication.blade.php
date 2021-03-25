@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title')Auth - @endsection
+@section('title')Yetkilendirme - @endsection
 @section('content')
 <div class="container-fluid">
     <div class="card shadow-lg">
@@ -26,106 +26,110 @@
                     </thead>
                     <tbody>
 
+                        @foreach ($employees ?? '' as $employee)
                         <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td> {{ $employee -> firstname }} </td>
+                            <td> {{ $employee -> lastname }} </td>
+                            <td> {{ $employee -> user_type }} </td>
+                            <td> {{ $employee -> tc }} </td>
+                            <td> {{ $employee -> start_at }} </td>
                             <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#a"
                                     data-whatever="@getbootstrap">Yetkilendir</button></td>
                             <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#b"
                                     data-whatever="@getbootstrap">Yetkisini Kaldır</button></td>
+
+                            <div class="modal fade" id="a" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Yetkilendir</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="authentication.php" method="POST">
+                                                <div class="row col-sm-10">
+                                                    <label><b>Kullanıcı adı</b></label>
+                                                    <input class="form-control" name="username" value="" readonly>
+                                                </div>
+                                                <br>
+                                                <div class="row col-sm-10">
+                                                    <label><b>Yetkilendirileceği işletmeyi seçin</b></label>
+                                                    <select class="form-control" name="comp_name" required>
+                                                        <option value="" disabled>İş Yeri Seç</option>
+
+                                                    </select>
+                                                </div>
+                                                <br>
+                                                <div style="float: right;">
+                                                    <button id="yetkilendir" name="yetkilendir" type="submit"
+                                                        class="btn btn-success">Yetkilendir</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal fade" id="b" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Yetkisini Kaldır</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="authentication.php" method="POST">
+                                                <div class="row col-sm-10">
+                                                    <label><b>Kullanıcı adı</b></label>
+                                                    <input class="form-control" name="username" value="" readonly>
+                                                </div>
+                                                <br>
+                                                <div class="row col-sm-10">
+                                                    <label><b>Yetkilendirildiği işletmeler</b></label>
+                                                    <select class="form-control" name="comp_name" required>
+                                                        <option value="" disabled>İş Yeri Seç</option>
+
+                                                    </select>
+                                                </div>
+                                                <br>
+                                                <div style="float:left;">
+                                                    <button id="hepsini_kaldır" name="hepsini_kaldır" type="submit"
+                                                        class="btn btn-warning">Bütün Yetkilerini Kaldır</button>
+                                                </div>
+                                                <div style="float: right;">
+                                                    <button id="yetki_kaldır" name="yetki_kaldır" type="submit"
+                                                        class="btn btn-danger">Seçili Yetkisini Kaldır</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </tr>
-                        <div class="modal fade" id="a" tabindex="-1" aria-labelledby="exampleModalLabel"
-                            aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Yetkilendir</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form action="authentication.php" method="POST">
-                                            <div class="row col-sm-10">
-                                                <label><b>Kullanıcı adı</b></label>
-                                                <input class="form-control" name="username" value="" readonly>
-                                            </div>
-                                            <br>
-                                            <div class="row col-sm-10">
-                                                <label><b>Yetkilendirileceği işletmeyi seçin</b></label>
-                                                <select class="form-control" name="comp_name" required>
-                                                    <option value="" disabled>İş Yeri Seç</option>
-
-                                                </select>
-                                            </div>
-                                            <br>
-                                            <div style="float: right;">
-                                                <button id="yetkilendir" name="yetkilendir" type="submit"
-                                                    class="btn btn-success">Yetkilendir</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="modal fade" id="b" tabindex="-1" aria-labelledby="exampleModalLabel"
-                            aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Yetkisini Kaldır</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form action="authentication.php" method="POST">
-                                            <div class="row col-sm-10">
-                                                <label><b>Kullanıcı adı</b></label>
-                                                <input class="form-control" name="username" value="" readonly>
-                                            </div>
-                                            <br>
-                                            <div class="row col-sm-10">
-                                                <label><b>Yetkilendirildiği işletmeler</b></label>
-                                                <select class="form-control" name="comp_name" required>
-                                                    <option value="" disabled>İş Yeri Seç</option>
-
-                                                </select>
-                                            </div>
-                                            <br>
-                                            <div style="float:left;">
-                                                <button id="hepsini_kaldır" name="hepsini_kaldır" type="submit"
-                                                    class="btn btn-warning">Bütün Yetkilerini Kaldır</button>
-                                            </div>
-                                            <div style="float: right;">
-                                                <button id="yetki_kaldır" name="yetki_kaldır" type="submit"
-                                                    class="btn btn-danger">Seçili Yetkisini Kaldır</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        @endforeach
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td><strong>Ad</strong></td>
+                            <td><strong>Soyad</strong></td>
+                            <td><strong>Çalışma Alanı</strong></td>
+                            <td><strong>T.C Kimlik No</strong></td>
+                            <td><strong>İşe Giriş Tarihi</strong></td>
+                            <td><strong>Yetkilendir</strong></td>
+                            <td><strong>Yetkisini Kaldır</strong></td>
+                        </tr>
+                    </tfoot>
+                </table>
             </div>
-
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td><strong>Ad</strong></td>
-                    <td><strong>Soyad</strong></td>
-                    <td><strong>Çalışma Alanı</strong></td>
-                    <td><strong>T.C Kimlik No</strong></td>
-                    <td><strong>İşe Giriş Tarihi</strong></td>
-                    <td><strong>Yetkilendir</strong></td>
-                    <td><strong>Yetkisini Kaldır</strong></td>
-                </tr>
-            </tfoot>
-            </table>
+            <div class="float-right">
+                {{ $employees -> links()}}
+            </div>
         </div>
     </div>
-</div>
-@endsection
+    @endsection
