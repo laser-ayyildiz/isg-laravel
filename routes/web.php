@@ -55,7 +55,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::post('/profile', [ProfileController::class, 'updatePicture'])->name('profile');
 
-    Route::get('/{id}/company', [CompanyController::class, 'index'])->name('company');
+    Route::get('/company/{id}', [CompanyController::class, 'index'])->name('company');
 
     Route::get('/messages', [MessageController::class, 'index'])->name('messages');
 

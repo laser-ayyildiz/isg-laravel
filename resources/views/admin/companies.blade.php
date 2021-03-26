@@ -36,7 +36,7 @@
                     <tbody>
                         @foreach ($companies as $company)
                         <tr>
-                            <td> <a href="/admin/{{ $company -> id }}/company">{{ $company -> name }}</a> </td>
+                            <td> <a href="/admin/company/{{ @Hashids::encode($company -> id , 15, 298, 177) }}">{{ $company -> name }}</a> </td>
                             <td> {{ $company -> type }} </td>
                             <td> {{ $company -> phone }} </td>
                             <td> {{ $company -> email }} </td>
