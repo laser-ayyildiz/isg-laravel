@@ -36,7 +36,7 @@
                     <tbody>
                         @foreach ($companies as $company)
                         <tr>
-                            <td> {{ $company -> name }} </td>
+                            <td> <a href="/admin/{{ $company -> id }}/company">{{ $company -> name }}</a> </td>
                             <td> {{ $company -> type }} </td>
                             <td> {{ $company -> phone }} </td>
                             <td> {{ $company -> email }} </td>
@@ -730,6 +730,6 @@
         });
 
     </script>
-    
+
 </div>
 @endsection

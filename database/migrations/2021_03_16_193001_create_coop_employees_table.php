@@ -17,9 +17,9 @@ class CreateCoopEmployeesTable extends Migration
             $table->char('email', 150);
             $table->char('phone', 16);
             $table->char('tc', 11);
-            $table->char('position', 200);
+            $table->char('position', 200)->nullable();
             $table->date('contract_at');
-            $table->boolean('deleted');
+            $table->boolean('deleted')->default(0);
             $table->timestamps();
             $table->foreign('company_id')->references('id')->on('coop_companies');
         });

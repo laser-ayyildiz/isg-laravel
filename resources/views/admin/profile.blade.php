@@ -9,13 +9,13 @@
                 <p class="text-primary m-0 font-weight-bold">Profil Resmi</p>
             </div>
             <div class="card-body text-center shadow">
-                <img class="img-thumbnail mb-3 mt-4" src="/uploads/profile_pictures/{{auth()->user()->profile_photo_path}}" width="160" height="160">
-
+                <img class="img-thumbnail mb-3 mt-4" src="/uploads/profile_pictures/{{auth()->user()->profile_photo_path}}" width="218" height="300">
                 <form action="{{ route('profile') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
                     <label>Profil Resmi Yükle</label>
                     <input type="file" name="avatar">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                    <input type="submit" class="pull-right btn btn-sm btn-primary" value="Değiştir">
+                    <input type="submit" style="width:200px;" class="pull-right btn btn-success" value="Değiştir">
                 </form>
             </div>
         </div>

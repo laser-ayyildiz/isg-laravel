@@ -39,10 +39,10 @@ class CreateCoopCompaniesTable extends Migration
             $table->bigInteger('muhasebe_p_id')->unsigned()->index()->nullable();
             $table->bigInteger('muhasebe_p_id_2')->unsigned()->index()->nullable();
             $table->bigInteger('yetkili_id')->unsigned()->index()->nullable();
-            $table->char('change', 2)->nullable();
+            $table->char('change', 2)->nullable()->default(0);
             $table->integer('remi_freq')->nullable();
             $table->char('changer', 100)->nullable();
-            $table->boolean('deleted')->nullable();
+            $table->boolean('deleted')->nullable()->default(0);
             $table->timestamps();
             $table->foreign('uzman_id')->references('id')->on('osgb_employees');
             $table->foreign('uzman_id_2')->references('id')->on('osgb_employees');

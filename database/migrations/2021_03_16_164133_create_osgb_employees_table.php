@@ -22,7 +22,7 @@ class CreateOsgbEmployeesTable extends Migration
             $table->char('phone', 16);
             $table->char('tc', 11);
             $table->date('start_at');
-            $table->boolean('deleted');
+            $table->boolean('deleted')->default(0);
             $table->text('worker_text');
             $table->timestamps();
             $table->foreign('email')->references('email')->on('users');

@@ -1,14 +1,18 @@
 <?php
 
-use App\Http\Controllers\AuthenticateController;
+use Faker\Provider\ar_JO\Company;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AuthenticateController;
 use App\Http\Controllers\OsgbEmployeeController;
 use App\Http\Controllers\CoopCompaniesController;
 use App\Http\Controllers\ChangeValidateController;
 use App\Http\Controllers\DeletedCompaniesController;
 use App\Http\Controllers\DeletedEmployeesController;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\MessageController;
+use App\Http\Controllers\NotificationController;
 
 require __DIR__ . '/auth.php';
 
@@ -51,13 +55,11 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::post('/profile', [ProfileController::class, 'updatePicture'])->name('profile');
 
-    Route::get('/messages', function () {
-        return view('admin/messages');
-    })->name('messages');
+    Route::get('/{id}/company', [CompanyController::class, 'index'])->name('company');
 
-    Route::get('/notifications', function () {
-        return view('admin/notifications');
-    })->name('notifications');
+    Route::get('/messages', [MessageController::class, 'index'])->name('messages');
+
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications');
 
     Route::get('/profile', function () {
         return view('admin/profile');
