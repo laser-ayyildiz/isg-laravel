@@ -1,6 +1,11 @@
 @extends('layouts.admin')
 @section('title')Onay Bekleyenler - @endsection
 @section('content')
+@if (session('deleteStatus'))
+    <div class="alert alert-success">
+        {{ session('deleteStatus') }}
+    </div>
+@endif
 <div class="card shadow-lg">
     <div class="card-header bg-light">
         <h1 class="text-dark mb-1" style="text-align: center;"><b>Onay Bekleyen Değişiklikler</b></h1>
@@ -25,15 +30,16 @@
                                 <th>Anlaşma Tarihi</th>
                                 <th>Düzenleyen</th>
                                 <th>Düzenlenme Tarihi</th>
-                                <th>Düzenle</th>
-                                <th>Sil</th>
+                                <th>Düzenle/Sil</th>
                             </tr>
                         </thead>
                         <tbody>
 
-                            @foreach ($companies ?? '' as $company)
+                            @foreach ($companies ?? '' as $key => $company)
                             <tr>
-                                <td> <a href="/admin/company/{{ @Hashids::encode($company -> id , 15, 298, 177) }}">{{ $company -> name }}</a> </td>
+                                <td> <a
+                                        href="/admin/company/{{ @Hashids::encode($company -> id , 15, 298, 177) }}">{{ $company -> name }}</a>
+                                </td>
                                 <td> {{ $company -> type }} </td>
                                 <td> {{ $company -> phone }} </td>
                                 <td> {{ $company -> email }} </td>
@@ -44,15 +50,13 @@
                                 <td> {{ $company -> updated_at }} </td>
 
 
-
-                                <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#a"
-                                        data-whatever="@getbootstrap">Düzenle</button></td>
-
-                                <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#a"
-                                        data-whatever="@getbootstrap">Sil</button></td>
-
-                                <div class="modal fade" id="a" tabindex="-1" aria-labelledby="exampleModalLabel"
-                                    aria-hidden="true">
+                                @if ($company->change == 1)
+                                <td><button type="button" class="btn btn-success" data-toggle="modal"
+                                        data-target="#change<?= $key ?>" data-whatever="@getbootstrap">Düzenle</button>
+                                </td>
+                                <!-- Düzenleme Modal -->
+                                <div class="modal fade" id="change<?= $key ?>" tabindex="-1"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-xl">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -63,15 +67,9 @@
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
 
-                                                <h5 class="modal-title" id="exampleModalLabel">Sil</h5>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-
                                             </div>
                                             <div class="modal-body">
-                                                <form action="change_validate.php" method="POST">
+                                                <form action="" method="POST">
 
 
                                                     <p><b>Düzenlenme tarihi:&emsp;</b> </p>
@@ -358,6 +356,41 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                @elseif ($company->change == 2)
+                                <td><button type="button" class="btn btn-danger" data-toggle="modal"
+                                        data-target="#delete<?= $key ?>" data-whatever="@getbootstrap">Sil</button></td>
+                                <div class="modal fade" id="delete<?= $key ?>" tabindex="-1"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Sil</h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <h3>
+                                                    {{ $company->name }} işletmesini silmek istediğinizden emin misiniz?
+                                                </h3>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <form action="{{ route('validate.delete') }}" method="POST">
+                                                    @csrf
+                                                    <input name="id" type="hidden" value="{{ @Hashids::encode($company -> id , 15, 298, 177) }}">
+                                                    <button type="submit" class="btn btn-secondary mr-auto"
+                                                        name="rejectDelete" value="aaa">Düzenleme talebini reddet</button>
+                                                    <button type="submit" class="btn btn-danger ml-auto"
+                                                        name="acceptDelete">İşletmeyi Sil</button>
+                                                </form>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                @endif
                             </tr>
                             @endforeach
                         </tbody>
@@ -372,8 +405,7 @@
                                 <td><strong>Anlaşma Tarihi</strong></td>
                                 <td><strong>Düzenleyen</strong></td>
                                 <td><strong>Düzenlenme Tarihi</strong></td>
-                                <td><strong>Düzenle</strong></td>
-                                <td><strong>Sil</strong></td>
+                                <td><strong>Düzenle/Sil</strong></td>
                             </tr>
                         </tfoot>
                     </table>
@@ -385,6 +417,7 @@
         </div>
     </div>
 </div>
+<!--
 <script>
     $('#exampleModal').on('show.bs.modal', function(event) {
       var button = $(event.relatedTarget) // Button that triggered the modal
@@ -397,4 +430,5 @@
     })
 
 </script>
+-->
 @endsection

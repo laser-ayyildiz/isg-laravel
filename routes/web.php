@@ -45,6 +45,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::get('/deleted_companies', [DeletedCompaniesController::class, 'index'])->name('deleted_companies');
 
     Route::get('/change_validate', [ChangeValidateController::class, 'index'])->name('change_validate');
+    Route::post('/change_validate', [ChangeValidateController::class, 'deleteRequest'])->name('validate.delete');
 
     Route::get('/osgb_employees', [OsgbEmployeeController::class, 'index'])->name('osgb_employees');
 
@@ -56,6 +57,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::post('/profile', [ProfileController::class, 'updatePicture'])->name('profile');
 
     Route::get('/company/{id}', [CompanyController::class, 'index'])->name('company');
+    Route::post('/company/{id}', [CompanyController::class, 'deleteRequest'])->name('company.delete');
 
     Route::get('/messages', [MessageController::class, 'index'])->name('messages');
 

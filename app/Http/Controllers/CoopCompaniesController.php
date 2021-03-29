@@ -9,7 +9,7 @@ class CoopCompaniesController extends Controller
 {
     public function index()
     {
-        $companies = CoopCompanies::where('deleted', 0)->paginate(15);
+        $companies = CoopCompanies::where('deleted', 0)->where('change', 0)->paginate(15);
         return view(
             'admin.companies',
             [
