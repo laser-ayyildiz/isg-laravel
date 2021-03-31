@@ -2,9 +2,9 @@
 @section('title')Onay Bekleyenler - @endsection
 @section('content')
 @if (session('deleteStatus'))
-    <div class="alert alert-success">
-        {{ session('deleteStatus') }}
-    </div>
+<div class="alert alert-success">
+    {{ session('deleteStatus') }}
+</div>
 @endif
 <div class="card shadow-lg">
     <div class="card-header bg-light">
@@ -70,8 +70,6 @@
                                             </div>
                                             <div class="modal-body">
                                                 <form action="" method="POST">
-
-
                                                     <p><b>Düzenlenme tarihi:&emsp;</b> </p>
                                                     <p><b>Düzenlemeye gönderen kullanıcı:&emsp;</b> </p>
                                                     <p><b>İsg Uzmanı</b>:&emsp;</p>
@@ -83,7 +81,8 @@
                                                             <label for="name"><strong>İşletme
                                                                     Adı:&emsp;</strong></label>
                                                             <input class="form-control" type="text" placeholder="Adı"
-                                                                name="name" value="" </div> </div> <br>
+                                                                name="name" value="{{ $company->name }}"></div>
+                                                                <br>
                                                             <div class=" row">
 
                                                                 <div class="col-sm-4">
@@ -379,9 +378,11 @@
                                             <div class="modal-footer">
                                                 <form action="{{ route('validate.delete') }}" method="POST">
                                                     @csrf
-                                                    <input name="id" type="hidden" value="{{ @Hashids::encode($company -> id , 15, 298, 177) }}">
+                                                    <input name="id" type="hidden"
+                                                        value="{{ @Hashids::encode($company -> id , 15, 298, 177) }}">
                                                     <button type="submit" class="btn btn-secondary mr-auto"
-                                                        name="rejectDelete" value="aaa">Düzenleme talebini reddet</button>
+                                                        name="rejectDelete" value="aaa">Düzenleme talebini
+                                                        reddet</button>
                                                     <button type="submit" class="btn btn-danger ml-auto"
                                                         name="acceptDelete">İşletmeyi Sil</button>
                                                 </form>

@@ -34,7 +34,6 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-
 Route::prefix('admin')->middleware(['auth'])->group(function () {
 
     Route::get('', [HomeController::class, 'index'])->name('home');
@@ -57,7 +56,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::post('/profile', [ProfileController::class, 'updatePicture'])->name('profile');
 
     Route::get('/company/{id}', [CompanyController::class, 'index'])->name('company');
-    Route::post('/company/{id}', [CompanyController::class, 'deleteRequest'])->name('company.delete');
+    Route::post('/company', [CompanyController::class, 'handle'])->name('company.handle');
 
     Route::get('/messages', [MessageController::class, 'index'])->name('messages');
 

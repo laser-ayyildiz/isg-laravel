@@ -10,7 +10,14 @@ class ChangeValidateController extends Controller
 {
     public function index()
     {
-        $companies = CoopCompanies::where('change', 1)->orWhere('change', 2)->orderBy('updated_at')->paginate(15);
+        $companies =
+            CoopCompanies::whereColumn([['change_from', '=', 'id']])
+            ->orderBy('updated_at', "DESC")
+            ->paginate(15);
+        //->get();
+        //$companies->query() = json_encode($companies);
+        dd($companies);
+        //$changedCompanies = CoopCompanies::where('')
         return view(
             'admin.change_validate',
             [
@@ -41,6 +48,6 @@ class ChangeValidateController extends Controller
                 );
             return redirect()->back()->with('deleteStatus', 'İşletme Silindi! İşletmeye ait bilgilere arşiv bölümünden ulaşabilirsiniz');
         } else
-            return redirect()->back()->with('Hata');
+            return redirect()->back()->with('Bir hata ile karşılaşıldı. Tekrar Deneyiniz!');
     }
 }

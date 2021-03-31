@@ -2,11 +2,6 @@
 @section('title')Şirket - @endsection
 @section('content')
 
-@if (session('deleteStatus'))
-    <div class="alert alert-success">
-        {{ session('deleteStatus') }}
-    </div>
-@endif
 <div class="container-fluid">
     <div class="card border">
         <div class="card-header tab-card-header text-center bg-light text-dark border">
@@ -52,19 +47,18 @@
             </ul>
         </div>
         <div class="card-body">
-
             <div class="tab-content" id="myTabContent">
                 <!--Genel Bilgiler -->
                 <div class="tab-pane fade show active" id="genel_bilgiler" role="tabpanel" aria-labelledby="gb-tab">
                     <fieldset id="gb_form">
-                        <button class="btn btn-success mx-1 float-right" data-toggle="modal" data-target="#addUser"
-                            id="addUserBtn" data-whatever="@getbootstrap">Kullanıcı
-                            Oluştur</button>
+                        <button class="btn btn-danger mx-1 float-right" data-toggle="modal" data-target="#areYouSure"
+                            id="changeCompanyBtn" data-whatever="@getbootstrap">İşletmeyi Sil</button>
                         <button class="btn btn-warning mx-1 float-right" data-toggle="modal"
                             data-target="#changeCompany" id="changeCompanyBtn" data-whatever="@getbootstrap">İşletme
                             Bilgilerini Değiştir</button>
-                        <button class="btn btn-danger mx-1 float-right" data-toggle="modal" data-target="#areYouSure"
-                            id="changeCompanyBtn" data-whatever="@getbootstrap">İşletmeyi Sil</button>
+                        <button class="btn btn-success mx-1 float-right" data-toggle="modal" data-target="#addUser"
+                            id="addUserBtn" data-whatever="@getbootstrap">Kullanıcı
+                            Oluştur</button>
                         <div class="form-row">
                             <div class="form-group col-lg-3">
                                 <label for="comp_type_show">
@@ -111,10 +105,10 @@
                         </div>
                         <div class="form-row">
                             <div class="form-group col-lg-4">
-                                <label for="contract_date">
+                                <label for="contract_at">
                                     <h5><b>Anlaşma Tarihi</b></h5>
                                 </label>
-                                <input type="date" class="form-control" name="contract_date" id="contract_date"
+                                <input type="date" class="form-control" name="contract_at" id="contract_at"
                                     value="{{$company->contract_at}}" required>
                             </div>
                             <div class="form-group col-lg-4">
@@ -137,9 +131,7 @@
                                 </label>
                                 <select class="form-control" id="remi_freq" name="remi_freq" size="1" required>
                                     <option value="" disabled>Ziyaret Sıklığı Ayarla</option>
-
-                                    <option value="{{$company->remi_freq}}" selected hidden></option>
-
+                                    <option value="{{$company->remi_freq}}" selected>{{$company->remi_freq}} Ay</option>
                                     <option value=1>1 Ay</option>
                                     <option value=2>2 Ay</option>
                                     <option value=3>3 Ay</option>
@@ -445,7 +437,7 @@
                                         <h4><b>SGK Sicil No</b></h4>
                                     </label>
                                     <input class="form-control" id="sgk_sicil" name="sgk_sicil" type="tel" min="12"
-                                        maxlength="12" placeholder="SGK Sicil No" value="">
+                                        maxlength="12" placeholder="SGK Sicil No" value="{{ $company->sgk_sicil }}">
                                 </div>
                             </div>
                             <br>
@@ -810,8 +802,7 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form action="{{ route('company.delete',['id' => @Hashids::encode($company->id , 15, 298, 177)]) }}"
-                        method="POST">
+                    <form action="{{ route('company.handle') }}" method="POST">
                         @csrf
                         <div class="modal-body">
                             <h3>
@@ -822,13 +813,17 @@
                             </h3>
                         </div>
                         <div class="modal-footer">
+                            <input type="hidden" name="companyId"
+                                value="{{ @Hashids::encode($company->id , 15, 298, 177) }}">
                             <button class="btn btn-lg btn-danger mr-auto" data-dismiss="modal">İptal</button>
-                            <button type="submit" class="btn btn-lg btn-danger float-right">SİL</button>
+                            <button type="submit" name="deleteRequest"
+                                class="btn btn-lg btn-danger float-right">SİL</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
+
         <!-- Yeni çalışan ekleme modal -->
         <div class="modal fade" id="addWorker" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl">
@@ -1267,9 +1262,12 @@
 
         <!-- İşletme bilgilerini değiştir-->
         <div class="modal fade" id="changeCompany" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <form action="../core/saveChanges.php" method="POST">
-                <div class="modal-dialog modal-xl" role="document">
-                    <div class="modal-content">
+
+            <div class="modal-dialog modal-xl" role="document">
+                <div class="modal-content">
+                    <form action="{{ route('company.handle',['id' => @Hashids::encode($company->id , 15, 298, 177)]) }}"
+                        method="POST">
+                        @csrf
                         <div class="modal-c-tabs">
                             <ul class="nav nav-tabs justify-content-center bg-light" style="padding-top: 10px"
                                 role="tablist">
@@ -1299,9 +1297,7 @@
                                 </li>
 
                             </ul>
-
                             <div class="tab-content">
-
                                 <div class="tab-pane fade in show active" id="link1" role="tabpanel"
                                     aria-labelledby="link1-tab">
                                     <div class="modal-body">
@@ -1310,8 +1306,9 @@
                                                 <label for="comp_type">
                                                     <h5><b>Sektör</b></h5>
                                                 </label>
-                                                <select class="form-control" id="comp_type" name="comp_type" required>
-                                                    <option value="" selected></option>
+                                                <select class="form-control" id="type" name="type" required>
+                                                    <option value="{{ $company->type }}" selected>{{ $company->type }}
+                                                    </option>
                                                     <option value="Hizmet">Hizmet</option>
                                                     <option value="Sağlık">Sağlık</option>
                                                     <option value="Sanayi">Sanayi</option>
@@ -1327,14 +1324,16 @@
                                                     <h5><strong>İşletme Adı</strong></h5>
                                                 </label>
                                                 <input class="form-control" type="text" placeholder="Adı" name="name"
-                                                    id="name" maxlength="250" readonly required value="">
+                                                    id="name" maxlength="250" readonly required
+                                                    value="{{ $company->name }}">
                                             </div>
                                             <div class="col-sm-6">
                                                 <label for="mail">
                                                     <h5><strong>İşletme Mail Adresi</strong></h5>
                                                 </label>
                                                 <input class="form-control" type="email" placeholder="E-mail"
-                                                    name="mail" id="mail" maxlength="125" required value="">
+                                                    name="email" id="email" maxlength="125" required
+                                                    value="{{ $company->email }}">
                                             </div>
                                         </div>
                                         <br>
@@ -1346,14 +1345,14 @@
                                                 <input class="form-control" type="tel" name="phone" id="phone"
                                                     placeholder="Tel: 0XXXXXXXXXX"
                                                     pattern="(\d{4})(\d{3})(\d{2})(\d{2})" maxlength="11" required
-                                                    value="">
+                                                    value="{{ $company->phone }}">
                                             </div>
                                             <div class="col-sm-6">
                                                 <label for="is_veren">
                                                     <h5><strong>İşveren Ad Soyad</strong></h5>
                                                 </label>
-                                                <input class="form-control" type="tel" name="is_veren" id="is_veren"
-                                                    maxlength="50" required value="">
+                                                <input class="form-control" type="tel" name="employer" id="employer"
+                                                    maxlength="50" required value="{{ $company->employer }}">
                                             </div>
                                         </div>
                                         <br>
@@ -1364,7 +1363,8 @@
                                                 </label>
                                                 <select class="form-control" id="countrySelect" name="countrySelect"
                                                     size="1" onchange="makeSubmenu(this.value)" required>
-                                                    <option value="" selected></option>
+                                                    <option value="{{ $company->city }}" selected>{{ $company->city }}
+                                                    </option>
                                                     <option>Adana</option>
                                                     <option>Adıyaman</option>
                                                     <option>Afyonkarahisar</option>
@@ -1454,17 +1454,19 @@
                                                 </label>
                                                 <select class="form-control" id="citySelect" name="citySelect" size="1"
                                                     required>
-                                                    <option value="" selected></option>
+                                                    <option value="{{ $company->town }}" selected>{{ $company->town }}
+                                                    </option>
                                                     <option></option>
                                                 </select>
                                             </div>
                                             <div class="col-sm-4">
-                                                <label for="contract_date">
+                                                <label for="contract_at">
                                                     <h5><strong>İşletme Anlaşma Tarihi<a
                                                                 style="color:red">*</a></strong></h5>
                                                 </label>
                                                 <input class="form-control" type="date" placeholder="Anlaşma Tarihi"
-                                                    name="contract_date" id="contract_date" required value="">
+                                                    name="contract_at" id="contract_at" required
+                                                    value="{{ $company->contract_at }}">
                                             </div>
                                         </div>
                                         <br>
@@ -1474,7 +1476,8 @@
                                                     <h5><b>Adres<a style="color:red">*</a></b></h5>
                                                 </label>
                                                 <textarea class="form-control" id="address" name="address" rows="3"
-                                                    style="max-width: 100%;" maxlength="2500" required></textarea>
+                                                    style="max-width: 100%;" maxlength="2500"
+                                                    required>{{ $company->address }}</textarea>
                                             </div>
                                         </div>
                                         <br>
@@ -1486,9 +1489,8 @@
                                                 <select class="form-control" id="remi_freq" name="remi_freq" size="1"
                                                     required>
                                                     <option value="" disabled>Ziyaret Sıklığı Ayarla</option>
-
-                                                    <option value="" selected> Ay</option>
-
+                                                    <option value="{{ $company->remi_freq }}" selected>
+                                                        {{ $company->remi_freq }} Ay</option>
                                                     <option value=1>1 Ay</option>
                                                     <option value=2>2 Ay</option>
                                                     <option value=3>3 Ay</option>
@@ -1521,7 +1523,7 @@
 
                                                 <select class="form-control" id="uzman" name="uzman" size="1">
 
-                                                    <option value="" selected></option>
+                                                    <option value="{{ $company->uzman }}" selected></option>
 
                                                     <option disabled selected>İsg Uzmanı Seç</option>
 
@@ -1744,7 +1746,8 @@
                                             <label for="nace_kodu">
                                                 <h4><b>Kurum NACE Kodu</b></h4>
                                             </label>
-                                            <input class="form-control" type="text" name="nace_kodu" required value="">
+                                            <input class="form-control" type="text" name="nace_kodu" required
+                                                value="{{ $company->nace_kodu }}">
                                         </div>
                                         <br>
                                         <div class="row">
@@ -1753,14 +1756,14 @@
                                                     <h4><b>Kurum Mersis No Giriniz</b></h4>
                                                 </label>
                                                 <input class="form-control" id="mersis_no" name="mersis_no" type="tel"
-                                                    min="16" maxlength="16" required value="">
+                                                    min="16" maxlength="16" required value="{{ $company->mersis_no }}">
                                             </div>
                                             <div class="col-6">
                                                 <label for="sgk_sicil">
                                                     <h4><b>SGK Sicil No Giriniz</b></h4>
                                                 </label>
                                                 <input class="form-control" id="sgk_sicil" name="sgk_sicil" type="tel"
-                                                    min="12" maxlength="12" required value="">
+                                                    min="12" maxlength="12" required value="{{ $company->sgk_sicil }}">
                                             </div>
                                         </div>
                                         <br>
@@ -1770,14 +1773,14 @@
                                                     <h4><b>Vergi No Giriniz</b></h4>
                                                 </label>
                                                 <input class="form-control" id="vergi_no" name="vergi_no" type="tel"
-                                                    min="10" maxlength="10" required value="">
+                                                    min="10" maxlength="10" required value="{{ $company->vergi_no }}">
                                             </div>
                                             <div class="col-6">
                                                 <label for="vergi_dairesi">
                                                     <h4><b>Vergi Dairesi Giriniz</b></h4>
                                                 </label>
                                                 <input class="form-control" id="vergi_dairesi" name="vergi_dairesi"
-                                                    type="text" required value="">
+                                                    type="text" required value="{{ $company->vergi_dairesi }}">
                                             </div>
                                         </div>
                                         <br>
@@ -1787,33 +1790,31 @@
                                                     <h4><b>İSG-KATİP İş Yeri ID</b></h4>
                                                 </label>
                                                 <input class="form-control" id="katip_is_yeri_id"
-                                                    name="katip_is_yeri_id" type="tel" maxlength="30" required value="">
+                                                    name="katip_is_yeri_id" type="tel" maxlength="30" required
+                                                    value="{{ $company->katip_is_yeri_id }}">
                                             </div>
                                             <div class="col-6">
                                                 <label for="katip_kurum_id">
                                                     <h4><b>İSG-KATİP Kurum ID</b></h4>
                                                 </label>
                                                 <input class="form-control" id="katip_kurum_id" name="katip_kurum_id"
-                                                    type="tel" maxlength="30" required value="">
+                                                    type="tel" maxlength="30" required
+                                                    value="{{ $company->katip_kurum_id }}">
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <input type="text" name="changer" value="" hidden>
-                                        <input type="number" name="company_id" value="" hidden>
-                                        <input type="text" name="company_name" value="" hidden>
-                                        <button class="btn btn-danger btn-lg" name="sil"
-                                            onClick='return confirmSubmit()' style="margin-right: auto;">İşletmeyi
-                                            Sil</button>
-                                        <button class="btn btn-primary btn-lg" type='submit' name='kaydet'
-                                            onClick='return confirmSubmit()'>Kaydet</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                        <div class="modal-footer">
+                            <input type="hidden" name="companyId"
+                                value="{{ @Hashids::encode($company->id , 15, 298, 177) }}">
+                            <button class="btn btn-primary btn-lg" type='submit' name='changeRequest'>Kaydet</button>
+                        </div>
+                    </form>
                 </div>
-            </form>
+            </div>
+
         </div>
 
         <!-- Yeni Kullanıcı Oluştur-->
@@ -1827,7 +1828,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="../core/addCompanyUser.php" method="POST">
+                        <form action="" method="POST">
                             <div class="row">
                                 <div class="col-sm">
                                     <label for="firstname"><strong>Adı</strong></label>
@@ -1872,30 +1873,121 @@
     <!--card end-->
 </div>
 <!--container end-->
+<script type="text/javascript">
+    var citiesByState = {
+    Adana: ["Aladağ", "Ceyhan", "Çukurova", "Feke", "İmamoğlu", "Karaisalı", "Karataş", "Kozan", "Pozantı", "Saimbeyli", "Sarıçam", "Seyhan", "Tufanbeyli", "Yumurtalık", "Yüreğir"],
+    Adıyaman: ["Besni", "Çelikhan", "Gerger", "Gölbaşı", "Kahta", "Merkez", "Samsat", "Sincik", "Tut"],
+    Afyonkarahisar: ["Başmakçı", "Bayat", "Bolvadin", "Çay", "Çobanlar", "Dazkırı", "Dinar", "Emirdağ", "Evciler", "Hocalar", "İhsaniye", "İscehisar", "Kızılören", "Merkez", "Sandıklı", "Sinanpaşa", "Sultandağı", "Şuhut"],
+    Ağrı: ["Diyadin", "Doğubayazıt", "Eleşkirt", "Hamur", "Merkez", "Patnos", "Taşlıçay", "Tutak"],
+    Amasya: ["Göynücek", "Gümüşhacıköy", "Hamamözü", "Merkez", "Merzifon", "Suluova", "Taşova"],
+    Ankara: ["Altındağ", "Ayaş", "Bala", "Beypazarı", "Çamlıdere", "Çankaya", "Çubuk", "Elmadağ", "Güdül", "Haymana", "Kalecik", "Kızılcahamam", "Nallıhan", "Polatlı", "Şereflikoçhisar", "Yenimahalle", "Gölbaşı", "Keçiören", "Mamak", "Sincan",
+      "Kazan", "Akyurt", "Etimesgut", "Evren", "Pursaklar"
+    ],
+    Antalya: ["Akseki", "Alanya", "Elmalı", "Finike", "Gazipaşa", "Gündoğmuş", "Kaş", "Korkuteli", "Kumluca", "Manavgat", "Serik", "Demre", "İbradı", "Kemer", "Aksu", "Döşemealtı", "Kepez", "Konyaaltı", "Muratpaşa"],
+    Artvin: ["Ardanuç", "Arhavi", "Merkez", "Borçka", "Hopa", "Şavşat", "Yusufeli", "Murgul"],
+    Aydın: ["Merkez", "Bozdoğan", "Efeler", "Çine", "Germencik", "Karacasu", "Koçarlı", "Kuşadası", "Kuyucak", "Nazilli", "Söke", "Sultanhisar", "Yenipazar", "Buharkent", "İncirliova", "Karpuzlu", "Köşk", "Didim"],
+    Balıkesir: ["Altıeylül", "Ayvalık", "Merkez", "Balya", "Bandırma", "Bigadiç", "Burhaniye", "Dursunbey", "Edremit", "Erdek", "Gönen", "Havran", "İvrindi", "Karesi", "Kepsut", "Manyas", "Savaştepe", "Sındırgı", "Gömeç", "Susurluk", "Marmara"],
+    Bilecik: ["Merkez", "Bozüyük", "Gölpazarı", "Osmaneli", "Pazaryeri", "Söğüt", "Yenipazar", "İnhisar"],
+    Bingöl: ["Merkez", "Genç", "Karlıova", "Kiğı", "Solhan", "Adaklı", "Yayladere", "Yedisu"],
+    Bitlis: ["Adilcevaz", "Ahlat", "Merkez", "Hizan", "Mutki", "Tatvan", "Güroymak"],
+    Bolu: ["Merkez", "Gerede", "Göynük", "Kıbrıscık", "Mengen", "Mudurnu", "Seben", "Dörtdivan", "Yeniçağa"],
+    Burdur: ["Ağlasun", "Bucak", "Merkez", "Gölhisar", "Tefenni", "Yeşilova", "Karamanlı", "Kemer", "Altınyayla", "Çavdır", "Çeltikçi"],
+    Bursa: ["Gemlik", "İnegöl", "İznik", "Karacabey", "Keles", "Mudanya", "Mustafakemalpaşa", "Orhaneli", "Orhangazi", "Yenişehir", "Büyükorhan", "Harmancık", "Nilüfer", "Osmangazi", "Yıldırım", "Gürsu", "Kestel"],
+    Çanakkale: ["Ayvacık", "Bayramiç", "Biga", "Bozcaada", "Çan", "Merkez", "Eceabat", "Ezine", "Gelibolu", "Gökçeada", "Lapseki", "Yenice"],
+    Çankırı: ["Merkez", "Çerkeş", "Eldivan", "Ilgaz", "Kurşunlu", "Orta", "Şabanözü", "Yapraklı", "Atkaracalar", "Kızılırmak", "Bayramören", "Korgun"],
+    Çorum: ["Alaca", "Bayat", "Merkez", "İskilip", "Kargı", "Mecitözü", "Ortaköy", "Osmancık", "Sungurlu", "Boğazkale", "Uğurludağ", "Dodurga", "Laçin", "Oğuzlar"],
+    Denizli: ["Acıpayam", "Buldan", "Çal", "Çameli", "Çardak", "Çivril", "Merkez", "Merkezefendi", "Pamukkale", "Güney", "Kale", "Sarayköy", "Tavas", "Babadağ", "Bekilli", "Honaz", "Serinhisar", "Baklan", "Beyağaç", "Bozkurt"],
+    Diyarbakır: ["Kocaköy", "Çermik", "Çınar", "Çüngüş", "Dicle", "Ergani", "Hani", "Hazro", "Kulp", "Lice", "Silvan", "Eğil", "Bağlar", "Kayapınar", "Sur", "Yenişehir", "Bismil"],
+    Edirne: ["Merkez", "Enez", "Havsa", "İpsala", "Keşan", "Lalapaşa", "Meriç", "Uzunköprü", "Süloğlu"],
+    Elazığ: ["Ağın", "Baskil", "Merkez", "Karakoçan", "Keban", "Maden", "Palu", "Sivrice", "Arıcak", "Kovancılar", "Alacakaya"],
+    Erzincan: ["Çayırlı", "Merkez", "İliç", "Kemah", "Kemaliye", "Refahiye", "Tercan", "Üzümlü", "Otlukbeli"],
+    Erzurum: ["Aşkale", "Çat", "Hınıs", "Horasan", "İspir", "Karayazı", "Narman", "Oltu", "Olur", "Pasinler", "Şenkaya", "Tekman", "Tortum", "Karaçoban", "Uzundere", "Pazaryolu", "Köprüköy", "Palandöken", "Yakutiye", "Aziziye"],
+    Eskişehir: ["Çifteler", "Mahmudiye", "Mihalıççık", "Sarıcakaya", "Seyitgazi", "Sivrihisar", "Alpu", "Beylikova", "İnönü", "Günyüzü", "Han", "Mihalgazi", "Odunpazarı", "Tepebaşı"],
+    Gaziantep: ["Araban", "İslahiye", "Nizip", "Oğuzeli", "Yavuzeli", "Şahinbey", "Şehitkamil", "Karkamış", "Nurdağı"],
+    Giresun: ["Alucra", "Bulancak", "Dereli", "Espiye", "Eynesil", "Merkez", "Görele", "Keşap", "Şebinkarahisar", "Tirebolu", "Piraziz", "Yağlıdere", "Çamoluk", "Çanakçı", "Doğankent", "Güce"],
+    Gümüşhane: ["Merkez", "Kelkit", "Şiran", "Torul", "Köse", "Kürtün"],
+    Hakkari: ["Çukurca", "Merkez", "Şemdinli", "Yüksekova"],
+    Hatay: ["Altınözü", "Arsuz", "Defne", "Dörtyol", "Hassa", "Antakya", "İskenderun", "Kırıkhan", "Payas", "Reyhanlı", "Samandağ", "Yayladağı", "Erzin", "Belen", "Kumlu"],
+    Isparta: ["Atabey", "Eğirdir", "Gelendost", "Merkez", "Keçiborlu", "Senirkent", "Sütçüler", "Şarkikaraağaç", "Uluborlu", "Yalvaç", "Aksu", "Gönen", "Yenişarbademli"],
+    Mersin: ["Anamur", "Erdemli", "Gülnar", "Mut", "Silifke", "Tarsus", "Aydıncık", "Bozyazı", "Çamlıyayla", "Akdeniz", "Mezitli", "Toroslar", "Yenişehir"],
+    İstanbul: ["Adalar", "Bakırköy", "Beşiktaş", "Beykoz", "Beyoğlu", "Çatalca", "Eyüp", "Fatih", "Gaziosmanpaşa", "Kadıköy", "Kartal", "Sarıyer", "Silivri", "Şile", "Şişli", "Üsküdar", "Zeytinburnu", "Büyükçekmece", "Kağıthane", "Küçükçekmece",
+      "Pendik", "Ümraniye", "Bayrampaşa", "Avcılar", "Bağcılar", "Bahçelievler", "Güngören", "Maltepe", "Sultanbeyli", "Tuzla", "Esenler", "Arnavutköy", "Ataşehir", "Başakşehir", "Beylikdüzü", "Çekmeköy", "Esenyurt", "Sancaktepe", "Sultangazi"
+    ],
+    İzmir: ["Aliağa", "Bayındır", "Bergama", "Bornova", "Çeşme", "Dikili", "Foça", "Karaburun", "Karşıyaka", "Kemalpaşa", "Kınık", "Kiraz", "Menemen", "Ödemiş", "Seferihisar", "Selçuk", "Tire", "Torbalı", "Urla", "Beydağ", "Buca", "Konak",
+      "Menderes", "Balçova", "Çiğli", "Gaziemir", "Narlıdere", "Güzelbahçe", "Bayraklı", "Karabağlar"
+    ],
+    Kars: ["Arpaçay", "Digor", "Kağızman", "Merkez", "Sarıkamış", "Selim", "Susuz", "Akyaka"],
+    Kastamonu: ["Abana", "Araç", "Azdavay", "Bozkurt", "Cide", "Çatalzeytin", "Daday", "Devrekani", "İnebolu", "Merkez", "Küre", "Taşköprü", "Tosya", "İhsangazi", "Pınarbaşı", "Şenpazar", "Ağlı", "Doğanyurt", "Hanönü", "Seydiler"],
+    Kayseri: ["Bünyan", "Develi", "Felahiye", "İncesu", "Pınarbaşı", "Sarıoğlan", "Sarız", "Tomarza", "Yahyalı", "Yeşilhisar", "Akkışla", "Talas", "Kocasinan", "Melikgazi", "Hacılar", "Özvatan"],
+    Kırklareli: ["Babaeski", "Demirköy", "Merkez", "Kofçaz", "Lüleburgaz", "Pehlivanköy", "Pınarhisar", "Vize"],
+    Kırşehir: ["Çiçekdağı", "Kaman", "Merkez", "Mucur", "Akpınar", "Akçakent", "Boztepe"],
+    Kocaeli: ["Gebze", "Gölcük", "Kandıra", "Karamürsel", "Körfez", "Derince", "Başiskele", "Çayırova", "Darıca", "Dilovası", "İzmit", "Kartepe"],
+    Konya: ["Akşehir", "Beyşehir", "Bozkır", "Cihanbeyli", "Çumra", "Doğanhisar", "Ereğli", "Hadim", "Ilgın", "Kadınhanı", "Karapınar", "Kulu", "Sarayönü", "Seydişehir", "Yunak", "Akören", "Altınekin", "Derebucak", "Hüyük", "Karatay", "Meram",
+      "Selçuklu", "Taşkent", "Ahırlı", "Çeltik", "Derbent", "Emirgazi", "Güneysınır", "Halkapınar", "Tuzlukçu", "Yalıhüyük"
+    ],
+    Kütahya: ["Altıntaş", "Domaniç", "Emet", "Gediz", "Merkez", "Simav", "Tavşanlı", "Aslanapa", "Dumlupınar", "Hisarcık", "Şaphane", "Çavdarhisar", "Pazarlar"],
+    Malatya: ["Akçadağ", "Arapgir", "Arguvan", "Darende", "Doğanşehir", "Hekimhan", "Merkez", "Pütürge", "Yeşilyurt", "Battalgazi", "Doğanyol", "Kale", "Kuluncak", "Yazıhan"],
+    Manisa: ["Akhisar", "Alaşehir", "Demirci", "Gördes", "Kırkağaç", "Kula", "Merkez", "Salihli", "Sarıgöl", "Saruhanlı", "Selendi", "Soma", "Şehzadeler", "Yunusemre", "Turgutlu", "Ahmetli", "Gölmarmara", "Köprübaşı"],
+    Kahramanmaraş: ["Afşin", "Andırın", "Dulkadiroğlu", "Onikişubat", "Elbistan", "Göksun", "Merkez", "Pazarcık", "Türkoğlu", "Çağlayancerit", "Ekinözü", "Nurhak"],
+    Mardin: ["Derik", "Kızıltepe", "Artuklu", "Merkez", "Mazıdağı", "Midyat", "Nusaybin", "Ömerli", "Savur", "Dargeçit", "Yeşilli"],
+    Muğla: ["Bodrum", "Datça", "Fethiye", "Köyceğiz", "Marmaris", "Menteşe", "Milas", "Ula", "Yatağan", "Dalaman", "Seydikemer", "Ortaca", "Kavaklıdere"],
+    Muş: ["Bulanık", "Malazgirt", "Merkez", "Varto", "Hasköy", "Korkut"],
+    Nevşehir: ["Avanos", "Derinkuyu", "Gülşehir", "Hacıbektaş", "Kozaklı", "Merkez", "Ürgüp", "Acıgöl"],
+    Niğde: ["Bor", "Çamardı", "Merkez", "Ulukışla", "Altunhisar", "Çiftlik"],
+    Ordu: ["Akkuş", "Altınordu", "Aybastı", "Fatsa", "Gölköy", "Korgan", "Kumru", "Mesudiye", "Perşembe", "Ulubey", "Ünye", "Gülyalı", "Gürgentepe", "Çamaş", "Çatalpınar", "Çaybaşı", "İkizce", "Kabadüz", "Kabataş"],
+    Rize: ["Ardeşen", "Çamlıhemşin", "Çayeli", "Fındıklı", "İkizdere", "Kalkandere", "Pazar", "Merkez", "Güneysu", "Derepazarı", "Hemşin", "İyidere"],
+    Sakarya: ["Akyazı", "Geyve", "Hendek", "Karasu", "Kaynarca", "Sapanca", "Kocaali", "Pamukova", "Taraklı", "Ferizli", "Karapürçek", "Söğütlü", "Adapazarı", "Arifiye", "Erenler", "Serdivan"],
+    Samsun: ["Alaçam", "Bafra", "Çarşamba", "Havza", "Kavak", "Ladik", "Terme", "Vezirköprü", "Asarcık", "Ondokuzmayıs", "Salıpazarı", "Tekkeköy", "Ayvacık", "Yakakent", "Atakum", "Canik", "İlkadım"],
+    Siirt: ["Baykan", "Eruh", "Kurtalan", "Pervari", "Merkez", "Şirvan", "Tillo"],
+    Sinop: ["Ayancık", "Boyabat", "Durağan", "Erfelek", "Gerze", "Merkez", "Türkeli", "Dikmen", "Saraydüzü"],
+    Sivas: ["Divriği", "Gemerek", "Gürün", "Hafik", "İmranlı", "Kangal", "Koyulhisar", "Merkez", "Suşehri", "Şarkışla", "Yıldızeli", "Zara", "Akıncılar", "Altınyayla", "Doğanşar", "Gölova", "Ulaş"],
+    Tekirdağ: ["Çerkezköy", "Çorlu", "Ergene", "Hayrabolu", "Malkara", "Muratlı", "Saray", "Süleymanpaşa", "Kapaklı", "Şarköy", "Marmaraereğlisi"],
+    Tokat: ["Almus", "Artova", "Erbaa", "Niksar", "Reşadiye", "Merkez", "Turhal", "Zile", "Pazar", "Yeşilyurt", "Başçiftlik", "Sulusaray"],
+    Trabzon: ["Akçaabat", "Araklı", "Arsin", "Çaykara", "Maçka", "Of", "Ortahisar", "Sürmene", "Tonya", "Vakfıkebir", "Yomra", "Beşikdüzü", "Şalpazarı", "Çarşıbaşı", "Dernekpazarı", "Düzköy", "Hayrat", "Köprübaşı"],
+    Tunceli: ["Çemişgezek", "Hozat", "Mazgirt", "Nazımiye", "Ovacık", "Pertek", "Pülümür", "Merkez"],
+    Şanlıurfa: ["Akçakale", "Birecik", "Bozova", "Ceylanpınar", "Eyyübiye", "Halfeti", "Haliliye", "Hilvan", "Karaköprü", "Siverek", "Suruç", "Viranşehir", "Harran"],
+    Uşak: ["Banaz", "Eşme", "Karahallı", "Sivaslı", "Ulubey", "Merkez"],
+    Van: ["Başkale", "Çatak", "Erciş", "Gevaş", "Gürpınar", "İpekyolu", "Muradiye", "Özalp", "Tuşba", "Bahçesaray", "Çaldıran", "Edremit", "Saray"],
+    Yozgat: ["Akdağmadeni", "Boğazlıyan", "Çayıralan", "Çekerek", "Sarıkaya", "Sorgun", "Şefaatli", "Yerköy", "Merkez", "Aydıncık", "Çandır", "Kadışehri", "Saraykent", "Yenifakılı"],
+    Zonguldak: ["Çaycuma", "Devrek", "Ereğli", "Merkez", "Alaplı", "Gökçebey"],
+    Aksaray: ["Ağaçören", "Eskil", "Gülağaç", "Güzelyurt", "Merkez", "Ortaköy", "Sarıyahşi"],
+    Bayburt: ["Merkez", "Aydıntepe", "Demirözü"],
+    Karaman: ["Ermenek", "Merkez", "Ayrancı", "Kazımkarabekir", "Başyayla", "Sarıveliler"],
+    Kırıkkale: ["Delice", "Keskin", "Merkez", "Sulakyurt", "Bahşili", "Balışeyh", "Çelebi", "Karakeçili", "Yahşihan"],
+    Batman: ["Merkez", "Beşiri", "Gercüş", "Kozluk", "Sason", "Hasankeyf"],
+    Şırnak: ["Beytüşşebap", "Cizre", "İdil", "Silopi", "Merkez", "Uludere", "Güçlükonak"],
+    Bartın: ["Merkez", "Kurucaşile", "Ulus", "Amasra"],
+    Ardahan: ["Merkez", "Çıldır", "Göle", "Hanak", "Posof", "Damal"],
+    Iğdır: ["Aralık", "Merkez", "Tuzluca", "Karakoyunlu"],
+    Yalova: ["Merkez", "Altınova", "Armutlu", "Çınarcık", "Çiftlikköy", "Termal"],
+    Karabük: ["Eflani", "Eskipazar", "Merkez", "Ovacık", "Safranbolu", "Yenice"],
+    Kilis: ["Merkez", "Elbeyli", "Musabeyli", "Polateli"],
+    Osmaniye: ["Bahçe", "Kadirli", "Merkez", "Düziçi", "Hasanbeyli", "Sumbas", "Toprakkale"],
+    Düzce: ["Akçakoca", "Merkez", "Yığılca", "Cumayeri", "Gölyaka", "Çilimli", "Gümüşova", "Kaynaşlı"]
+  }
 
-<script language="JavaScript">
-    function confirmSubmit()
-    {
-    var agree=confirm("Lütfen yaptığınız değişiklikler onaylanana kadar başka bir değişiklik yapmayınız!\nDeğişiklikler onaylanmadan yaptığınız yeni değişiklikler kaydedilmeyecektir!\nDeğişiklikleri işletme yöneticinize göndermek istediğinize emin misiniz?");
-    if (agree)
-     return true ;
-    else
-     return false ;
+  function makeSubmenu(value) {
+    if (value.length == 0) document.getElementById("citySelect").innerHTML = "<option></option>";
+    else {
+      var citiesOptions = "";
+      for (cityId in citiesByState[value]) {
+        citiesOptions += "<option>" + citiesByState[value][cityId] + "</option>";
+      }
+      document.getElementById("citySelect").innerHTML = citiesOptions;
     }
+  }
+
+  function displaySelected() {
+    var country = document.getElementById("countrySelect").value;
+    var city = document.getElementById("citySelect").value;
+    alert(country + "\n" + city);
+  }
+
+  function resetSelection() {
+    document.getElementById("countrySelect").selectedIndex = 0;
+    document.getElementById("citySelect").selectedIndex = 0;
+  }
 </script>
-<script src="/js/jquery.min.js"></script>
-<script src="/js/bootstrap.min.js"></script>
-<script src="/js/chart.min.js"></script>
-<script src="/js/bs-init.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
-<script src="/js/theme.js"></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js'></script>
-<script src='../../calendar/js/moment.min.js'></script>
-<script src="https://code.jquery.com/jquery-1.9.1.min.js"
-    integrity="sha256-wS9gmOZBqsqWxgIVgA8Y9WcQOa7PgSIX+rPA0VL2rbQ=" crossorigin="anonymous"></script>
-<script src='../../calendar/js/fullcalendar.min.js'></script>
-<script src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js'></script>
 <!--
     <script>
       $('#ic_form1').prop('disabled', true);

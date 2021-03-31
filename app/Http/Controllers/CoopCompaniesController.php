@@ -19,7 +19,6 @@ class CoopCompaniesController extends Controller
     }
     public function store(Request $request)
     {
-        //dd($request->address);
         CoopCompanies::create([
             'type' => $request->type,
             'name' => $request->name,
@@ -50,7 +49,5 @@ class CoopCompaniesController extends Controller
             'remi_freq' => $request->remi_freq,
         ]);
         return redirect()->route('companies');
-        //dd($request->email);
-        //return view('admin.companies');
     }
 }

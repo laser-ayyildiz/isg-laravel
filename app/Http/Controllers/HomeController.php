@@ -25,8 +25,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $comp_count = CoopCompanies::count();
-        $emp_count = CoopEmployees::count();
+        $comp_count = CoopCompanies::where('deleted', 0)->where('change', 0)->count();
+        $emp_count = CoopEmployees::where('deleted', 0)->count();
 
         return view(
             'admin.home',

@@ -4,12 +4,19 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCoopCompaniesTable extends Migration
+class CreateChangeRequestsTable extends Migration
 {
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
     public function up()
     {
-        Schema::create('coop_companies', function (Blueprint $table) {
+        Schema::create('change_requests', function (Blueprint $table) {
             $table->id();
+
+            $table->bigInteger('company_id')->unsigned()->index();
             $table->char('type', 255);
             $table->string('name');
             $table->char('employer', 150);
@@ -27,20 +34,22 @@ class CreateCoopCompaniesTable extends Migration
             $table->string('vergi_dairesi');
             $table->char('katip_is_yeri_id');
             $table->char('katip_kurum_id');
-            $table->char('change', 2)->nullable()->default(0);
             $table->bigInteger('changer')->unsigned()->index()->nullable();
-            $table->boolean('deleted')->nullable()->default(0);
-            $table->bigInteger('change_from')->unsigned()->index()->nullable();
             $table->timestamps();
 
-            //Foreign keys
+            //Foreign Keys
             $table->foreign('changer')->references('id')->on('users');
-            $table->foreign('change_from')->references('id')->on('coop_companies');
+            $table->foreign('company_id')->references('id')->on('coop_companies');
         });
     }
 
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
     public function down()
     {
-        Schema::dropIfExists('coop_companies');
+        Schema::dropIfExists('change_requests');
     }
 }
