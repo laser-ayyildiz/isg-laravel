@@ -15,7 +15,11 @@ class CreateIsgUzmansTable extends Migration
     {
         Schema::create('isg_uzmans', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('user_id')->index()->unsigned();
+            $table->integer('uzman_type');
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

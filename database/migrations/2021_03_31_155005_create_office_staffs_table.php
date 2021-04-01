@@ -15,7 +15,10 @@ class CreateOfficeStaffsTable extends Migration
     {
         Schema::create('office_staffs', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('user_id')->index()->unsigned();
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
