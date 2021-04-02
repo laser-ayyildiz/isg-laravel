@@ -21,7 +21,7 @@ class CreateCoopEmployeesTable extends Migration
             $table->date('contract_at');
             $table->boolean('deleted')->default(0);
             $table->timestamps();
-            $table->foreign('company_id')->references('id')->on('coop_companies');
+            $table->foreign('company_id')->references('id')->on('coop_companies')->onDelete('cascade');
         });
     }
 

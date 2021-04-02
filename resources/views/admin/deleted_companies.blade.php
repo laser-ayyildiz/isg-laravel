@@ -22,20 +22,20 @@
                             <th>E-mail</th>
                             <th>Şehir</th>
                             <th>İlçe</th>
-                            <th>Anlaşma Tarihi</th>
+                            <th>Silinme Tarihi</th>
                         </tr>
                     </thead>
                     <tbody>
 
                         @foreach ($companies as $company)
                         <tr>
-                            <td> <a href="/admin/company/{{ @Hashids::encode($company -> id , 15, 298, 177) }}">{{ $company -> name }}</a> </td>
+                            <td> <a href="/admin/company/deleted/{{ @Hashids::encode($company -> id , 15, 298, 177)  }}">{{ $company -> name }}</a> </td>
                             <td> {{ $company -> type }} </td>
                             <td> {{ $company -> phone }} </td>
                             <td> {{ $company -> email }} </td>
                             <td> {{ $company -> city }} </td>
                             <td> {{ $company -> town }} </td>
-                            <td> {{ $company -> contract_at }} </td>
+                            <td> {{ $company -> created_at }} </td>
                         </tr>
                         @endforeach
 
@@ -48,7 +48,7 @@
                             <td><strong>E-mail</strong></td>
                             <td><strong>Şehir</strong></td>
                             <td><strong>İlçe</strong></td>
-                            <td><strong>Anlaşma Tarihi</strong></td>
+                            <td><strong>Silinme Tarihi</strong></td>
                         </tr>
                     </tfoot>
                 </table>

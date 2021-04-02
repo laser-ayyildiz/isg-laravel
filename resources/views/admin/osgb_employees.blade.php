@@ -107,8 +107,7 @@
             <table class="table table-striped table-bordered table-hover" id="dataTable">
                 <thead class="thead-dark">
                     <tr>
-                        <th>Ad</th>
-                        <th>Soyad</th>
+                        <th>Ad Soyad</th>
                         <th>Çalışma Alanı</th>
                         <th>T.C Kimlik No</th>
                         <th>İşe Giriş Tarihi</th>
@@ -116,17 +115,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($osgb_employees ?? '' as $employee)
+                    @foreach ($employees ?? '' as $key => $employee)
                     <tr>
-                        <td> {{ $employee -> firstname }} </td>
-                        <td> {{ $employee -> lastname }} </td>
+                        <td> {{ $employee -> name }} </td>
                         <td> {{ $employee -> user_type }} </td>
                         <td> {{ $employee -> tc }} </td>
-                        <td> {{ $employee -> start_at }} </td>
-                        <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#a"
+                        <td> {{ $employee -> recruitment_date }} </td>
+                        <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#düzenle{{ $key }}"
                                 data-whatever="@getbootstrap">Düzenle</button>
                         </td>
-                    <div class="modal fade" id="a" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="düzenle{{ $key }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -136,7 +134,7 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <form action="osgb_users.php" method="POST">
+                                    <form action="" method="POST">
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <label><strong>Kullanıcı türünü seçin</strong></label>
@@ -163,12 +161,7 @@
                                             <div class="col-sm-6">
                                                 <label for="firstname"><strong>Adı</strong></label>
                                                 <input type="text" class="form-control" placeholder="Adı"
-                                                    name="firstname" value="" required>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <label for="lastname"><strong>Soy Adı </strong></label>
-                                                <input type="text" class="form-control" placeholder="Soy Adı"
-                                                    name="lastname" value="" required>
+                                                    name="firstname" value="{{ $employee -> name }}" required>
                                             </div>
                                         </div>
                                         <br>
@@ -176,7 +169,7 @@
                                             <div class="col-sm-10">
                                                 <label for="email"><strong>E-mail </strong></label>
                                                 <input type="email" class="form-control" placeholder="E-mail"
-                                                    name="email" value="" readonly required>
+                                                    name="email" value="{{ $employee -> email }}" readonly required>
                                             </div>
                                         </div>
                                         <br>
@@ -185,13 +178,13 @@
                                                 <label for="phone"><strong>Telefon No </strong></label>
                                                 <input type="tel" class="form-control" name="phone"
                                                     placeholder="Tel: 05XXXXXXXXX"
-                                                    pattern="(\d{4})(\d{3})(\d{2})(\d{2})" maxlength="11" value=""
+                                                    pattern="(\d{4})(\d{3})(\d{2})(\d{2})" maxlength="11" value="{{ $employee -> phone }}"
                                                     required>
                                             </div>
                                             <div class="col-sm-6">
                                                 <label for="start_date"><strong>İşe Giriş Tarihi </strong></label>
                                                 <input type="date" class="form-control" placeholder="İşe giriş"
-                                                    name="start_date" value="" required>
+                                                    name="start_date" value="{{ $employee -> recruitment_date }}" required>
                                             </div>
                                         </div>
                                         <br>
@@ -199,7 +192,7 @@
                                             <div class="col-sm-6">
                                                 <label for="tc"><strong>T.C Kimlik No </strong></label>
                                                 <input type="number" class="form-control" placeholder="T.C Kimlik No"
-                                                    name="tc" min="11" maxlength="11" value="" readonly required>
+                                                    name="tc" min="11" maxlength="11" value="{{ $employee -> tc }}" readonly required>
                                             </div>
                                         </div>
                                         <br>
@@ -224,7 +217,6 @@
                 <tfoot>
                     <tr>
                         <td><strong>Ad</strong></td>
-                        <td><strong>Soyad</strong></td>
                         <td><strong>Çalışma Alanı</strong></td>
                         <td><strong>T.C Kimlik No</strong></td>
                         <td><strong>İşe Giriş Tarihi</strong></td>
@@ -234,7 +226,7 @@
             </table>
         </div>
         <div class="float-right my-3">
-            {{ $osgb_employees -> links() }}
+            {{ $employees -> links() }}
         </div>
     </div>
     @endsection

@@ -69,10 +69,10 @@
                     <div class="dropdown-content" aria-labelledby="dropdownMenu2">
                         <a class="dropdown-item" type="button" href="{{ route('companies') }}"><i
                                 class="fas fa-stream"></i><span>&nbsp;İşletme Listesi</span></a>
-                        <a class="dropdown-item" type="button" href="{{ route('deleted_companies') }}"><i
-                                class="fas fa-eraser"></i><span>&nbsp;Silinen İşletmeler</span></a>
                         <a class="dropdown-item" type="button" href="{{ route('change_validate') }}"><i
                                 class="fas fa-exchange-alt"></i><span>&nbsp;Onay Bekleyenler</span></a>
+                        <a class="dropdown-item" type="button" href="{{ route('deleted_companies') }}"><i
+                                class="fas fa-eraser"></i><span>&nbsp;Silinen İşletmeler</span></a>
                     </div>
                 </div>
             </li>
@@ -94,7 +94,7 @@
                     <div class="dropdown-content" aria-labelledby="dropdownMenu2">
                         <a class="dropdown-item" type="button" href="{{ route('osgb_employees') }}"><i
                                 class="fas fa-stream"></i><span>&nbsp;Çalışan Listesi</span></a>
-                        <a class="dropdown-item" type="button" href="{{ route('deleted_employees') }}"><i
+                        <a class="dropdown-item" type="button" href="{{ route('deleted_users') }}"><i
                                 class="fas fa-eraser"></i><span>&nbsp;Silinen Çalışanlar</span></a>
                         <a class="dropdown-item" type="button" href="{{ route('authentication') }}"><i
                                 class="fas fa-user-edit"></i><span>&nbsp;Yetkilendir</span></a>
@@ -107,15 +107,16 @@
             <li class="nav-item dropdown no-arrow mx-1">
                 <div class="nav-item dropdown no-arrow">
 
-                    <a href="{{ route('notifications') }}" title="Bildirimler" class="nav-link" data-bs-hover-animate="rubberBand">
+                    <a href="{{ route('notifications') }}" title="Bildirimler" class="nav-link"
+                        data-bs-hover-animate="rubberBand">
                         <i style="color: black;" class="fas fa-bell fa-fw"></i>
                         <span class="badge badge-danger badge-counter"></span></a>
                 </div>
             </li>
             <li class="nav-item dropdown no-arrow mx-1">
                 <div class="nav-item dropdown no-arrow">
-                    <a style="color: black;" title="Mesajlar" href="{{ route('messages') }}" class="dropdown-toggle nav-link"
-                        data-bs-hover-animate="rubberBand">
+                    <a style="color: black;" title="Mesajlar" href="{{ route('messages') }}"
+                        class="dropdown-toggle nav-link" data-bs-hover-animate="rubberBand">
                         <i style="color: black;" class="fas fa-envelope fa-fw"></i>
 
                         <span class="badge badge-danger badge-counter"></span></a>
@@ -127,8 +128,10 @@
             <li class="nav-item">
                 <div class="nav-item">
                     <a href="{{ route('profile') }}" class="nav-link" title="Profil">
-                        <span style="color:black;" class="d-none d-lg-inline mr-2 text-600">{{auth()->user()->name}}</span><img
-                            class="rounded-circle img-profile" src="/uploads/profile_pictures/{{auth()->user()->profile_photo_path}}"></a>
+                        <span style="color:black;"
+                            class="d-none d-lg-inline mr-2 text-600">{{auth()->user()->name}}</span><img
+                            class="rounded-circle img-profile"
+                            src="/uploads/profile_pictures/{{auth()->user()->profile_photo_path}}"></a>
             </li>
             <div class="d-none d-sm-block topbar-divider"></div>
             <form method="POST" action="{{ route('logout') }}">
@@ -204,4 +207,3 @@
           }
         }
     </script>
-

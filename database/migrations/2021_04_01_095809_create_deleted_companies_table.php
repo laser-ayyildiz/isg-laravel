@@ -4,11 +4,16 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCoopCompaniesTable extends Migration
+class CreateDeletedCompaniesTable extends Migration
 {
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
     public function up()
     {
-        Schema::create('coop_companies', function (Blueprint $table) {
+        Schema::create('deleted_companies', function (Blueprint $table) {
             $table->id();
             $table->string('type');
             $table->string('name');
@@ -32,8 +37,13 @@ class CreateCoopCompaniesTable extends Migration
         });
     }
 
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
     public function down()
     {
-        Schema::dropIfExists('coop_companies');
+        Schema::dropIfExists('deleted_companies');
     }
 }

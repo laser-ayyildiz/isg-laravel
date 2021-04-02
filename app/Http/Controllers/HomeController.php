@@ -2,21 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CoopCompanies;
-use App\Models\CoopEmployees;
-use Illuminate\Http\Request;
+use App\Models\CoopCompany;
+use App\Models\CoopEmployee;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+
 
     /**
      * Show the application dashboard.
@@ -25,8 +16,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $comp_count = CoopCompanies::where('deleted', 0)->where('change', 0)->count();
-        $emp_count = CoopEmployees::where('deleted', 0)->count();
+
+        $comp_count = CoopCompany::where('change', 0)->count();
+        $emp_count = CoopEmployee::count();
 
         return view(
             'admin.home',

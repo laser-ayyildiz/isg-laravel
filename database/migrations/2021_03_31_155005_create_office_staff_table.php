@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUserToCompaniesTable extends Migration
+class CreateOfficeStaffTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,12 @@ class CreateUserToCompaniesTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_to_companies', function (Blueprint $table) {
+        Schema::create('office_staff', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('user_id')->unsigned()->index();
-            $table->bigInteger('company_id')->unsigned()->index();
+            $table->bigInteger('user_id')->index()->unsigned();
             $table->timestamps();
 
-            //Foreign keys
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('company_id')->references('id')->on('coop_companies')->onDelete('cascade');
         });
     }
 
@@ -32,6 +29,6 @@ class CreateUserToCompaniesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_to_companies');
+        Schema::dropIfExists('office_staffs');
     }
 }

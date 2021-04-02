@@ -15,14 +15,16 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             UserSeeder::class,
-            CompaniesSeeder::class,
-            CoopEmployeesSeeder::class,
-            OsgbEmployeesSeeder::class,
-            UserToCompaniesSeeder::class,
-            IsgUzmansSeeder::class,
-            DoctorsSeeder::class,
-            OfficeStaffsSeeder::class,
-            HealthStaffsSeeder::class,
+            CompanySeeder::class,
+            CoopEmployeeSeeder::class,
+            UserToCompanySeeder::class,
+            IsgExpertSeeder::class,
+            DoctorSeeder::class,
+            OfficeStaffSeeder::class,
+            HealthStaffSeeder::class,
+            AccountantSeeder::class,
+            //DeletedCompanySeeder::class,
+            //DeletedUserSeeder::class
         ]);
     }
 }
