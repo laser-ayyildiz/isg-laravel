@@ -11,10 +11,6 @@
         <h1 class="text-dark mb-1" style="text-align: center;"><b>Onay Bekleyen Değişiklikler</b></h1>
     </div>
     <div class="card-body">
-        <div class="form-group col-md-4">
-            <input type="text" class="form-control" id="myInput" onkeyup="myFunction()"
-                placeholder="İşletme Adı ile ara...">
-        </div>
         <div>
             <div id="dataTable_filter">
                 <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
@@ -418,18 +414,4 @@
         </div>
     </div>
 </div>
-<!--
-<script>
-    $('#exampleModal').on('show.bs.modal', function(event) {
-      var button = $(event.relatedTarget) // Button that triggered the modal
-      var recipient = button.data('whatever') // Extract info from data-* attributes
-      // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-      // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-      var modal = $(this)
-      modal.find('.modal-title').text('New message to ' + recipient)
-      modal.find('.modal-body input').val(recipient)
-    })
-
-</script>
--->
 @endsection

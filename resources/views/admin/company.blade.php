@@ -155,224 +155,17 @@
 
                 <!--OSGB Çalışanları -->
                 <div class="tab-pane fade show " id="osgb_calisanlar" role="tabpanel" aria-labelledby="oc-tab">
-                    <fieldset id="oc_form">
-                        <!--İsg Uzmanları -->
-                        <div class="row">
-                            <!--1. İsg Uzmanı -->
-                            <div class="col-lg-4">
-                                <label for="uzman">
-                                    <h5><b>1. İsg Uzmanı</b></h5>
-                                </label>
-
-                                <select class="form-control" id="uzman" name="uzman" size="1">
-                                    @foreach ($experts as $expert )
-                                    <option value="{{ $expert->user->name }}">{{ $expert->user->name }}</option>
-                                    @endforeach
-
-                                </select>
-                            </div>
-
-                            <!--2. İsg Uzmanı -->
-                            <div class="col-lg-4">
-                                <label for="uzman_2">
-                                    <h5><b>2.İsg Uzmanı</b></h5>
-                                </label>
-
-                                <select class="form-control" id="uzman_2" name="uzman_2" size="1">
-
-                                    <option value="" selected></option>
-
-                                    <option disabled selected>İsg Uzmanı Seç</option>
-
-                                    <option value=""></option>
-
-                                </select>
-                            </div>
-
-                            <!--3. İsg Uzmanı -->
-                            <div class="col-lg-4">
-                                <label for="uzman_3">
-                                    <h5><b>3.İsg Uzmanı</b></h5>
-                                </label>
-
-                                <select class="form-control" id="uzman_3" name="uzman_3" size="1">
-
-                                    <option value="" selected></option>
-
-                                    <option disabled selected>İsg Uzmanı Seç</option>
-
-                                    <option value=""></option>
-
-                                </select>
-                            </div>
-                        </div>
-                        <br>
-                        <hr style="border-top: 1px dashed red;">
-                        <br>
-
-                        <!--İş Yeri Hekimleri-->
-                        <div class="row">
-
-                            <!--1 İş Yeri Hekimi -->
-                            <div class="col-lg-4">
-                                <label for="hekim">
-                                    <h5><b>1. İş Yeri Hekimi</b></h5>
-                                </label>
-
-                                <select class="form-control" id="hekim" name="hekim" size="1">
-
-                                    <option value="" selected></option>
-
-                                    <option disabled selected>İş Yeri Hekimi Seç</option>
-
-                                    <option value=</option> </select> </div> <!--2. İş Yeri Hekimi -->
-                                        <div class="col-lg-4">
-                                            <label for="hekim_2">
-                                                <h5><b>2. İş Yeri Hekimi</b></h5>
-                                            </label>
-
-                                            <select class="form-control" id="hekim_2" name="hekim_2" size="1">
-
-                                                <option value="" selected></option>
-
-                                                <option disabled selected>İş Yeri Hekimi Seç</option>
-
-                                                <option value=""></option>
-
-                                            </select>
-                                        </div>
-
-                                        <!--3. İş Yeri Hekimi -->
-                                        <div class="col-lg-4">
-                                            <label for="hekim_3">
-                                                <h5><b>3. İş Yeri Hekimi</b></h5>
-                                            </label>
-
-                                            <select class="form-control" id="hekim_3" name="hekim_3" size="1">
-
-                                                <option value="" selected></option>
-
-                                                <option disabled selected>İş Yeri Hekimi Seç</option>
-
-                                                <option value=""></option>
-
-                                            </select>
-                                        </div>
-                            </div>
-                            <br>
-                            <hr style="border-top: 1px dashed red;">
-                            <br>
-
-                            <!--1. Personeller -->
-                            <div class="row">
-                                <div class="col-lg-4">
-                                    <label for="saglık">
-                                        <h5><b>Sağlık Personeli</b></h5>
-                                    </label>
-
-                                    <select class="form-control" id="saglık" name="saglık" size="1">
-
-                                        <option value="" selected></option>
-
-                                        <option disabled selected>İş Yeri Hekimi Seç</option>
-
-                                        <option value=""></option>
-
-                                    </select>
-                                </div>
-
-                                <div class="col-lg-4">
-                                    <label for="ofis">
-                                        <h5><b>Ofis Personeli</b></h5>
-                                    </label>
-
-                                    <select class="form-control" id="ofis" name="ofis" size="1">
-
-                                        <option value="" selected></option>
-
-                                        <option disabled selected>Ofis Personeli Seç</option>
-
-                                        <option value=""></option>
-
-                                    </select>
-                                </div>
-
-                                <div class="col-lg-4">
-                                    <label for="muhasebe">
-                                        <h5><b>Muhasebe Personeli</b></h5>
-                                    </label>
-
-                                    <select class="form-control" id="muhasebe" name="muhasebe" size="1">
-
-                                        <option value="" selected></option>
-
-                                        <option disabled selected>Muhasebe Personeli Seç</option>
-
-                                        <option value=""></option>
-
-                                    </select>
-                                </div>
-                            </div>
-                            <br>
-                            <br>
-
-                            <!--2. Personeller -->
-                            <div class="row">
-                                <!--2. Sağlık Personeli -->
-                                <div class="col-lg-4">
-                                    <label for="saglık_2">
-                                        <h5><b>2.Sağlık Personeli</b></h5>
-                                    </label>
-
-                                    <select class="form-control" id="saglık_2" name="saglık_2" size="1">
-
-                                        <option value="" selected></option>
-
-                                        <option disabled selected>İş Yeri Hekimi Seç</option>
-
-                                        <option value=""></option>
-
-                                    </select>
-                                </div>
-
-                                <!--2. Ofis Personeli -->
-                                <div class="col-lg-4">
-                                    <label for="ofis_2">
-                                        <h5><b>2.Ofis Personeli</b></h5>
-                                    </label>
-
-                                    <select class="form-control" id="ofis_2" name="ofis_2" size="1">
-
-                                        <option value="" selected></option>
-
-                                        <option disabled selected>Ofis Personeli Seç</option>
-
-                                        <option value=""></option>
-
-                                    </select>
-                                </div>
-
-                                <!--2. Muhasebe Personeli -->
-                                <div class="col-lg-4">
-                                    <label for="muhasebe_2">
-                                        <h5><b>2.Muhasebe Personeli</b></h5>
-                                    </label>
-
-                                    <select class="form-control" id="muhasebe_2" name="muhasebe_2" size="1">
-
-                                        <option value="" selected></option>
-
-                                        <option disabled selected>Muhasebe Personeli Seç</option>
-
-                                        <option value=""></option>
-
-                                    </select>
-                                </div>
-
-                            </div>
-                            <br>
-                    </fieldset>
-                    </form>
+                    <div class="text-center">
+                        @if (!empty($osgbEmployees))
+                        @foreach ($osgbEmployees as $employee )
+                        <h3>
+                            {{ $employee }}
+                        </h3>
+                        @endforeach
+                        @else
+                        <h1>Henüz bu işletme için bir çalışan atanmadı</h1>
+                        @endif
+                    </div>
                 </div>
 
                 <!--Devlet Bilgileri -->
@@ -488,7 +281,7 @@
                         tıklayabilirsiniz</b>
 
 
-                    <form method="POST" action="../core/addWorkerList.php" enctype="multipart/form-data">
+                    <form method="POST" action="" enctype="multipart/form-data">
                         <fieldset id="ic_form1">
                             <label for="calisan_list"><b>Çalışan Listesi Yükle-></b></label>
                             <input type="number" name="company_id" value="" hidden>
@@ -506,8 +299,6 @@
                             <thead class="thead-dark">
                                 <tr>
                                     <th>Çalışan Adı Soyadı</th>
-                                    <th>Pozisyonu</th>
-                                    <th>Cinsiyeti</th>
                                     <th>T.C Kimlik No</th>
                                     <th>Telefon No</th>
                                     <th>E-mail</th>
@@ -516,16 +307,16 @@
                                 </tr>
                             </thead>
                             <tbody>
-
+                                @if (!empty($coopEmployees))
+                                @foreach ($coopEmployees as $key => $employee )
                                 <tr>
-                                    <td data-toggle="modal" data-target="#b" data-whatever="@getbootstrap"
-                                        style="cursor: pointer;"></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td data-toggle="modal" data-target="#b{{ $key }}" data-whatever="@getbootstrap"
+                                        style="cursor: pointer;">{{ $employee->user->name }}</td>
+
+                                    <td>{{ $employee->user->tc }}</td>
+                                    <td>{{ $employee->user->phone }}</td>
+                                    <td>{{ $employee->user->email }}</td>
+                                    <td>{{ $employee->user->recruitment_date }}</td>
                                     <form action="../core/deleteWorker.php" method="POST">
                                         <input type="number" name="company_id" value="" hidden>
                                         <input type="text" name="company_name" value="" hidden>
@@ -534,8 +325,10 @@
                                                 id="deleteWorkerButton">Sil</button></td>
                                     </form>
                                 </tr>
+
                                 <!-- Çalışan Dosyaları -->
-                                <div class="modal fade" id="b" tabindex="-1" aria-labelledby="label" aria-hidden="true">
+                                <div class="modal fade" id="b{{ $key }}" tabindex="-1" aria-labelledby="label"
+                                    aria-hidden="true">
                                     <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
                                             <div class="modal-header bg-light">
@@ -568,13 +361,14 @@
                                         </div>
                                     </div>
                                 </div>
-
+                                @endforeach
+                                @else
+                                <h1>Henüz bu işletme için çalışan atanmadı</h1>
+                                @endif
                             </tbody>
                             <tfoot>
                                 <tr>
                                     <td><strong>Çalışan Adı Soyadı</strong></td>
-                                    <td><strong>Pozisyonu</strong></td>
-                                    <td><strong>Cinsiyeti</strong></td>
                                     <td><strong>T.C Kimlik No</strong></td>
                                     <td><strong>Telefon No</strong></td>
                                     <td><strong>E-mail</strong></td>
@@ -836,7 +630,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="../core/addWorker.php" method="POST">
+                        <form action="" method="POST">
                             <div class="row">
                                 <div class="col-6">
                                     <label for="worker_name">
@@ -915,7 +709,7 @@
             aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <form class="form-horizontal" method="POST" action="../../calendar/core/add-event.php">
+                    <form class="form-horizontal" method="POST" action="">
                         <div class="modal-header">
                             <h4 class="modal-title" id="myModalLabel">Etkinlik Ekle</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
@@ -1263,7 +1057,6 @@
 
         <!-- İşletme bilgilerini değiştir-->
         <div class="modal fade" id="changeCompany" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-
             <div class="modal-dialog modal-xl" role="document">
                 <div class="modal-content">
                     <form action="{{ route('company.handle',['id' => @Hashids::encode($company->id , 15, 298, 177)]) }}"
@@ -1523,13 +1316,9 @@
                                                 </label>
 
                                                 <select class="form-control" id="uzman" name="uzman" size="1">
-
-                                                    <option value="{{ $company->uzman }}" selected></option>
-
-                                                    <option disabled selected>İsg Uzmanı Seç</option>
-
-                                                    <option value=""></option>
-
+                                                    @foreach ($selectExperts[0] as $selectExpert)
+                                                    <option value="{{ $selectExpert->id }}" >{{ $selectExpert->name }}</option>
+                                                    @endforeach
                                                 </select>
                                             </div>
 
@@ -1541,11 +1330,9 @@
 
                                                 <select class="form-control" id="uzman_2" name="uzman_2" size="1">
 
-                                                    <option value="" selected></option>
-
-                                                    <option disabled selected>İsg Uzmanı Seç</option>
-
-                                                    <option value=""></option>
+                                                    @foreach ($selectExperts[0] as $selectExpert)
+                                                    <option value="{{ $selectExpert->id }}" >{{ $selectExpert->name }}</option>
+                                                    @endforeach
 
                                                 </select>
                                             </div>
@@ -1558,11 +1345,9 @@
 
                                                 <select class="form-control" id="uzman_3" name="uzman_3" size="1">
 
-                                                    <option value="" selected></option>
-
-                                                    <option disabled selected>İsg Uzmanı Seç</option>
-
-                                                    <option value=""></option>
+                                                    @foreach ($selectExperts[0] as $selectExpert)
+                                                    <option value="{{ $selectExpert->id }}" >{{ $selectExpert->name }}</option>
+                                                    @endforeach
 
                                                 </select>
                                             </div>
@@ -1582,11 +1367,9 @@
 
                                                 <select class="form-control" id="hekim" name="hekim" size="1">
 
-                                                    <option value="" selected></option>
-
-                                                    <option disabled selected>İş Yeri Hekimi Seç</option>
-
-                                                    <option value=""></option>
+                                                    @foreach ($selectExperts[1] as $selectExpert)
+                                                    <option value="{{ $selectExpert->id }}" >{{ $selectExpert->name }}</option>
+                                                    @endforeach
 
                                                 </select>
                                             </div>
@@ -1599,11 +1382,9 @@
 
                                                 <select class="form-control" id="hekim_2" name="hekim_2" size="1">
 
-                                                    <option value="" selected></option>
-
-                                                    <option disabled selected>İş Yeri Hekimi Seç</option>
-
-                                                    <option value=""></option>
+                                                    @foreach ($selectExperts[1] as $selectExpert)
+                                                    <option value="{{ $selectExpert->id }}" >{{ $selectExpert->name }}</option>
+                                                    @endforeach
 
                                                 </select>
                                             </div>
@@ -1616,11 +1397,9 @@
 
                                                 <select class="form-control" id="hekim_3" name="hekim_3" size="1">
 
-                                                    <option value="" selected></option>
-
-                                                    <option disabled selected>İş Yeri Hekimi Seç</option>
-
-                                                    <option value=""></option>
+                                                    @foreach ($selectExperts[1] as $selectExpert)
+                                                    <option value="{{ $selectExpert->id }}" >{{ $selectExpert->name }}</option>
+                                                    @endforeach
 
                                                 </select>
                                             </div>
@@ -1638,11 +1417,9 @@
 
                                                 <select class="form-control" id="saglık" name="saglık" size="1">
 
-                                                    <option value="" selected></option>
-
-                                                    <option disabled selected>İş Yeri Hekimi Seç</option>
-
-                                                    <option value=""></option>
+                                                    @foreach ($selectExperts[2] as $selectExpert)
+                                                    <option value="{{ $selectExpert->id }}" >{{ $selectExpert->name }}</option>
+                                                    @endforeach
 
                                                 </select>
                                             </div>
@@ -1654,11 +1431,9 @@
 
                                                 <select class="form-control" id="ofis" name="ofis" size="1">
 
-                                                    <option value="" selected></option>
-
-                                                    <option disabled selected>Ofis Personeli Seç</option>
-
-                                                    <option value=""></option>
+                                                    @foreach ($selectExperts[3] as $selectExpert)
+                                                    <option value="{{ $selectExpert->id }}" >{{ $selectExpert->name }}</option>
+                                                    @endforeach
 
                                                 </select>
                                             </div>
@@ -1670,11 +1445,9 @@
 
                                                 <select class="form-control" id="muhasebe" name="muhasebe" size="1">
 
-                                                    <option value="" selected></option>
-
-                                                    <option disabled selected>Muhasebe Personeli Seç</option>
-
-                                                    <option value=""></option>
+                                                    @foreach ($selectExperts[4] as $selectExpert)
+                                                    <option value="{{ $selectExpert->id }}" >{{ $selectExpert->name }}</option>
+                                                    @endforeach
 
                                                 </select>
                                             </div>
@@ -1692,11 +1465,9 @@
 
                                                 <select class="form-control" id="saglık_2" name="saglık_2" size="1">
 
-                                                    <option value="" selected></option>
-
-                                                    <option disabled selected>İş Yeri Hekimi Seç</option>
-
-                                                    <option value=""></option>
+                                                    @foreach ($selectExperts[2] as $selectExpert)
+                                                    <option value="{{ $selectExpert->id }}" >{{ $selectExpert->name }}</option>
+                                                    @endforeach
 
                                                 </select>
                                             </div>
@@ -1709,11 +1480,9 @@
 
                                                 <select class="form-control" id="ofis_2" name="ofis_2" size="1">
 
-                                                    <option value="" selected></option>
-
-                                                    <option disabled selected>Ofis Personeli Seç</option>
-
-                                                    <option value=""></option>
+                                                    @foreach ($selectExperts[3] as $selectExpert)
+                                                    <option value="{{ $selectExpert->id }}" >{{ $selectExpert->name }}</option>
+                                                    @endforeach
 
                                                 </select>
                                             </div>
@@ -1726,11 +1495,9 @@
 
                                                 <select class="form-control" id="muhasebe_2" name="muhasebe_2" size="1">
 
-                                                    <option value="" selected></option>
-
-                                                    <option disabled selected>Muhasebe Personeli Seç</option>
-
-                                                    <option value=""></option>
+                                                    @foreach ($selectExperts[4] as $selectExpert)
+                                                    <option value="{{ $selectExpert->id }}" >{{ $selectExpert->name }}</option>
+                                                    @endforeach
 
                                                 </select>
                                             </div>
@@ -1874,6 +1641,41 @@
     <!--card end-->
 </div>
 <!--container end-->
+@push('styles')
+<link href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+@endpush
+
+@push('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap5.min.js"></script>
+
+<script type="text/javascript" src="/js/hashids.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+          var table = $('.data-table').DataTable({
+              processing: true,
+              serverSide: true,
+              DT_RowId: true,
+              ajax: "{{ route('companies') }}",
+              columns: [
+                  {data: 'name', name: 'name'},
+                  {data: 'type', name: 'type'},
+                  {data: 'phone', name: 'phone'},
+                  {data: 'email', name: 'email'},
+                  {data: 'city', name: 'city'},
+                  {data: 'town', name: 'town'},
+                  {data: 'contract_at', name: 'contract_at'}
+              ]
+          });
+          $('#example tbody').on('click', 'tr', function () {
+            var data = table.row( this ).data();
+            var hashids = new Hashids();
+            id = hashids.encode(data['id']);
+            window.location.href="company/"+id
+        });
+    } );
+</script>
 <script type="text/javascript">
     var citiesByState = {
     Adana: ["Aladağ", "Ceyhan", "Çukurova", "Feke", "İmamoğlu", "Karaisalı", "Karataş", "Kozan", "Pozantı", "Saimbeyli", "Sarıçam", "Seyhan", "Tufanbeyli", "Yumurtalık", "Yüreğir"],
@@ -1989,21 +1791,6 @@
     document.getElementById("citySelect").selectedIndex = 0;
   }
 </script>
-<!--
-    <script>
-      $('#ic_form1').prop('disabled', true);
-      $('#ic_form2').prop('disabled', true);
-      $('#ir_form').prop('disabled', true);
-      $('#ir_form2').prop('disabled', true);
-      $('#addUserBtn').prop('disabled', true);
-      $('#changeCompanyBtn').prop('disabled', true);
-      $('#gb_form').prop('disabled', true);
-      $('#oc_form').prop('disabled', true);
-      $('#db_form').prop('disabled', true);
-      $('#zr_form').prop('disabled', true);
-      $('#ie_button').prop('disabled', true);
-      $('#sc-tab').prop('hidden', true);
-    </script>
--->
+@endpush
 
 @endsection

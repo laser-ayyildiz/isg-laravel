@@ -697,7 +697,7 @@
           $('#example tbody').on('click', 'tr', function () {
             var data = table.row( this ).data();
             var hashids = new Hashids();
-            id = hashids.encode(data['id'],1, 2, 3);
+            id = hashids.encode(data['id']);
             window.location.href="company/"+id
 
         });

@@ -11,6 +11,7 @@ use App\Models\UserToCompany;
 use App\Models\DeletedCompany;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Yajra\DataTables\Facades\DataTables;
 
 class CompanyController extends Controller
 {
@@ -19,27 +20,54 @@ class CompanyController extends Controller
     {
         try {
             $hash = new Hashids();
-            $id = $hash->decode($crypted, 15, 298, 177)[0];
+            $id = $hash->decode($crypted)[0];
             return $id;
         } catch (Exception $e) {
             abort(404);
         }
     }
 
-    public function index($crypted)
+    public function index($crypted, Request $request)
     {
         $id = CompanyController::decryptedId($crypted);
         $company = CoopCompany::where('id', $id)->first();
 
-        $experts = UserToCompany::whereHas('user', function ($query) {
-            return $query->where('auth_type', 1);
+        $employees = UserToCompany::whereHas('user', function ($query) {
+            return $query->whereBetween('auth_type', [1, 6])
+                ->orWhere('auth_type', 9);
         })->where('company_id', $id)->get();
+        $types = [
+            'İSG Uzmanı',
+            'İş Yeri Hekimi',
+            'Sağlık Personeli',
+            'Ofis Personeli',
+            'Muhasebeci'
+        ];
+        $osgbEmployees = null;
+        $coopEmployees = null;
+
+        foreach ($employees as $employee) {
+            $auth_type = $employee->user->auth_type;
+            if ($auth_type == 9) {
+                $coopEmployees[] = $employee;
+            }
+            if (isset($types[$auth_type])) {
+                $osgbEmployees[] = $employee->user->name . " - " . $types[$auth_type];
+            }
+        }
+        $selectExperts = null;
+        for ($i = 1; $i < 6; $i++) {
+            $selectExperts[] = User::where('auth_type', $i)->get();
+        }
 
         return (view(
             'admin.company',
-            ['company' => $company],
-            ['experts' => $experts],
-
+            [
+                'company' => $company,
+                'osgbEmployees' => $osgbEmployees,
+                'coopEmployees' => $coopEmployees,
+                'selectExperts' => $selectExperts
+            ],
         ));
     }
 
@@ -48,9 +76,13 @@ class CompanyController extends Controller
         $id = CompanyController::decryptedId($crypted);
         $company = DeletedCompany::where('id', $id)->first();
 
+        $experts = null;
+
         return (view(
             'admin.company',
-            ['company' => $company]
+            ['company' => $company],
+            ['experts' => $experts],
+
         ));
     }
 
