@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use Exception;
+use App\Models\User;
 use Hashids\Hashids;
 use App\Models\CoopCompany;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Models\UserToCompany;
 use App\Models\DeletedCompany;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class CompanyController extends Controller
@@ -29,9 +31,15 @@ class CompanyController extends Controller
         $id = CompanyController::decryptedId($crypted);
         $company = CoopCompany::where('id', $id)->first();
 
+        $experts = UserToCompany::whereHas('user', function ($query) {
+            return $query->where('auth_type', 1);
+        })->where('company_id', $id)->get();
+
         return (view(
             'admin.company',
-            ['company' => $company]
+            ['company' => $company],
+            ['experts' => $experts],
+
         ));
     }
 

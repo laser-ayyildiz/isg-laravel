@@ -165,12 +165,9 @@
                                 </label>
 
                                 <select class="form-control" id="uzman" name="uzman" size="1">
-
-                                    <option value="" selected></option>
-
-                                    <option disabled selected>İsg Uzmanı Seç</option>
-
-                                    <option value=""></option>
+                                    @foreach ($experts as $expert )
+                                    <option value="{{ $expert->user->name }}">{{ $expert->user->name }}</option>
+                                    @endforeach
 
                                 </select>
                             </div>
@@ -387,7 +384,8 @@
                                     <h4><b>NACE Kodu</b></h4>
                                 </label>
                                 <select name="nace_kodu" id="nace_kodu" class="form-control" required>
-                                    <option value="" selected></option>
+                                    <option value="{{ $company->nace_kodu ?? ''}}" selected>
+                                        {{ $company->nace_kodu ?? ''}}</option>
                                     <option value="81.22.03">81.22.03,Nesne veya binaların (ameliyathaneler vb.)
                                         sterilizasyonu faaliyetleri.Binalar ile ilgili hizmetler ve çevre düzenlemesi
                                         faaliyetleri 3</option>
@@ -430,7 +428,7 @@
                                         <h4><b>Kurum Mersis No</b></h4>
                                     </label>
                                     <input class="form-control" id="mersis_no" name="mersis_no" type="tel" min="16"
-                                        maxlength="16" placeholder="Mersis No" value="">
+                                        maxlength="16" placeholder="Mersis No" value="{{ $company->mersis_no }}">
                                 </div>
                                 <div class="col-6">
                                     <label for="sgk_sicil">
@@ -447,14 +445,15 @@
                                         <h4><b>Vergi No</b></h4>
                                     </label>
                                     <input class="form-control" id="vergi_no" name="vergi_no" type="tel" min="10"
-                                        maxlength="10" placeholder="Vergi No" value="">
+                                        maxlength="10" placeholder="Vergi No" value="{{ $company->vergi_no }}">
                                 </div>
                                 <div class="col-6">
                                     <label for="vergi_dairesi">
                                         <h4><b>Vergi Dairesi</b></h4>
                                     </label>
                                     <input class="form-control" id="vergi_dairesi" name="vergi_dairesi" type="text"
-                                        maxlength="500" placeholder="Vergi Dairesi" value="">
+                                        maxlength="500" placeholder="Vergi Dairesi"
+                                        value="{{ $company->vergi_dairesi }}">
                                 </div>
                             </div>
                             <br>
@@ -464,14 +463,16 @@
                                         <h4><b>İSG-KATİP İş Yeri ID</b></h4>
                                     </label>
                                     <input class="form-control" id="katip_is_yeri_id" name="katip_is_yeri_id" type="tel"
-                                        maxlength="30" placeholder="İSG-KATİP İş Yeri ID" value="">
+                                        maxlength="30" placeholder="İSG-KATİP İş Yeri ID"
+                                        value="{{ $company->katip_is_yeri_id }}">
                                 </div>
                                 <div class="col-6">
                                     <label for="katip_kurum_id">
                                         <h4><b>İSG-KATİP Kurum ID</b></h4>
                                     </label>
                                     <input class="form-control" id="katip_kurum_id" name="katip_kurum_id" type="tel"
-                                        maxlength="30" placeholder="İSG-KATİP Kurum ID" value="">
+                                        maxlength="30" placeholder="İSG-KATİP Kurum ID"
+                                        value="{{ $company->katip_kurum_id }}">
                                 </div>
                             </div>
                         </fieldset>

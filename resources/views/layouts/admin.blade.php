@@ -50,6 +50,9 @@
             background-color: #3e8e41;
         }
     </style>
+
+    @stack('styles')
+
 </head>
 
 <body id="page-top">
@@ -70,9 +73,9 @@
                         <a class="dropdown-item" type="button" href="{{ route('companies') }}"><i
                                 class="fas fa-stream"></i><span>&nbsp;İşletme Listesi</span></a>
                         <a class="dropdown-item" type="button" href="{{ route('change_validate') }}"><i
-                                class="fas fa-exchange-alt"></i><span>&nbsp;Onay Bekleyenler</span></a>
+                                class="fas fa-exchange-alt"></i><span>&nbsp;Değişiklik Talepleri</span></a>
                         <a class="dropdown-item" type="button" href="{{ route('deleted_companies') }}"><i
-                                class="fas fa-eraser"></i><span>&nbsp;Silinen İşletmeler</span></a>
+                                class="fas fa-eraser"></i><span>&nbsp;Arşiv</span></a>
                     </div>
                 </div>
             </li>
@@ -158,52 +161,5 @@
     </div>
     <script src="/js/jquery.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
-    <script src="/js/chart.min.js"></script>
-    <script src="/js/bs-init.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
-    <script src="/js/theme.js"></script>
-    <script type="text/javascript">
-        if (window.history.replaceState) {
-          window.history.replaceState(null, null, window.location.href);
-        }
-    </script>
-    <script>
-        $(document).ready(function() {
-          $("#show_hide_password a").on('click', function(event) {
-            event.preventDefault();
-            if ($('#show_hide_password input').attr("type") == "text") {
-              $('#show_hide_password input').attr('type', 'password');
-              $('#show_hide_password i').addClass("fa-eye-slash");
-              $('#show_hide_password i').removeClass("fa-eye");
-            } else if ($('#show_hide_password input').attr("type") == "password") {
-              $('#show_hide_password input').attr('type', 'text');
-              $('#show_hide_password i').removeClass("fa-eye-slash");
-              $('#show_hide_password i').addClass("fa-eye");
-            }
-          });
-        });
 
-    </script>
-    <script>
-        function myFunction() {
-          // Declare variables
-          var input, filter, table, tr, td, i, txtValue;
-          input = document.getElementById("myInput");
-          filter = input.value.toUpperCase();
-          table = document.getElementById("dataTable");
-          tr = table.getElementsByTagName("tr");
-
-          // Loop through all table rows, and hide those who don't match the search query
-          for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[0];
-            if (td) {
-              txtValue = td.textContent || td.innerText;
-              if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                tr[i].style.display = "";
-              } else {
-                tr[i].style.display = "none";
-              }
-            }
-          }
-        }
-    </script>
+    @stack('scripts')

@@ -7,70 +7,40 @@
     {{ session('status') }}
 </div>
 @endif
-<div class="card">
-    <div class="card-header bg-light">
-        <h1 class="text-dark mb-1" style="text-align: center;"><b>İşletmeler</b></h1>
+<div class="card shadow-lg">
+    <div class="card-header">
+        <h1 class="text-dark mb-1 text-center"><b>İşletmeler</b></h1>
     </div>
-    <div class="card shadow-lg">
-        <div class="card-body bg-light text-light">
-            <button class="btn btn-primary" data-toggle="modal" data-target="#addCompany"
-                data-whatever="@getbootstrap">Yeni İşletme Ekle</a>
 
-                <button type="button" onclick="window.location.href='/admin/change_validate'"
-                class="btn btn-success ml-1">Onay Bekleyenler</button>
+    <div class="card-body">
+        <button class="btn btn-primary" data-toggle="modal" data-target="#addCompany" data-whatever="@getbootstrap">Yeni
+            İşletme Ekle</a>
 
-            <button type="button" onclick="window.location.href='/admin/deleted_companies'"
-                class="btn btn-danger ml-1">Arşiv</button>
+        <button type="button" onclick="window.location.href='{{ route('change_validate') }}'"
+            class="btn btn-success ml-1">Onay Bekleyenler</button>
 
-            <input type="text" class="form-control" style="float:right;max-width:600px;display:block;" id="myInput"
-                onkeyup="myFunction()" placeholder="İşletme Adı ile ara...">
+        <button type="button" onclick="window.location.href='{{ route('deleted_companies') }}'"
+            class="btn btn-danger ml-1">Arşiv</button>
 
-            <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
-                <table class="table table-striped table-bordered table-hover" id="dataTable">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th>İşletme Adı</th>
-                            <th>Sektör</th>
-                            <th>Telefon</th>
-                            <th>E-mail</th>
-                            <th>Şehir</th>
-                            <th>İlçe</th>
-                            <th>Anlaşma Tarihi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($companies as $company)
-                        <tr>
-                            <td> <a href="/admin/company/{{ @Hashids::encode($company -> id , 15, 298, 177) }}">{{ $company -> name }}</a> </td>
-                            <td> {{ $company -> type }} </td>
-                            <td> {{ $company -> phone }} </td>
-                            <td> {{ $company -> email }} </td>
-                            <td> {{ $company -> city }} </td>
-                            <td> {{ $company -> town }} </td>
-                            <td> {{ $company -> contract_at }} </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td><strong>İşletme Adı</strong></td>
-                            <td><strong>Sektör</strong></td>
-                            <td><strong>Telefon</strong></td>
-                            <td><strong>E-mail</strong></td>
-                            <td><strong>Şehir</strong></td>
-                            <td><strong>İlçe</strong></td>
-                            <td><strong>Anlaşma Tarihi</strong></td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
+        <div class="table table-responsive mt-2">
+            <table class="table table-striped table-bordered table-hover data-table" id="example">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>İşletme Adı</a></th>
+                        <th>Sektör</th>
+                        <th>Telefon</th>
+                        <th>E-mail</th>
+                        <th>Şehir</th>
+                        <th>İlçe</th>
+                        <th>Anlaşma Tarihi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
-<div class="float-right my-3">
-    {{ $companies -> links() }}
-</div>
-
 <div class="modal fade" id="addCompany" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <form action="{{ route('companies') }}" method="POST">
@@ -575,10 +545,23 @@
         </div>
     </form>
 </div>
-<div name="scripts">
-    <script language="JavaScript" type="text/javascript" src="/js/jquery-2.1.0.min.js"></script>
-    <script type="text/javascript">
-        var citiesByState = {
+
+
+@push('styles')
+<!--  -->
+<link href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+
+@endpush
+
+@push('scripts')
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap5.min.js"></script>
+
+<script type="text/javascript">
+    var citiesByState = {
         Adana: ["Aladağ", "Ceyhan", "Çukurova", "Feke", "İmamoğlu", "Karaisalı", "Karataş", "Kozan", "Pozantı", "Saimbeyli", "Sarıçam", "Seyhan", "Tufanbeyli", "Yumurtalık", "Yüreğir"],
         Adıyaman: ["Besni", "Çelikhan", "Gerger", "Gölbaşı", "Kahta", "Merkez", "Samsat", "Sincik", "Tut"],
         Afyonkarahisar: ["Başmakçı", "Bayat", "Bolvadin", "Çay", "Çobanlar", "Dazkırı", "Dinar", "Emirdağ", "Evciler", "Hocalar", "İhsaniye", "İscehisar", "Kızılören", "Merkez", "Sandıklı", "Sinanpaşa", "Sultandağı", "Şuhut"],
@@ -691,9 +674,38 @@
         document.getElementById("countrySelect").selectedIndex = 0;
         document.getElementById("citySelect").selectedIndex = 0;
       }
-    </script>
-    <script>
-        $('#next1').click(function () {
+</script>
+<script type="text/javascript" src="/js/hashids.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+          var table = $('.data-table').DataTable({
+              processing: true,
+              serverSide: true,
+              DT_RowId: true,
+              ajax: "{{ route('companies') }}",
+              columns: [
+                  {data: 'name', name: 'name'},
+                  {data: 'type', name: 'type'},
+                  {data: 'phone', name: 'phone'},
+                  {data: 'email', name: 'email'},
+                  {data: 'city', name: 'city'},
+                  {data: 'town', name: 'town'},
+                  {data: 'contract_at', name: 'contract_at'}
+              ]
+          });
+
+          $('#example tbody').on('click', 'tr', function () {
+            var data = table.row( this ).data();
+            var hashids = new Hashids();
+            id = hashids.encode(data['id'],1, 2, 3);
+            window.location.href="company/"+id
+
+        });
+
+    } );
+</script>
+<script>
+    $('#next1').click(function () {
         	if($('#type').val() && $('#name').val() && $('#contract_at').val()&& $('#address').val()
           && $('#email').val()  && $('#phone').val()  && $('#citySelect').val()
            && $('#countrySelect').val() && $('#employer').val()) {
@@ -734,7 +746,7 @@
           }
         });
 
-    </script>
+</script>
+@endpush
 
-</div>
 @endsection

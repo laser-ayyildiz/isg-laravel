@@ -5,19 +5,24 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\CoopCompany;
 use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 
 class CoopCompanyController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $companies = CoopCompany::paginate(15);
+
+        if ($request->ajax()) {
+            $data = CoopCompany::select('*');
+            return DataTables::of($data)
+                ->make(true);
+        }
         return view(
             'admin.companies',
-            [
-                'companies' => $companies
-            ]
         );
     }
+
+
     public function store(Request $request)
     {
         CoopCompany::create([

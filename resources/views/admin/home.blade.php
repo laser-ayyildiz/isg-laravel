@@ -145,4 +145,11 @@
         </div>
     </div>
 </div>
+@push('scripts')
+<script src="/js/chart.min.js"></script>
+<script src="/js/bs-init.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
+<script src="/js/theme.js"></script>
+@endpush
+
 @endsection
