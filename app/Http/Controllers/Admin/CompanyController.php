@@ -11,10 +11,10 @@ use App\Models\UserToCompany;
 use App\Models\DeletedCompany;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Yajra\DataTables\Facades\DataTables;
 
 class CompanyController extends Controller
 {
+
 
     private static function decryptedId($crypted)
     {
@@ -27,7 +27,7 @@ class CompanyController extends Controller
         }
     }
 
-    public function index($crypted, Request $request)
+    public function index($crypted)
     {
         $id = CompanyController::decryptedId($crypted);
         $company = CoopCompany::where('id', $id)->first();
@@ -43,8 +43,10 @@ class CompanyController extends Controller
             'Ofis Personeli',
             'Muhasebeci'
         ];
+
         $osgbEmployees = null;
         $coopEmployees = null;
+        $selectExperts = null;
 
         foreach ($employees as $employee) {
             $auth_type = $employee->user->auth_type;
@@ -66,7 +68,8 @@ class CompanyController extends Controller
                 'company' => $company,
                 'osgbEmployees' => $osgbEmployees,
                 'coopEmployees' => $coopEmployees,
-                'selectExperts' => $selectExperts
+                'selectExperts' => $selectExperts,
+                'deleted' => false
             ],
         ));
     }
@@ -75,20 +78,25 @@ class CompanyController extends Controller
     {
         $id = CompanyController::decryptedId($crypted);
         $company = DeletedCompany::where('id', $id)->first();
-
-        $experts = null;
+        $osgbEmployees = null;
+        $coopEmployees = null;
+        $selectExperts = null;
 
         return (view(
             'admin.company',
-            ['company' => $company],
-            ['experts' => $experts],
+            [
+                'company' => $company,
+                'osgbEmployees' => $osgbEmployees,
+                'coopEmployees' => $coopEmployees,
+                'selectExperts' => $selectExperts,
+                'deleted' => true
+            ],
 
         ));
     }
 
     public function handle(Request $request)
     {
-
         $crypted = $request->input('companyId');
         $id = CompanyController::decryptedId($crypted);
         if ($request->has('deleteRequest')) {

@@ -6,19 +6,23 @@
     <div class="card border">
         <div class="card-header tab-card-header text-center bg-light text-dark border">
             <h1><b>{{$company->name}}</b></h1>
+
             <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link " id="gb-tab" data-toggle="tab" href="#genel_bilgiler" role="tab"
+                    <a class="nav-link active" id="gb-tab" data-toggle="tab" href="#genel_bilgiler" role="tab"
                         aria-controls="Genel Bilgiler" aria-selected="true"><b>Bilgiler</b></a>
                 </li>
+                @if ($deleted == false)
                 <li class="nav-item">
                     <a class="nav-link " id="oc-tab" data-toggle="tab" href="#osgb_calisanlar" role="tab"
                         aria-controls="OSGB Çalışanları" aria-selected="false"><b>OSGB Çalışanları</b></a>
                 </li>
+                @endif
                 <li class="nav-item">
                     <a class="nav-link " id="db-tab" data-toggle="tab" href="#devlet_bilgileri" role="tab"
                         aria-controls="Devlet Bilgileri" aria-selected="false"><b>Devlet Bilgileri</b></a>
                 </li>
+                @if ($deleted == false)
                 <li class="nav-item">
                     <a class="nav-link " id="ic-tab" data-toggle="tab" href="#isletme_calisanlar" role="tab"
                         aria-controls="İşletme Çalışanları" aria-selected="false"><b>Çalışanlar</b></a>
@@ -28,10 +32,12 @@
                     <a class="nav-link " id="it-tab" data-toggle="tab" href="#isletme_takvim" role="tab"
                         aria-controls="İşletme Takvimi" aria-selected="false"><b>Takvim</b></a>
                 </li>
+
                 <li class="nav-item">
                     <a class="nav-link " id="ie-tab" data-toggle="tab" href="#isletme_ekipman" role="tab"
                         aria-controls="İşletme Ekipmanları" aria-selected="false"><b>Ekipmanlar</b></a>
                 </li>
+                @endif
                 <li class="nav-item">
                     <a class="nav-link " id="ir-tab" data-toggle="tab" href="#isletme_rapor" role="tab"
                         aria-controls="İşletme Raporları" aria-selected="false"><b>Raporlar</b></a>
@@ -40,10 +46,13 @@
                     <a class="nav-link " id="zr-tab" data-toggle="tab" href="#ziyaret_rapor" role="tab"
                         aria-controls="Ziyaret Raporları" aria-selected="false"><b>Ziyaret Raporları</b></a>
                 </li>
+                @if ($deleted == false)
                 <li class="nav-item">
                     <a class="nav-link " id="sc-tab" data-toggle="tab" href="#silinen_calisanlar" role="tab"
                         aria-controls="Silinen Çalışanlar"><b>Arşiv</b></a>
                 </li>
+                @endif
+
             </ul>
         </div>
         <div class="card-body">
@@ -51,6 +60,7 @@
                 <!--Genel Bilgiler -->
                 <div class="tab-pane fade show active" id="genel_bilgiler" role="tabpanel" aria-labelledby="gb-tab">
                     <fieldset id="gb_form">
+                        @if ($deleted == false)
                         <button class="btn btn-danger mx-1 float-right" data-toggle="modal" data-target="#areYouSure"
                             id="changeCompanyBtn" data-whatever="@getbootstrap">İşletmeyi Sil</button>
                         <button class="btn btn-warning mx-1 float-right" data-toggle="modal"
@@ -59,6 +69,7 @@
                         <button class="btn btn-success mx-1 float-right" data-toggle="modal" data-target="#addUser"
                             id="addUserBtn" data-whatever="@getbootstrap">Kullanıcı
                             Oluştur</button>
+                        @endif
                         <div class="form-row">
                             <div class="form-group col-lg-3">
                                 <label for="comp_type_show">
@@ -152,7 +163,7 @@
                         </div>
                     </fieldset>
                 </div>
-
+                @if ($deleted == false)
                 <!--OSGB Çalışanları -->
                 <div class="tab-pane fade show " id="osgb_calisanlar" role="tabpanel" aria-labelledby="oc-tab">
                     <div class="text-center">
@@ -167,7 +178,7 @@
                         @endif
                     </div>
                 </div>
-
+                @endif
                 <!--Devlet Bilgileri -->
                 <div class="tab-pane fade show " id="devlet_bilgileri" role="tabpanel" aria-labelledby="db-tab">
                     <form action="index.php" method="POST">
@@ -271,7 +282,7 @@
                         </fieldset>
                     </form>
                 </div>
-
+                @if ($deleted == false)
                 <!--İşletme Çalışanları -->
                 <div class="tab-pane fade show " id="isletme_calisanlar" role="tabpanel" aria-labelledby="ic-tab">
 
@@ -424,13 +435,15 @@
                         </table>
                     </div>
                 </div>
-
+                @endif
                 <!--İşletme Raporları -->
                 <div class="tab-pane fade show " id="isletme_rapor" role="tabpanel" aria-labelledby="ir-tab">
+                    @if ($deleted == false)
                     <button style="float: left;" class="btn btn-primary" id="ir_form" data-toggle="modal"
                         data-target="#addReport" data-whatever="@getbootstrap">Yeni Rapor Hazırla</button>
                     <button style="float: right;" class="btn btn-primary" id="ir_form2" data-toggle="modal"
                         data-target="#uploadReport" data-whatever="@getbootstrap">Rapor Yükle</button>
+                    @endif
                     <div class="table-responsive table mt-2" id="dataTable" role="grid"
                         aria-describedby="dataTable_info">
                         <table class="table table-striped table-bordered table-hover table-sm mt-2" id="dataTable">
@@ -464,8 +477,10 @@
 
                 <!--Ziyaret Raporları -->
                 <div class="tab-pane fade show " id="ziyaret_rapor" role="tabpanel" aria-labelledby="zr-tab">
+                    @if ($deleted == false)
                     <button class="btn btn-primary" id="zr_form" data-toggle="modal" data-target="#addVisitReport"
                         data-whatever="@getbootstrap">Yeni Ziyaret Raporu Ekle</button>
+                    @endif
                     <div class="table-responsive table mt-2" id="dataTable" role="grid"
                         aria-describedby="dataTable_info">
                         <table class="table table-striped table-bordered table-hover table-sm" id="dataTable">
@@ -496,7 +511,7 @@
                         </table>
                     </div>
                 </div>
-
+                @if ($deleted == false)
                 <!--Silinen Çalışanlar -->
                 <div class="tab-pane fade show " id="silinen_calisanlar" role="tabpanel" aria-labelledby="tr-tab">
                     <b>Çalışana ait dosyalara erişmek için çalışanın isminin yazılı olduğu kutucuğa
@@ -583,10 +598,10 @@
                         </table>
                     </div>
                 </div>
-
+                @endif
             </div><!-- tab content end -->
         </div><!-- card body end -->
-
+        @if ($deleted == false)
         <!-- Silme Talebi -->
         <div class="modal fade" id="areYouSure" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
@@ -1316,9 +1331,13 @@
                                                 </label>
 
                                                 <select class="form-control" id="uzman" name="uzman" size="1">
+                                                    @if (!empty($selectExperts[0]))
                                                     @foreach ($selectExperts[0] as $selectExpert)
-                                                    <option value="{{ $selectExpert->id }}" >{{ $selectExpert->name }}</option>
+                                                    <option value="{{ $selectExpert->id }}">{{ $selectExpert->name }}
+                                                    </option>
                                                     @endforeach
+                                                    @endif
+
                                                 </select>
                                             </div>
 
@@ -1330,9 +1349,12 @@
 
                                                 <select class="form-control" id="uzman_2" name="uzman_2" size="1">
 
+                                                    @if (!empty($selectExperts[0]))
                                                     @foreach ($selectExperts[0] as $selectExpert)
-                                                    <option value="{{ $selectExpert->id }}" >{{ $selectExpert->name }}</option>
+                                                    <option value="{{ $selectExpert->id }}">{{ $selectExpert->name }}
+                                                    </option>
                                                     @endforeach
+                                                    @endif
 
                                                 </select>
                                             </div>
@@ -1345,9 +1367,12 @@
 
                                                 <select class="form-control" id="uzman_3" name="uzman_3" size="1">
 
+                                                    @if (!empty($selectExperts[0]))
                                                     @foreach ($selectExperts[0] as $selectExpert)
-                                                    <option value="{{ $selectExpert->id }}" >{{ $selectExpert->name }}</option>
+                                                    <option value="{{ $selectExpert->id }}">{{ $selectExpert->name }}
+                                                    </option>
                                                     @endforeach
+                                                    @endif
 
                                                 </select>
                                             </div>
@@ -1367,9 +1392,12 @@
 
                                                 <select class="form-control" id="hekim" name="hekim" size="1">
 
+                                                    @if (!empty($selectExperts[1]))
                                                     @foreach ($selectExperts[1] as $selectExpert)
-                                                    <option value="{{ $selectExpert->id }}" >{{ $selectExpert->name }}</option>
+                                                    <option value="{{ $selectExpert->id }}">{{ $selectExpert->name }}
+                                                    </option>
                                                     @endforeach
+                                                    @endif
 
                                                 </select>
                                             </div>
@@ -1382,9 +1410,12 @@
 
                                                 <select class="form-control" id="hekim_2" name="hekim_2" size="1">
 
+                                                    @if (!empty($selectExperts[1]))
                                                     @foreach ($selectExperts[1] as $selectExpert)
-                                                    <option value="{{ $selectExpert->id }}" >{{ $selectExpert->name }}</option>
+                                                    <option value="{{ $selectExpert->id }}">{{ $selectExpert->name }}
+                                                    </option>
                                                     @endforeach
+                                                    @endif
 
                                                 </select>
                                             </div>
@@ -1397,9 +1428,12 @@
 
                                                 <select class="form-control" id="hekim_3" name="hekim_3" size="1">
 
+                                                    @if (!empty($selectExperts[1]))
                                                     @foreach ($selectExperts[1] as $selectExpert)
-                                                    <option value="{{ $selectExpert->id }}" >{{ $selectExpert->name }}</option>
+                                                    <option value="{{ $selectExpert->id }}">{{ $selectExpert->name }}
+                                                    </option>
                                                     @endforeach
+                                                    @endif
 
                                                 </select>
                                             </div>
@@ -1417,10 +1451,12 @@
 
                                                 <select class="form-control" id="saglık" name="saglık" size="1">
 
+                                                    @if (!empty($selectExperts[2]))
                                                     @foreach ($selectExperts[2] as $selectExpert)
-                                                    <option value="{{ $selectExpert->id }}" >{{ $selectExpert->name }}</option>
+                                                    <option value="{{ $selectExpert->id }}">{{ $selectExpert->name }}
+                                                    </option>
                                                     @endforeach
-
+                                                    @endif
                                                 </select>
                                             </div>
 
@@ -1431,9 +1467,12 @@
 
                                                 <select class="form-control" id="ofis" name="ofis" size="1">
 
+                                                    @if (!empty($selectExperts[3]))
                                                     @foreach ($selectExperts[3] as $selectExpert)
-                                                    <option value="{{ $selectExpert->id }}" >{{ $selectExpert->name }}</option>
+                                                    <option value="{{ $selectExpert->id }}">{{ $selectExpert->name }}
+                                                    </option>
                                                     @endforeach
+                                                    @endif
 
                                                 </select>
                                             </div>
@@ -1445,9 +1484,12 @@
 
                                                 <select class="form-control" id="muhasebe" name="muhasebe" size="1">
 
+                                                    @if (!empty($selectExperts[4]))
                                                     @foreach ($selectExperts[4] as $selectExpert)
-                                                    <option value="{{ $selectExpert->id }}" >{{ $selectExpert->name }}</option>
+                                                    <option value="{{ $selectExpert->id }}">{{ $selectExpert->name }}
+                                                    </option>
                                                     @endforeach
+                                                    @endif
 
                                                 </select>
                                             </div>
@@ -1465,9 +1507,12 @@
 
                                                 <select class="form-control" id="saglık_2" name="saglık_2" size="1">
 
+                                                    @if (!empty($selectExperts[2]))
                                                     @foreach ($selectExperts[2] as $selectExpert)
-                                                    <option value="{{ $selectExpert->id }}" >{{ $selectExpert->name }}</option>
+                                                    <option value="{{ $selectExpert->id }}">{{ $selectExpert->name }}
+                                                    </option>
                                                     @endforeach
+                                                    @endif
 
                                                 </select>
                                             </div>
@@ -1480,10 +1525,12 @@
 
                                                 <select class="form-control" id="ofis_2" name="ofis_2" size="1">
 
+                                                    @if (!empty($selectExperts[3]))
                                                     @foreach ($selectExperts[3] as $selectExpert)
-                                                    <option value="{{ $selectExpert->id }}" >{{ $selectExpert->name }}</option>
+                                                    <option value="{{ $selectExpert->id }}">{{ $selectExpert->name }}
+                                                    </option>
                                                     @endforeach
-
+                                                    @endif
                                                 </select>
                                             </div>
 
@@ -1495,9 +1542,12 @@
 
                                                 <select class="form-control" id="muhasebe_2" name="muhasebe_2" size="1">
 
+                                                    @if (!empty($selectExperts[4]))
                                                     @foreach ($selectExperts[4] as $selectExpert)
-                                                    <option value="{{ $selectExpert->id }}" >{{ $selectExpert->name }}</option>
+                                                    <option value="{{ $selectExpert->id }}">{{ $selectExpert->name }}
+                                                    </option>
                                                     @endforeach
+                                                    @endif
 
                                                 </select>
                                             </div>
@@ -1637,45 +1687,13 @@
                 </div>
             </div>
         </div><!-- addUser end-->
+        @endif
     </div>
     <!--card end-->
 </div>
 <!--container end-->
-@push('styles')
-<link href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap5.min.css" rel="stylesheet">
-@endpush
-
+@if ($deleted == false)
 @push('scripts')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
-<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap5.min.js"></script>
-
-<script type="text/javascript" src="/js/hashids.min.js"></script>
-<script type="text/javascript">
-    $(function () {
-          var table = $('.data-table').DataTable({
-              processing: true,
-              serverSide: true,
-              DT_RowId: true,
-              ajax: "{{ route('companies') }}",
-              columns: [
-                  {data: 'name', name: 'name'},
-                  {data: 'type', name: 'type'},
-                  {data: 'phone', name: 'phone'},
-                  {data: 'email', name: 'email'},
-                  {data: 'city', name: 'city'},
-                  {data: 'town', name: 'town'},
-                  {data: 'contract_at', name: 'contract_at'}
-              ]
-          });
-          $('#example tbody').on('click', 'tr', function () {
-            var data = table.row( this ).data();
-            var hashids = new Hashids();
-            id = hashids.encode(data['id']);
-            window.location.href="company/"+id
-        });
-    } );
-</script>
 <script type="text/javascript">
     var citiesByState = {
     Adana: ["Aladağ", "Ceyhan", "Çukurova", "Feke", "İmamoğlu", "Karaisalı", "Karataş", "Kozan", "Pozantı", "Saimbeyli", "Sarıçam", "Seyhan", "Tufanbeyli", "Yumurtalık", "Yüreğir"],
@@ -1792,5 +1810,6 @@
   }
 </script>
 @endpush
+@endif
 
 @endsection
