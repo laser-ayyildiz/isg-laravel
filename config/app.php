@@ -179,9 +179,7 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         Torann\Hashids\HashidsServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
-
-
-
+        Spatie\Permission\PermissionServiceProvider::class,
     ],
 
     /*

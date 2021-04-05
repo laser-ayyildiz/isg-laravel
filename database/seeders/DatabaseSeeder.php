@@ -23,8 +23,7 @@ class DatabaseSeeder extends Seeder
             OfficeStaffSeeder::class,
             HealthStaffSeeder::class,
             AccountantSeeder::class,
-            //DeletedCompanySeeder::class,
-            //DeletedUserSeeder::class
+            RolePermissionSeeder::class,
         ]);
     }
 }

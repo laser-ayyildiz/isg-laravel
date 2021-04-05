@@ -40,6 +40,7 @@ abstract class Factory
      * @var \Illuminate\Support\Collection
      */
     protected $states;
+
     /**
      * The parent relationships that will be applied to the model.
      *

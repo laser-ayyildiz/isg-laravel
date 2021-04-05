@@ -3,10 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
-use App\Models\DeletedCompany;
 
-Route::get('', [HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('admin.home');
 
 Route::get('/companies', [CoopCompanyController::class, 'index'])->name('companies');
 Route::post('/companies', [CoopCompanyController::class, 'store']);

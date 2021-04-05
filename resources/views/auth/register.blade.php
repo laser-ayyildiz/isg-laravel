@@ -8,9 +8,8 @@
 
         <form method="POST" action="{{ route('register') }}">
             @csrf
-
             <div>
-                <x-jet-label for="name" value="{{ __('Name') }}" />
+                <x-jet-label for="name" value="{{ __('Ad Soyad') }}" />
                 <x-jet-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
             </div>
 
@@ -20,13 +19,32 @@
             </div>
 
             <div class="mt-4">
-                <x-jet-label for="password" value="{{ __('Password') }}" />
+                <x-jet-label for="tc" value="{{ __('T.C Kimlik Numarası') }}" />
+                <x-jet-input id="tc" class="block mt-1 w-full" type="number" name="tc" :value="old('tc')"/>
+            </div>
+
+            <div class="mt-4">
+                <x-jet-label for="phone" value="{{ __('Telefon Numarası') }}" />
+                <x-jet-input id="phone" class="block mt-1 w-full" type="number" name="phone" :value="old('phone')"/>
+            </div>
+
+            <div class="mt-4">
+                <x-jet-label for="password" value="{{ __('Şifre') }}" />
                 <x-jet-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
             </div>
 
             <div class="mt-4">
-                <x-jet-label for="password_confirmation" value="{{ __('Confirm Password') }}" />
-                <x-jet-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
+                <x-jet-label for="password_confirmation" value="{{ __('Şifreyi Doğrula') }}" />
+                <x-jet-input id="password_confirmation" class="block mt-1 mb-2 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
+            </div>
+
+            <div>
+                <x-jet-label for="role" value="{{ __('Kullanıcı Tipi') }}" />
+                <select id="role" type="" class="form-select rounded-md shadow-sm mt-1 mb-1 block w-full" name="role" :value="old('role')" required autocomplete="role">
+                    @foreach ($roles as $role )
+                    <option value="{{ $role->name }}">{{ $role->name }}</option>
+                    @endforeach
+                </select>
             </div>
 
             @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())

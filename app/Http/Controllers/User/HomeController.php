@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
 use App\Models\CoopCompany;
 use App\Models\CoopEmployee;
+use App\Http\Controllers\Controller;
 
 class HomeController extends Controller
 {
-
-
     /**
      * Show the application dashboard.
      *
@@ -21,12 +20,11 @@ class HomeController extends Controller
         $emp_count = CoopEmployee::count();
 
         return view(
-            'admin.home',
+            'user.home',
             [
                 'comp_count' => $comp_count,
                 'emp_count' => $emp_count
             ]
         );
-        return view('admin.home');
     }
 }
