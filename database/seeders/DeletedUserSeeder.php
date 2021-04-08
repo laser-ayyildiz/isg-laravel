@@ -14,6 +14,6 @@ class DeletedUserSeeder extends Seeder
      */
     public function run()
     {
-        DeletedUser::factory()->times(200)->create();
+        DeletedUser::factory()->times(10)->create();
     }
 }

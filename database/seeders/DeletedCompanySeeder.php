@@ -14,6 +14,6 @@ class DeletedCompanySeeder extends Seeder
      */
     public function run()
     {
-        DeletedCompany::factory()->times(200)->create();
+        DeletedCompany::factory()->times(10)->create();
     }
 }
