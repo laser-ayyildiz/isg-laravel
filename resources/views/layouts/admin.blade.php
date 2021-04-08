@@ -50,7 +50,6 @@
             background-color: #3e8e41;
         }
     </style>
-
     @stack('styles')
 
 </head>
@@ -58,7 +57,7 @@
 <body id="page-top">
     <nav class="navbar shadow navbar-expand mb-3 bg-warning topbar static-top">
         <img width="55" height="40" class="rounded-circle img-profile" src="/images/nav_brand.jpg" />
-        <a class="navbar-brand" title="Anasayfa" style="color: black;" href="/admin"><b>Özgür OSGB</b></a>
+        <a class="navbar-brand" title="Anasayfa" style="color: black;" href="{{ route('admin.home') }}"><b>Özgür OSGB</b></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span></button>
@@ -70,24 +69,24 @@
                         id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-building"></i><span>&nbsp;İşletmeler</span></a>
                     <div class="dropdown-content" aria-labelledby="dropdownMenu2">
-                        <a class="dropdown-item" type="button" href="{{ route('companies') }}"><i
+                        <a class="dropdown-item" type="button" href="{{ route('admin.companies.index') }}"><i
                                 class="fas fa-stream"></i><span>&nbsp;İşletme Listesi</span></a>
-                        <a class="dropdown-item" type="button" href="{{ route('change_validate') }}"><i
+                        <a class="dropdown-item" type="button" href="{{ route('admin.change_validate') }}"><i
                                 class="fas fa-exchange-alt"></i><span>&nbsp;Değişiklik Talepleri</span></a>
-                        <a class="dropdown-item" type="button" href="{{ route('deleted_companies') }}"><i
+                        <a class="dropdown-item" type="button" href="{{ route('admin.deleted_companies') }}"><i
                                 class="fas fa-eraser"></i><span>&nbsp;Arşiv</span></a>
                     </div>
                 </div>
             </li>
             <li class="nav-item">
-                <a style="color: black;" class="nav-link btn-warning" href="{{ route('reports') }}"><i
+                <a style="color: black;" class="nav-link btn-warning" href="{{ route('admin.reports') }}"><i
                         class="fas fa-folder"></i><span>&nbsp;Raporlar</span></a>
             </li>
             <li class="nav-item">
                 <a style="color: black;" class="nav-link btn-warning" href=""><i
                         class="fas fa-calendar-alt"></i><span>&nbsp;Takvim</span></a>
             </li>
-            <li class="nav-item"><a style="color: black;" class="nav-link btn-warning" href="{{ route('settings') }}"><i
+            <li class="nav-item"><a style="color: black;" class="nav-link btn-warning" href="{{ route('admin.settings') }}"><i
                         class="fas fa-wrench"></i><span>&nbsp;Ayarlar</span></a></li>
             <li class="nav-item">
                 <div class="dropdown no-arrow">
@@ -95,11 +94,11 @@
                         id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
                             class="fas fa-users"></i><span>&nbsp;Çalışanlar</span></button>
                     <div class="dropdown-content" aria-labelledby="dropdownMenu2">
-                        <a class="dropdown-item" type="button" href="{{ route('osgb_employees') }}"><i
+                        <a class="dropdown-item" type="button" href="{{ route('admin.osgb_employees') }}"><i
                                 class="fas fa-stream"></i><span>&nbsp;Çalışan Listesi</span></a>
-                        <a class="dropdown-item" type="button" href="{{ route('deleted_users') }}"><i
+                        <a class="dropdown-item" type="button" href="{{ route('admin.deleted_users') }}"><i
                                 class="fas fa-eraser"></i><span>&nbsp;Silinen Çalışanlar</span></a>
-                        <a class="dropdown-item" type="button" href="{{ route('authentication') }}"><i
+                        <a class="dropdown-item" type="button" href="{{ route('admin.authentication') }}"><i
                                 class="fas fa-user-edit"></i><span>&nbsp;Yetkilendir</span></a>
                     </div>
                 </div>
@@ -130,7 +129,7 @@
             <div class="d-none d-sm-block topbar-divider"></div>
             <li class="nav-item">
                 <div class="nav-item">
-                    <a href="{{ route('profile') }}" class="nav-link" title="Profil">
+                    <a href="{{ route('profile.index') }}" class="nav-link" title="Profil">
                         <span style="color:black;"
                             class="d-none d-lg-inline mr-2 text-600">{{auth()->user()->name}}</span><img
                             class="rounded-circle img-profile"
@@ -139,7 +138,7 @@
             <div class="d-none d-sm-block topbar-divider"></div>
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
-                <li class="nav-item"><a style="color: black;" title="Çıkış" class="nav-link" href="route('logout')"
+                <li class="nav-item"><a style="color: black;" title="Çıkış" class="nav-link" href="{{ route('logout') }}"
                         onclick="event.preventDefault(); this.closest('form').submit();"><i
                             class="fas fa-sign-out-alt"></i><span>&nbsp;Çıkış</span></a></li>
             </form>

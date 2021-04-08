@@ -15,21 +15,8 @@ use Illuminate\Support\Facades\Auth;
 class CompanyController extends Controller
 {
 
-
-    private static function decryptedId($crypted)
+    public function index($id)
     {
-        try {
-            $hash = new Hashids();
-            $id = $hash->decode($crypted)[0];
-            return $id;
-        } catch (Exception $e) {
-            abort(404);
-        }
-    }
-
-    public function index($crypted)
-    {
-        $id = CompanyController::decryptedId($crypted);
         $company = CoopCompany::where('id', $id)->first();
 
         $employees = UserToCompany::whereHas('user', function ($query) {
@@ -74,9 +61,8 @@ class CompanyController extends Controller
         ));
     }
 
-    public function deletedIndex($crypted)
+    public function deletedIndex($id)
     {
-        $id = CompanyController::decryptedId($crypted);
         $company = DeletedCompany::where('id', $id)->first();
         $osgbEmployees = null;
         $coopEmployees = null;
@@ -97,8 +83,7 @@ class CompanyController extends Controller
 
     public function handle(Request $request)
     {
-        $crypted = $request->input('companyId');
-        $id = CompanyController::decryptedId($crypted);
+        $id = $request->input('companyId');
         if ($request->has('deleteRequest')) {
             $this->deleteRequest($id);
             return redirect()->route('companies')->with('status', 'Silme talebiniz yöneticinize iletilmiştir!');

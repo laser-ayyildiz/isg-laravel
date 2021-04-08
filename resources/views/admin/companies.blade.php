@@ -16,10 +16,10 @@
         <button class="btn btn-primary" data-toggle="modal" data-target="#addCompany" data-whatever="@getbootstrap">Yeni
             İşletme Ekle</a>
 
-        <button type="button" onclick="window.location.href='{{ route('change_validate') }}'"
+        <button type="button" onclick="window.location.href='{{ route('admin.change_validate') }}'"
             class="btn btn-success ml-1">Onay Bekleyenler</button>
 
-        <button type="button" onclick="window.location.href='{{ route('deleted_companies') }}'"
+        <button type="button" onclick="window.location.href='{{ route('admin.deleted_companies') }}'"
             class="btn btn-danger ml-1">Arşiv</button>
 
         <div class="table table-responsive mt-2">
@@ -43,7 +43,7 @@
 </div>
 <div class="modal fade" id="addCompany" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
-    <form action="{{ route('companies') }}" method="POST">
+    <form action="{{ route('admin.companies.store') }}" method="POST">
         @csrf
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
@@ -682,7 +682,7 @@
               processing: true,
               serverSide: true,
               DT_RowId: true,
-              ajax: "{{ route('companies') }}",
+              ajax: "{{ route('admin.companies.index') }}",
               columns: [
                   {data: 'name', name: 'name'},
                   {data: 'type', name: 'type'},
@@ -696,9 +696,7 @@
 
           $('#example tbody').on('click', 'tr', function () {
             var data = table.row( this ).data();
-            var hashids = new Hashids();
-            id = hashids.encode(data['id']);
-            window.location.href="company/"+id
+            window.location.href="company/"+data['id'];
 
         });
 

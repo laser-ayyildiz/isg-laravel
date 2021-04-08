@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/home', [HomeController::class, 'index'])->name('admin.home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-Route::get('/companies', [CoopCompanyController::class, 'index'])->name('companies');
-Route::post('/companies', [CoopCompanyController::class, 'store']);
+Route::get('/companies', [CoopCompanyController::class, 'index'])->name('companies.index');
+Route::post('/companies', [CoopCompanyController::class, 'store'])->name('companies.store');
 
 Route::get('/deleted_companies', [DeletedCompanyController::class, 'index'])->name('deleted_companies');
 
@@ -20,17 +20,14 @@ Route::get('/deleted_users', [DeletedUserController::class, 'index'])->name('del
 
 Route::get('/authentication', [AuthenticateController::class, 'index'])->name('authentication');
 
-Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
-Route::post('/profile', [ProfileController::class, 'updatePicture'])->name('profile');
+
 
 Route::get('/company/{id}', [CompanyController::class, 'index'])->name('company');
 Route::get('/company/deleted/{id}', [CompanyController::class, 'deletedIndex'])->name('deleted_company');
 Route::post('/company', [CompanyController::class, 'handle'])->name('company.handle');
 
 
-Route::get('/messages', [MessageController::class, 'index'])->name('messages');
 
-Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications');
 
 Route::get('/profile', function () {
     return view('admin/profile');

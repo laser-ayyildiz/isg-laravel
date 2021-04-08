@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
 use App\Http\Controllers\Controller;
-use App\Models\Job;
 use App\Models\UserHasJob;
 
 class OsgbEmployeeController extends Controller
@@ -17,7 +16,6 @@ class OsgbEmployeeController extends Controller
         foreach ($temps as $temp) {
             $employees[$temp->user->name] = $temp->job->name;
         }
-        dump($employees);
         $employees = User::role('User')->paginate(15);
         //dd($employees);
         /*

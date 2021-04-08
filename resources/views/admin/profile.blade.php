@@ -10,7 +10,7 @@
             </div>
             <div class="card-body text-center shadow">
                 <img class="img-thumbnail mb-3 mt-4" src="/uploads/profile_pictures/{{auth()->user()->profile_photo_path}}" width="218" height="300">
-                <form action="{{ route('profile') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <label>Profil Resmi Yükle</label>
                     <input type="file" name="avatar">

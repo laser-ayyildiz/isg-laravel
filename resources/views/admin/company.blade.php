@@ -612,7 +612,7 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form action="{{ route('company.handle') }}" method="POST">
+                    <form action="{{ route('admin.company.handle') }}" method="POST">
                         @csrf
                         <div class="modal-body">
                             <h3>
@@ -624,7 +624,7 @@
                         </div>
                         <div class="modal-footer">
                             <input type="hidden" name="companyId"
-                                value="{{ @Hashids::encode($company->id , 15, 298, 177) }}">
+                                value="{{ $company->id }}">
                             <button class="btn btn-lg btn-danger mr-auto" data-dismiss="modal">İptal</button>
                             <button type="submit" name="deleteRequest"
                                 class="btn btn-lg btn-danger float-right">SİL</button>
@@ -1074,7 +1074,7 @@
         <div class="modal fade" id="changeCompany" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl" role="document">
                 <div class="modal-content">
-                    <form action="{{ route('company.handle',['id' => @Hashids::encode($company->id , 15, 298, 177)]) }}"
+                    <form action="{{ route('admin.company.handle',['id' => $company->id]) }}"
                         method="POST">
                         @csrf
                         <div class="modal-c-tabs">
@@ -1626,7 +1626,7 @@
                         </div>
                         <div class="modal-footer">
                             <input type="hidden" name="companyId"
-                                value="{{ @Hashids::encode($company->id , 15, 298, 177) }}">
+                                value="{{ $company->id }}">
                             <button class="btn btn-primary btn-lg" type='submit' name='changeRequest'>Kaydet</button>
                         </div>
                     </form>
