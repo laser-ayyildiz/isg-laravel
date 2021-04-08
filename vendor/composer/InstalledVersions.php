@@ -30,7 +30,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => 'd73ce7e80d600d33e834ea9a1bb938496c50ed4b',
+    'reference' => '9ca14f929ea51dd9ae28570a87cbf82080406b09',
     'name' => 'laravel/laravel',
   ),
   'versions' => 
@@ -55,12 +55,12 @@ private static $installed = array (
     ),
     'barryvdh/laravel-debugbar' => 
     array (
-      'pretty_version' => 'v3.5.2',
-      'version' => '3.5.2.0',
+      'pretty_version' => 'v3.5.5',
+      'version' => '3.5.5.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'cae0a8d1cb89b0f0522f65e60465e16d738e069b',
+      'reference' => '6420113d90bb746423fa70b9940e9e7c26ebc121',
     ),
     'brick/math' => 
     array (
@@ -150,21 +150,21 @@ private static $installed = array (
     ),
     'facade/flare-client-php' => 
     array (
-      'pretty_version' => '1.5.0',
-      'version' => '1.5.0.0',
+      'pretty_version' => '1.6.1',
+      'version' => '1.6.1.0',
       'aliases' => 
       array (
       ),
-      'reference' => '9dd6f2b56486d939c4467b3f35475d44af57cf17',
+      'reference' => 'f2b0969f2d9594704be74dbeb25b201570a98098',
     ),
     'facade/ignition' => 
     array (
-      'pretty_version' => '2.7.0',
-      'version' => '2.7.0.0',
+      'pretty_version' => '2.8.0',
+      'version' => '2.8.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'bdc8b0b32c888f6edc838ca641358322b3d9506d',
+      'reference' => 'ae602ea1c061bdc5b96b4d5af9ffca1fcb5fa80b',
     ),
     'facade/ignition-contracts' => 
     array (
@@ -269,217 +269,217 @@ private static $installed = array (
     array (
       'replaced' => 
       array (
-        0 => 'v8.35.1',
+        0 => 'v8.36.2',
       ),
     ),
     'illuminate/broadcasting' => 
     array (
       'replaced' => 
       array (
-        0 => 'v8.35.1',
+        0 => 'v8.36.2',
       ),
     ),
     'illuminate/bus' => 
     array (
       'replaced' => 
       array (
-        0 => 'v8.35.1',
+        0 => 'v8.36.2',
       ),
     ),
     'illuminate/cache' => 
     array (
       'replaced' => 
       array (
-        0 => 'v8.35.1',
+        0 => 'v8.36.2',
       ),
     ),
     'illuminate/collections' => 
     array (
       'replaced' => 
       array (
-        0 => 'v8.35.1',
+        0 => 'v8.36.2',
       ),
     ),
     'illuminate/config' => 
     array (
       'replaced' => 
       array (
-        0 => 'v8.35.1',
+        0 => 'v8.36.2',
       ),
     ),
     'illuminate/console' => 
     array (
       'replaced' => 
       array (
-        0 => 'v8.35.1',
+        0 => 'v8.36.2',
       ),
     ),
     'illuminate/container' => 
     array (
       'replaced' => 
       array (
-        0 => 'v8.35.1',
+        0 => 'v8.36.2',
       ),
     ),
     'illuminate/contracts' => 
     array (
       'replaced' => 
       array (
-        0 => 'v8.35.1',
+        0 => 'v8.36.2',
       ),
     ),
     'illuminate/cookie' => 
     array (
       'replaced' => 
       array (
-        0 => 'v8.35.1',
+        0 => 'v8.36.2',
       ),
     ),
     'illuminate/database' => 
     array (
       'replaced' => 
       array (
-        0 => 'v8.35.1',
+        0 => 'v8.36.2',
       ),
     ),
     'illuminate/encryption' => 
     array (
       'replaced' => 
       array (
-        0 => 'v8.35.1',
+        0 => 'v8.36.2',
       ),
     ),
     'illuminate/events' => 
     array (
       'replaced' => 
       array (
-        0 => 'v8.35.1',
+        0 => 'v8.36.2',
       ),
     ),
     'illuminate/filesystem' => 
     array (
       'replaced' => 
       array (
-        0 => 'v8.35.1',
+        0 => 'v8.36.2',
       ),
     ),
     'illuminate/hashing' => 
     array (
       'replaced' => 
       array (
-        0 => 'v8.35.1',
+        0 => 'v8.36.2',
       ),
     ),
     'illuminate/http' => 
     array (
       'replaced' => 
       array (
-        0 => 'v8.35.1',
+        0 => 'v8.36.2',
       ),
     ),
     'illuminate/log' => 
     array (
       'replaced' => 
       array (
-        0 => 'v8.35.1',
+        0 => 'v8.36.2',
       ),
     ),
     'illuminate/macroable' => 
     array (
       'replaced' => 
       array (
-        0 => 'v8.35.1',
+        0 => 'v8.36.2',
       ),
     ),
     'illuminate/mail' => 
     array (
       'replaced' => 
       array (
-        0 => 'v8.35.1',
+        0 => 'v8.36.2',
       ),
     ),
     'illuminate/notifications' => 
     array (
       'replaced' => 
       array (
-        0 => 'v8.35.1',
+        0 => 'v8.36.2',
       ),
     ),
     'illuminate/pagination' => 
     array (
       'replaced' => 
       array (
-        0 => 'v8.35.1',
+        0 => 'v8.36.2',
       ),
     ),
     'illuminate/pipeline' => 
     array (
       'replaced' => 
       array (
-        0 => 'v8.35.1',
+        0 => 'v8.36.2',
       ),
     ),
     'illuminate/queue' => 
     array (
       'replaced' => 
       array (
-        0 => 'v8.35.1',
+        0 => 'v8.36.2',
       ),
     ),
     'illuminate/redis' => 
     array (
       'replaced' => 
       array (
-        0 => 'v8.35.1',
+        0 => 'v8.36.2',
       ),
     ),
     'illuminate/routing' => 
     array (
       'replaced' => 
       array (
-        0 => 'v8.35.1',
+        0 => 'v8.36.2',
       ),
     ),
     'illuminate/session' => 
     array (
       'replaced' => 
       array (
-        0 => 'v8.35.1',
+        0 => 'v8.36.2',
       ),
     ),
     'illuminate/support' => 
     array (
       'replaced' => 
       array (
-        0 => 'v8.35.1',
+        0 => 'v8.36.2',
       ),
     ),
     'illuminate/testing' => 
     array (
       'replaced' => 
       array (
-        0 => 'v8.35.1',
+        0 => 'v8.36.2',
       ),
     ),
     'illuminate/translation' => 
     array (
       'replaced' => 
       array (
-        0 => 'v8.35.1',
+        0 => 'v8.36.2',
       ),
     ),
     'illuminate/validation' => 
     array (
       'replaced' => 
       array (
-        0 => 'v8.35.1',
+        0 => 'v8.36.2',
       ),
     ),
     'illuminate/view' => 
     array (
       'replaced' => 
       array (
-        0 => 'v8.35.1',
+        0 => 'v8.36.2',
       ),
     ),
     'intervention/image' => 
@@ -536,21 +536,21 @@ private static $installed = array (
     ),
     'laravel/framework' => 
     array (
-      'pretty_version' => 'v8.35.1',
-      'version' => '8.35.1.0',
+      'pretty_version' => 'v8.36.2',
+      'version' => '8.36.2.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'd118c0df39e7524131176aaf76493eae63a8a602',
+      'reference' => '0debd8ad6b5aa1f61ccc73910adf049af4ca0444',
     ),
     'laravel/jetstream' => 
     array (
-      'pretty_version' => 'v2.3.0',
-      'version' => '2.3.0.0',
+      'pretty_version' => 'v2.3.1',
+      'version' => '2.3.1.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'fffe15710e61c09f6cb919ff949a3c66c8244150',
+      'reference' => '39d50ec0dda28ae2077baf9df307509a09307d75',
     ),
     'laravel/laravel' => 
     array (
@@ -559,25 +559,25 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => 'd73ce7e80d600d33e834ea9a1bb938496c50ed4b',
+      'reference' => '9ca14f929ea51dd9ae28570a87cbf82080406b09',
     ),
     'laravel/sail' => 
     array (
-      'pretty_version' => 'v1.4.10',
-      'version' => '1.4.10.0',
+      'pretty_version' => 'v1.4.11',
+      'version' => '1.4.11.0',
       'aliases' => 
       array (
       ),
-      'reference' => '4f0b2bac128ee60a11d9758651f103f78157474a',
+      'reference' => 'e46a3228da4e95a411a981ac807bd119ab2485fa',
     ),
     'laravel/sanctum' => 
     array (
-      'pretty_version' => 'v2.9.3',
-      'version' => '2.9.3.0',
+      'pretty_version' => 'v2.9.4',
+      'version' => '2.9.4.0',
       'aliases' => 
       array (
       ),
-      'reference' => '81f3027af262590ffb63f202cba6d055d562a9a1',
+      'reference' => 'dd84a9141012c5509922df0c72866110f45026cb',
     ),
     'laravel/tinker' => 
     array (
@@ -1707,7 +1707,6 @@ self::$canGetVendors = method_exists('Composer\Autoload\ClassLoader', 'getRegist
 $installed = array();
 
 if (self::$canGetVendors) {
-
 foreach (ClassLoader::getRegisteredLoaders() as $vendorDir => $loader) {
 if (isset(self::$installedByVendor[$vendorDir])) {
 $installed[] = self::$installedByVendor[$vendorDir];
