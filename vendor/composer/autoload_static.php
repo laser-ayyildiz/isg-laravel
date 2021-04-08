@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInita7f0ceff45ec05e2a91669137b1fd52b
+class ComposerStaticInit91b29f284ee86447b437da19cea30d44
 {
     public static $files = array (
         'ec07570ca5a812141189b1fa81503674' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Assert/Functions.php',
@@ -36,10 +36,10 @@ class ComposerStaticInita7f0ceff45ec05e2a91669137b1fd52b
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
         'b6b991a57620e2fb6b2f66f03fe9ddc2' => __DIR__ . '/..' . '/symfony/string/Resources/functions.php',
         '4a1f389d6ce373bda9e57857d3b61c84' => __DIR__ . '/..' . '/barryvdh/laravel-debugbar/src/helpers.php',
+        'ed962a97bd972bc82007176b647d4e36' => __DIR__ . '/..' . '/facade/ignition/src/helpers.php',
         '40275907c8566c390185147049ef6e5d' => __DIR__ . '/..' . '/livewire/livewire/src/helpers.php',
         '377b22b161c09ed6e5152de788ca020a' => __DIR__ . '/..' . '/spatie/laravel-permission/src/helpers.php',
         '0b47d6d4a00ca9112ba3953b49e7c9a4' => __DIR__ . '/..' . '/yajra/laravel-datatables-oracle/src/helper.php',
-        'ed962a97bd972bc82007176b647d4e36' => __DIR__ . '/..' . '/facade/ignition/src/helpers.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -687,7 +687,6 @@ class ComposerStaticInita7f0ceff45ec05e2a91669137b1fd52b
         'App\\Models\\DeletedUser' => __DIR__ . '/../..' . '/app/Models/DeletedUser.php',
         'App\\Models\\Job' => __DIR__ . '/../..' . '/app/Models/Job.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
-        'App\\Models\\UserHasJob' => __DIR__ . '/../..' . '/app/Models/UserHasJob.php',
         'App\\Models\\UserToCompany' => __DIR__ . '/../..' . '/app/Models/UserToCompany.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
         'App\\Providers\\AuthServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AuthServiceProvider.php',
@@ -924,7 +923,6 @@ class ComposerStaticInita7f0ceff45ec05e2a91669137b1fd52b
         'Database\\Seeders\\DeletedUserSeeder' => __DIR__ . '/../..' . '/database/seeders/DeletedUserSeeder.php',
         'Database\\Seeders\\JobSeeder' => __DIR__ . '/../..' . '/database/seeders/JobSeeder.php',
         'Database\\Seeders\\RolePermissionSeeder' => __DIR__ . '/../..' . '/database/seeders/RolePermissionSeeder.php',
-        'Database\\Seeders\\UserHasJobSeeder' => __DIR__ . '/../..' . '/database/seeders/UserHasJobSeeder.php',
         'Database\\Seeders\\UserSeeder' => __DIR__ . '/../..' . '/database/seeders/UserSeeder.php',
         'Database\\Seeders\\UserToCompanySeeder' => __DIR__ . '/../..' . '/database/seeders/UserToCompanySeeder.php',
         'DebugBar\\Bridge\\CacheCacheCollector' => __DIR__ . '/..' . '/maximebf/debugbar/src/DebugBar/Bridge/CacheCacheCollector.php',
@@ -6050,10 +6048,10 @@ class ComposerStaticInita7f0ceff45ec05e2a91669137b1fd52b
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInita7f0ceff45ec05e2a91669137b1fd52b::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInita7f0ceff45ec05e2a91669137b1fd52b::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInita7f0ceff45ec05e2a91669137b1fd52b::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInita7f0ceff45ec05e2a91669137b1fd52b::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit91b29f284ee86447b437da19cea30d44::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit91b29f284ee86447b437da19cea30d44::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit91b29f284ee86447b437da19cea30d44::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit91b29f284ee86447b437da19cea30d44::$classMap;
 
         }, null, ClassLoader::class);
     }

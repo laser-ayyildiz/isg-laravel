@@ -27,8 +27,9 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
-        'job_type',
+        'job_id',
         'recruitment_date',
+        'tc',
         'phone',
         'email',
         'password',
@@ -64,4 +65,9 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function job()
+    {
+        return $this->belongsTo(Job::class);
+    }
 }

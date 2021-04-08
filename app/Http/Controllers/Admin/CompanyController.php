@@ -86,10 +86,10 @@ class CompanyController extends Controller
         $id = $request->input('companyId');
         if ($request->has('deleteRequest')) {
             $this->deleteRequest($id);
-            return redirect()->route('companies')->with('status', 'Silme talebiniz yöneticinize iletilmiştir!');
+            return redirect()->route('admin.companies.index')->with('status', 'Silme talebiniz yöneticinize iletilmiştir!');
         } else if ($request->has('changeRequest')) {
             $this->changeRequest($request, $id);
-            return redirect()->route('companies')->with('status', 'Yaptığınız değişiklikler yöneticinize iletilmiştir. Lütfen onaylanana kadar bekleyiniz!');
+            return redirect()->route('admin.companies.index')->with('status', 'Yaptığınız değişiklikler yöneticinize iletilmiştir. Lütfen onaylanana kadar bekleyiniz!');
         }
     }
 

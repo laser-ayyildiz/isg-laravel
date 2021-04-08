@@ -28,71 +28,79 @@ class UserSeeder extends Seeder
 
         User::create(
             [
-                'name' => 'İsg Uzmanı 1',
+                'name' => 'uzman1',
                 'password' => '$2y$10$Dxxw9F77BWu3UMByi6XtguPanObmSuxSdZbegJwvz0i8/0reM0pli',
                 'email' => 'uzman1@gmail.com',
                 'tc' => '111',
                 'phone' => '111',
+                'job_id' => 1
             ]
         )->syncRoles('User');
 
         User::create(
             [
-                'name' => 'İsg Uzmanı 2',
+                'name' => 'uzman2',
                 'password' => '$2y$10$Dxxw9F77BWu3UMByi6XtguPanObmSuxSdZbegJwvz0i8/0reM0pli',
                 'email' => 'uzman2@gmail.com',
                 'tc' => '222',
                 'phone' => '222',
+                'job_id' => 2
             ]
         )->syncRoles('User');
 
         User::create(
             [
-                'name' => 'İsg Uzmanı 3',
+                'name' => 'uzman3',
                 'password' => '$2y$10$Dxxw9F77BWu3UMByi6XtguPanObmSuxSdZbegJwvz0i8/0reM0pli',
                 'email' => 'uzman3@gmail.com',
                 'tc' => '333',
                 'phone' => '333',
+                'job_id' => 3
+
             ]
         )->syncRoles('User');
 
         User::create(
             [
-                'name' => 'Doktor',
+                'name' => 'd',
                 'password' => '$2y$10$Dxxw9F77BWu3UMByi6XtguPanObmSuxSdZbegJwvz0i8/0reM0pli',
                 'email' => 'doktor@gmail.com',
                 'tc' => '444',
                 'phone' => '444',
+                'job_id' => 4
             ]
         )->syncRoles('User');
 
         User::create(
             [
-                'name' => 'Sağlık Personeli',
+                'name' => 'sp',
                 'password' => '$2y$10$Dxxw9F77BWu3UMByi6XtguPanObmSuxSdZbegJwvz0i8/0reM0pli',
                 'email' => 'saglik@gmail.com',
                 'tc' => '555',
                 'phone' => '555',
+                'job_id' => 5
             ]
         )->syncRoles('User');
 
         User::create(
             [
-                'name' => 'Ofis Personeli',
+                'name' => 'op',
                 'password' => '$2y$10$Dxxw9F77BWu3UMByi6XtguPanObmSuxSdZbegJwvz0i8/0reM0pli',
                 'email' => 'ofis@gmail.com',
                 'tc' => '666',
                 'phone' => '666',
+                'job_id' => 6
             ]
         )->syncRoles('User');
 
         User::create(
             [
-                'name' => 'Muhasebeci',
+                'name' => 'm',
                 'password' => '$2y$10$Dxxw9F77BWu3UMByi6XtguPanObmSuxSdZbegJwvz0i8/0reM0pli',
                 'email' => 'muhasebe@gmail.com',
                 'tc' => '777',
                 'phone' => '777',
+                'job_id' => 7
             ]
         )->syncRoles('User');
 
@@ -102,7 +110,7 @@ class UserSeeder extends Seeder
                 'password' => '$2y$10$Dxxw9F77BWu3UMByi6XtguPanObmSuxSdZbegJwvz0i8/0reM0pli',
                 'email' => 'compadmin@gmail.com',
                 'tc' => '888',
-                'phone' => '888',
+                'phone' => '888'
             ]
         )->syncRoles('CompanyAdmin');
 

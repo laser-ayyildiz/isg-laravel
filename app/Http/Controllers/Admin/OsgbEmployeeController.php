@@ -3,33 +3,52 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
+use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
-use App\Models\UserHasJob;
+use Illuminate\Support\Facades\Hash;
 
 class OsgbEmployeeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $employees = [];
-        $temps = UserHasJob::with(['job', 'user'])->get();
-
-        foreach ($temps as $temp) {
-            $employees[$temp->user->name] = $temp->job->name;
+        if ($request->ajax()) {
+            $data = User::select('*')->with('job')
+                ->where('job_id', '!=', null);
+            return DataTables::of($data)
+                ->make(true);
         }
-        $employees = User::role('User')->paginate(15);
-        //dd($employees);
+        return view(
+            'admin.osgb_employees'
+        );
+
         /*
-        $employees = User::where('auth_type', 1)
-            ->orWhere('auth_type', 2)
-            ->orWhere('auth_type', 3)
-            ->orWhere('auth_type', 4)
-            ->paginate(15);
-            */
+        $employees = User::with('job')
+            ->where('job_id', '!=', null)
+            ->orderBy('name')
+            ->paginate(10);
+
         return view(
             'admin.osgb_employees',
             [
                 'employees' => $employees
             ]
         );
+        */
+    }
+
+    public function create(Request $request)
+    {
+        $password = random_int(100000, 9999999);
+        User::create([
+            'job_id' => $request->job_id,
+            'recruitment_date' => $request->recruitment_date,
+            'name' => $request->name,
+            'email' => $request->email,
+            'tc' => $request->tc,
+            'phone' => $request->phone,
+            'password' => Hash::make($password)
+        ])->syncRoles('User');
+        return redirect()->route('admin.osgb_employees')->with('status', 'Çalışan eklenmiştir!');
     }
 }

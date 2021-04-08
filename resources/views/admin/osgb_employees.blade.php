@@ -1,15 +1,16 @@
 @extends('layouts.admin')
 @section('title')OSGB Çalışanları - @endsection
 @section('content')
+@if (session('status'))
+<div class="alert alert-success">
+    {{ session('status') }}
+</div>
+@endif
 <div class="card-header border text-dark bg-light">
     <h1 style="text-align:center;"><b>Çalışanlar</b></h1>
 </div>
 <div class="card shadow-lg">
     <div class="card-body border">
-        <div class="form-group col-md-4" style="float:right;">
-            <input type="text" class="form-control" id="myInput" onkeyup="myFunction()"
-                placeholder="Çalışan ismi ile ara...">
-        </div>
         <div id="dataTable_filter">
             <div>
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"
@@ -28,36 +29,30 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form action="osgb_users.php" method="POST">
+                            <form action="{{ route('admin.osgb_employees.create') }}" method="POST">
+                                @csrf
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <label for="user_type"><strong>Kullanıcı türünü seçin</strong></label>
-                                        <select class="form-control" placeholder="Kullanıcı Türünü seçin"
-                                            list="user_type" name="user_type" required>
+                                        <label for="job_id"><strong>Kullanıcı türünü seçin</strong></label>
+                                        <select class="form-control" list="job_id" name="job_id" required>
                                             <option value="" disabled selected>Kullanıcı Türü</option>
                                             <optgroup label="İsg Uzmanı">
-                                                <option value="İsg Uzmanı 1">İsg Uzmanı 1</option>
-                                                <option value="İsg Uzmanı 2">İsg Uzmanı 2</option>
-                                                <option value="İsg Uzmanı 3">İsg Uzmanı 3</option>
+                                                <option value="1">İsg Uzmanı 1</option>
+                                                <option value="2">İsg Uzmanı 2</option>
+                                                <option value="3">İsg Uzmanı 3</option>
                                             </optgroup>
-                                            <option value="Yönetici">Yönetici</option>
-                                            <option value="Hekim">Hekim</option>
-                                            <option value="Ofis Personeli">Ofis Personeli</option>
-                                            <option value="Diğer Sağlık Personeli">Diğer Sağlık Personeli</option>
-                                            <option value="Muhasebe Personeli">Muhasebe Personeli</option>
+                                            <option value="4">Doktor</option>
+                                            <option value="5">Sağlık Personeli</option>
+                                            <option value="6">Ofis Personeli</option>
+                                            <option value="7">Muhasebeci</option>
                                         </select>
                                     </div>
                                 </div>
                                 <br>
                                 <div class="row">
                                     <div class="col-sm">
-                                        <label for="firstname"><strong>Adı</strong></label>
-                                        <input type="text" class="form-control" placeholder="Adı" name="firstname"
-                                            required>
-                                    </div>
-                                    <div class="col-sm">
-                                        <label for="lastname"><strong>Soy Adı </strong></label>
-                                        <input type="text" class="form-control" placeholder="Soy Adı" name="lastname"
+                                        <label for="name"><strong>Ad Soyad</strong></label>
+                                        <input type="text" class="form-control" placeholder="Ad Soyad" name="name"
                                             required>
                                     </div>
                                 </div>
@@ -78,9 +73,9 @@
                                             maxlength="11" required>
                                     </div>
                                     <div class="col-sm-6">
-                                        <label for="start_date"><strong>İşe Giriş Tarihi </strong></label>
-                                        <input type="date" class="form-control" placeholder="İşe giriş"
-                                            name="start_date" required>
+                                        <label for="recruitment_date"><strong>İşe Giriş Tarihi </strong></label>
+                                        <input type="date" class="form-control" name="recruitment_date"
+                                            id="recruitment_date" required>
                                     </div>
                                 </div>
                                 <br>
@@ -103,130 +98,157 @@
                 </div>
             </div>
         </div>
-        <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
-            <table class="table table-striped table-bordered table-hover" id="dataTable">
+        <div class="table table-responsive mt-2">
+            <table class="table table-striped table-bordered table-hover data-table" id="example">
                 <thead class="thead-dark">
                     <tr>
                         <th>Ad Soyad</th>
-                        <th>Çalışma Alanı</th>
+                        <!--<th>Çalışma Alanı</th>-->
+                        <th>E-mail</th>
+                        <th>Telefon Numarası</th>
                         <th>T.C Kimlik No</th>
                         <th>İşe Giriş Tarihi</th>
-                        <th>Düzenle/Sil</th>
+                        <!--<th>Düzenle/Sil</th>-->
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($employees ?? '' as $key => $employee)
-                    <tr>
-                        <td> {{ $employee -> name }} </td>
-                        <td> {{ $employee -> user_type }} </td>
-                        <td> {{ $employee -> tc }} </td>
-                        <td> {{ $employee -> recruitment_date }} </td>
-                        <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#düzenle{{ $key }}"
-                                data-whatever="@getbootstrap">Düzenle</button>
-                        </td>
-                    <div class="modal fade" id="düzenle{{ $key }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Düzenle</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <form action="" method="POST">
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <label><strong>Kullanıcı türünü seçin</strong></label>
-                                                <select class="form-control" placeholder="Kullanıcı Türünü seçin"
-                                                    list="user_type" name="user_type" required>
-                                                    <option value="" disabled selected>
-                                                    </option>
-                                                    <optgroup label="İsg Uzmanı">
-                                                        <option value="İsg Uzmanı 1">İsg Uzmanı 1</option>
-                                                        <option value="İsg Uzmanı 2">İsg Uzmanı 2</option>
-                                                        <option value="İsg Uzmanı 3">İsg Uzmanı 3</option>
-                                                    </optgroup>
-                                                    <option value="Yönetici">Yönetici</option>
-                                                    <option value="Hekim">Hekim</option>
-                                                    <option value="Ofis Personeli">Ofis Personeli</option>
-                                                    <option value="Diğer Sağlık Personeli">Diğer Sağlık Personeli
-                                                    </option>
-                                                    <option value="Muhasebe Personeli">Muhasebe Personeli</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <br>
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <label for="firstname"><strong>Adı</strong></label>
-                                                <input type="text" class="form-control" placeholder="Adı"
-                                                    name="firstname" value="{{ $employee -> name }}" required>
-                                            </div>
-                                        </div>
-                                        <br>
-                                        <div class="row">
-                                            <div class="col-sm-10">
-                                                <label for="email"><strong>E-mail </strong></label>
-                                                <input type="email" class="form-control" placeholder="E-mail"
-                                                    name="email" value="{{ $employee -> email }}" readonly required>
-                                            </div>
-                                        </div>
-                                        <br>
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <label for="phone"><strong>Telefon No </strong></label>
-                                                <input type="tel" class="form-control" name="phone"
-                                                    placeholder="Tel: 05XXXXXXXXX"
-                                                    pattern="(\d{4})(\d{3})(\d{2})(\d{2})" maxlength="11" value="{{ $employee -> phone }}"
-                                                    required>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <label for="start_date"><strong>İşe Giriş Tarihi </strong></label>
-                                                <input type="date" class="form-control" placeholder="İşe giriş"
-                                                    name="start_date" value="{{ $employee -> recruitment_date }}" required>
-                                            </div>
-                                        </div>
-                                        <br>
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <label for="tc"><strong>T.C Kimlik No </strong></label>
-                                                <input type="number" class="form-control" placeholder="T.C Kimlik No"
-                                                    name="tc" min="11" maxlength="11" value="{{ $employee -> tc }}" readonly required>
-                                            </div>
-                                        </div>
-                                        <br>
-                                        <label for="not"><strong>Çalışan hakkında not </strong></label>
-                                        <textarea class="form-control" id="not" name="not" rows="5" cols="120"
-                                            style="max-width: 100%;"></textarea>
-                                        <br>
-                                        <div style="float: right;">
-                                            <button id="onay" name="onay" type="submit"
-                                                class="btn btn-success">Kaydet</button>
-                                            <button type="submit" class="btn btn-danger" name="sil"
-                                                id="sil">Sil</button>
-                                        </div>
-                                </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    </tr>
-                    @endforeach
+
                 </tbody>
-                <tfoot>
-                    <tr>
-                        <td><strong>Ad</strong></td>
-                        <td><strong>Çalışma Alanı</strong></td>
-                        <td><strong>T.C Kimlik No</strong></td>
-                        <td><strong>İşe Giriş Tarihi</strong></td>
-                        <td><strong>Düzenle/Sil</strong></td>
-                    </tr>
-                </tfoot>
             </table>
         </div>
         <div class="float-right my-3">
-            {{ $employees -> links() }}
         </div>
     </div>
+    <div class="modal fade" id="düzenle" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Düzenle</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="" method="POST">
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <label><strong>Kullanıcı türünü seçin</strong></label>
+                                                    <select class="form-control" placeholder="Kullanıcı Türünü seçin"
+                                                        list="job_id" name="job_id" id="job_id" required>
+                                                        <option value="" disabled selected>
+                                                            </option>
+                                                        <optgroup label="İsg Uzmanı">
+                                                            <option value="1">İsg Uzmanı 1</option>
+                                                            <option value="2">İsg Uzmanı 2</option>
+                                                            <option value="3">İsg Uzmanı 3</option>
+                                                        </optgroup>
+                                                        <option value="4">Hekim</option>
+                                                        <option value="5">Sağlık Personeli</option>
+                                                        <option value="6">Ofis Personeli</option>
+                                                        <option value="7">Muhasebeci</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <label for="firstname"><strong>Adı</strong></label>
+                                                    <input type="text" class="form-control" placeholder="Adı"
+                                                        name="firstname" value="" id="name" required>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-sm-10">
+                                                    <label for="email"><strong>E-mail </strong></label>
+                                                    <input type="email" class="form-control" placeholder="E-mail"
+                                                        name="email" value="" id="email" readonly required>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <label for="phone"><strong>Telefon No </strong></label>
+                                                    <input type="tel" class="form-control" name="phone"
+                                                        placeholder="Tel: 05XXXXXXXXX"
+                                                        pattern="(\d{4})(\d{3})(\d{2})(\d{2})" maxlength="11"
+                                                        value="" id="phone" required>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label for="start_date"><strong>İşe Giriş Tarihi </strong></label>
+                                                    <input type="" class="form-control" placeholder="İşe giriş"
+                                                        name="start_date" value="" id="recruitment_date2"
+                                                        required>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <label for="tc"><strong>T.C Kimlik No </strong></label>
+                                                    <input type="number" class="form-control"
+                                                        placeholder="T.C Kimlik No" name="tc" min="11" maxlength="11"
+                                                        value="" readonly id="tc" required>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <label for="not"><strong>Çalışan hakkında not </strong></label>
+                                            <textarea class="form-control" id="not" name="not" rows="5" cols="120"
+                                                style="max-width: 100%;"></textarea>
+                                            <br>
+                                            <div style="float: right;">
+                                                <button id="onay" name="onay" type="submit"
+                                                    class="btn btn-success">Kaydet</button>
+                                                <button type="submit" class="btn btn-danger" name="sil"
+                                                    id="sil">Sil</button>
+                                            </div>
+                                    </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+
     @endsection
+    @push('styles')
+
+    <link href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+
+    @endpush
+
+    @push('scripts')
+    <script> recruitment_date.max = new Date().toISOString().split("T")[0]; </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap5.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+              var table = $('.data-table').DataTable({
+                  processing: true,
+                  serverSide: true,
+                  DT_RowId: true,
+                  ajax: "{{ route('admin.osgb_employees') }}",
+                  columns: [
+                      {data: 'name', name: 'name'},
+                      {data: 'phone', name: 'phone'},
+                      {data: 'email', name: 'email'},
+                      {data: 'tc', name: 'tc'},
+                      {data: 'recruitment_date', name: 'recruitment_date'}
+                  ]
+              });
+
+              $('#example tbody').on('click', 'tr', function () {
+                var data = table.row( this ).data();
+                var job = data['job'];
+
+                $('#düzenle').modal('show');
+                $("#name").val(data['name']);
+                $("#email").val(data['email']);
+                $("#phone").val(data['phone']);
+                $("#tc").val(data['tc']);
+                $("#recruitment_date2").val(data['recruitment_date']);
+                $("#job_id").val(job.id);
+            });
+        });
+    </script>
+    @endpush

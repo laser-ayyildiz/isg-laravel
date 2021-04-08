@@ -15,6 +15,8 @@ Route::get('/change_validate', [ChangeValidateController::class, 'index'])->name
 Route::post('/change_validate', [ChangeValidateController::class, 'deleteRequest'])->name('validate.delete');
 
 Route::get('/osgb_employees', [OsgbEmployeeController::class, 'index'])->name('osgb_employees');
+Route::post('/osgb_employees', [OsgbEmployeeController::class, 'create'])->name('osgb_employees.create');
+
 
 Route::get('/deleted_users', [DeletedUserController::class, 'index'])->name('deleted_users');
 

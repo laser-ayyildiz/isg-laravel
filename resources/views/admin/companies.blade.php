@@ -675,7 +675,6 @@
         document.getElementById("citySelect").selectedIndex = 0;
       }
 </script>
-<script type="text/javascript" src="/js/hashids.min.js"></script>
 <script type="text/javascript">
     $(function () {
           var table = $('.data-table').DataTable({
@@ -693,7 +692,6 @@
                   {data: 'contract_at', name: 'contract_at'}
               ]
           });
-
           $('#example tbody').on('click', 'tr', function () {
             var data = table.row( this ).data();
             window.location.href="company/"+data['id'];
