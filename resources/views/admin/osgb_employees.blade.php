@@ -103,12 +103,11 @@
                 <thead class="thead-dark">
                     <tr>
                         <th>Ad Soyad</th>
-                        <!--<th>Çalışma Alanı</th>-->
+                        <th>Çalışma Alanı</th>
                         <th>E-mail</th>
                         <th>Telefon Numarası</th>
                         <th>T.C Kimlik No</th>
                         <th>İşe Giriş Tarihi</th>
-                        <!--<th>Düzenle/Sil</th>-->
                     </tr>
                 </thead>
                 <tbody>
@@ -119,94 +118,88 @@
         <div class="float-right my-3">
         </div>
     </div>
-    <div class="modal fade" id="düzenle" tabindex="-1" aria-labelledby="exampleModalLabel"
-                            aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Düzenle</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form action="" method="POST">
-                                            <div class="row">
-                                                <div class="col-sm-6">
-                                                    <label><strong>Kullanıcı türünü seçin</strong></label>
-                                                    <select class="form-control" placeholder="Kullanıcı Türünü seçin"
-                                                        list="job_id" name="job_id" id="job_id" required>
-                                                        <option value="" disabled selected>
-                                                            </option>
-                                                        <optgroup label="İsg Uzmanı">
-                                                            <option value="1">İsg Uzmanı 1</option>
-                                                            <option value="2">İsg Uzmanı 2</option>
-                                                            <option value="3">İsg Uzmanı 3</option>
-                                                        </optgroup>
-                                                        <option value="4">Hekim</option>
-                                                        <option value="5">Sağlık Personeli</option>
-                                                        <option value="6">Ofis Personeli</option>
-                                                        <option value="7">Muhasebeci</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <br>
-                                            <div class="row">
-                                                <div class="col-sm-6">
-                                                    <label for="firstname"><strong>Adı</strong></label>
-                                                    <input type="text" class="form-control" placeholder="Adı"
-                                                        name="firstname" value="" id="name" required>
-                                                </div>
-                                            </div>
-                                            <br>
-                                            <div class="row">
-                                                <div class="col-sm-10">
-                                                    <label for="email"><strong>E-mail </strong></label>
-                                                    <input type="email" class="form-control" placeholder="E-mail"
-                                                        name="email" value="" id="email" readonly required>
-                                                </div>
-                                            </div>
-                                            <br>
-                                            <div class="row">
-                                                <div class="col-sm-6">
-                                                    <label for="phone"><strong>Telefon No </strong></label>
-                                                    <input type="tel" class="form-control" name="phone"
-                                                        placeholder="Tel: 05XXXXXXXXX"
-                                                        pattern="(\d{4})(\d{3})(\d{2})(\d{2})" maxlength="11"
-                                                        value="" id="phone" required>
-                                                </div>
-                                                <div class="col-sm-6">
-                                                    <label for="start_date"><strong>İşe Giriş Tarihi </strong></label>
-                                                    <input type="" class="form-control" placeholder="İşe giriş"
-                                                        name="start_date" value="" id="recruitment_date2"
-                                                        required>
-                                                </div>
-                                            </div>
-                                            <br>
-                                            <div class="row">
-                                                <div class="col-sm-6">
-                                                    <label for="tc"><strong>T.C Kimlik No </strong></label>
-                                                    <input type="number" class="form-control"
-                                                        placeholder="T.C Kimlik No" name="tc" min="11" maxlength="11"
-                                                        value="" readonly id="tc" required>
-                                                </div>
-                                            </div>
-                                            <br>
-                                            <label for="not"><strong>Çalışan hakkında not </strong></label>
-                                            <textarea class="form-control" id="not" name="not" rows="5" cols="120"
-                                                style="max-width: 100%;"></textarea>
-                                            <br>
-                                            <div style="float: right;">
-                                                <button id="onay" name="onay" type="submit"
-                                                    class="btn btn-success">Kaydet</button>
-                                                <button type="submit" class="btn btn-danger" name="sil"
-                                                    id="sil">Sil</button>
-                                            </div>
-                                    </div>
-                                    </form>
-                                </div>
+    <div class="modal fade" id="düzenle" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Düzenle</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('admin.osgb_employees.delete') }}" method="DELETE">
+                        @csrf
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label><strong>Kullanıcı türünü seçin</strong></label>
+                                <select class="form-control" placeholder="Kullanıcı Türünü seçin" list="job_id"
+                                    name="job_id" id="job_id" required>
+                                    <option disabled selected>
+                                    </option>
+                                    <optgroup label="İsg Uzmanı">
+                                        <option value="1">İsg Uzmanı 1</option>
+                                        <option value="2">İsg Uzmanı 2</option>
+                                        <option value="3">İsg Uzmanı 3</option>
+                                    </optgroup>
+                                    <option value="4">Hekim</option>
+                                    <option value="5">Sağlık Personeli</option>
+                                    <option value="6">Ofis Personeli</option>
+                                    <option value="7">Muhasebeci</option>
+                                </select>
                             </div>
                         </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label for="firstname"><strong>Adı</strong></label>
+                                <input type="text" class="form-control" placeholder="Adı" name="firstname"
+                                    id="name" required>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-10">
+                                <label for="email"><strong>E-mail </strong></label>
+                                <input type="email" class="form-control" placeholder="E-mail" name="email"
+                                    id="email"  required>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label for="phone"><strong>Telefon No </strong></label>
+                                <input type="tel" class="form-control" name="phone" placeholder="Tel: 05XXXXXXXXX"
+                                     maxlength="11" value="" id="phone" required>
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="start_date"><strong>İşe Giriş Tarihi </strong></label>
+                                <input type="" class="form-control" placeholder="İşe giriş" name="start_date"
+                                    id="recruitment_date2" required>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label for="tc"><strong>T.C Kimlik No </strong></label>
+                                <input type="number" class="form-control" placeholder="T.C Kimlik No" name="tc" min="11"
+                                    maxlength="11"   id="tc" required>
+                            </div>
+                        </div>
+                        <br>
+                        <label for="not"><strong>Çalışan hakkında not </strong></label>
+                        <textarea class="form-control" id="not" name="not" rows="5" cols="120"
+                            style="max-width: 100%;"></textarea>
+                        <br>
+                        <div style="float: right;">
+                            <button id="onay" name="onay" type="submit" class="btn btn-success">Kaydet</button>
+                            <button type="submit" class="btn btn-danger" name="delete" id="delete">Sil</button>
+                        </div>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
 
     @endsection
@@ -217,7 +210,9 @@
     @endpush
 
     @push('scripts')
-    <script> recruitment_date.max = new Date().toISOString().split("T")[0]; </script>
+    <script>
+        recruitment_date.max = new Date().toISOString().split("T")[0];
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
     <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap5.min.js"></script>
@@ -230,6 +225,7 @@
                   ajax: "{{ route('admin.osgb_employees') }}",
                   columns: [
                       {data: 'name', name: 'name'},
+                      {data: 'job.name', name: 'job.name'},
                       {data: 'phone', name: 'phone'},
                       {data: 'email', name: 'email'},
                       {data: 'tc', name: 'tc'},

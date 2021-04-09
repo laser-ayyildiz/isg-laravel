@@ -21,20 +21,6 @@ class OsgbEmployeeController extends Controller
         return view(
             'admin.osgb_employees'
         );
-
-        /*
-        $employees = User::with('job')
-            ->where('job_id', '!=', null)
-            ->orderBy('name')
-            ->paginate(10);
-
-        return view(
-            'admin.osgb_employees',
-            [
-                'employees' => $employees
-            ]
-        );
-        */
     }
 
     public function create(Request $request)
@@ -50,5 +36,10 @@ class OsgbEmployeeController extends Controller
             'password' => Hash::make($password)
         ])->syncRoles('User');
         return redirect()->route('admin.osgb_employees')->with('status', 'Çalışan eklenmiştir!');
+    }
+
+    public function delete()
+    {
+        dd("delete");
     }
 }

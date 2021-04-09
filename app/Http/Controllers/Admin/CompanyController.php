@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Exception;
 use App\Models\User;
-use Hashids\Hashids;
 use App\Models\CoopCompany;
 use Illuminate\Http\Request;
 use App\Models\UserToCompany;
