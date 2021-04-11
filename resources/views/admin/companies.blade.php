@@ -16,29 +16,29 @@
         <button class="btn btn-primary" data-toggle="modal" data-target="#addCompany" data-whatever="@getbootstrap">Yeni
             İşletme Ekle</a>
 
-        <button type="button" onclick="window.location.href='{{ route('admin.change_validate') }}'"
-            class="btn btn-success ml-1">Onay Bekleyenler</button>
+            <button type="button" onclick="window.location.href='{{ route('admin.change_validate') }}'"
+                class="btn btn-success ml-1">Onay Bekleyenler</button>
 
-        <button type="button" onclick="window.location.href='{{ route('admin.deleted_companies') }}'"
-            class="btn btn-danger ml-1">Arşiv</button>
+            <button type="button" onclick="window.location.href='{{ route('admin.deleted_companies') }}'"
+                class="btn btn-danger ml-1">Arşiv</button>
 
-        <div class="table table-responsive mt-2">
-            <table class="table table-striped table-bordered table-hover data-table" id="example">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>İşletme Adı</a></th>
-                        <th>Sektör</th>
-                        <th>Telefon</th>
-                        <th>E-mail</th>
-                        <th>Şehir</th>
-                        <th>İlçe</th>
-                        <th>Anlaşma Tarihi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </div>
+            <div class="table table-responsive mt-2">
+                <table class="table table-striped table-bordered table-hover data-table" id="example">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>İşletme Adı</a></th>
+                            <th>Sektör</th>
+                            <th>Telefon</th>
+                            <th>E-mail</th>
+                            <th>Şehir</th>
+                            <th>İlçe</th>
+                            <th>Anlaşma Tarihi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
     </div>
 </div>
 <div class="modal fade" id="addCompany" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -690,7 +690,10 @@
                   {data: 'city', name: 'city'},
                   {data: 'town', name: 'town'},
                   {data: 'contract_at', name: 'contract_at'}
-              ]
+              ],
+              "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Turkish.json"
+                }
           });
           $('#example tbody').on('click', 'tr', function () {
             var data = table.row( this ).data();

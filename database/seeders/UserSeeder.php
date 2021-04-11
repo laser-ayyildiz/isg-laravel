@@ -23,6 +23,8 @@ class UserSeeder extends Seeder
                 'email' => 'admin@gmail.com',
                 'tc' => '11111111111',
                 'phone' => '1111111111',
+                'email_verified_at' => now(),
+
             ]
         )->syncRoles('Admin');
 
@@ -33,7 +35,9 @@ class UserSeeder extends Seeder
                 'email' => 'uzman1@gmail.com',
                 'tc' => '111',
                 'phone' => '111',
-                'job_id' => 1
+                'job_id' => 1,
+                'email_verified_at' => now(),
+
             ]
         )->syncRoles('User');
 
@@ -44,7 +48,9 @@ class UserSeeder extends Seeder
                 'email' => 'uzman2@gmail.com',
                 'tc' => '222',
                 'phone' => '222',
-                'job_id' => 2
+                'job_id' => 2,
+                'email_verified_at' => now(),
+
             ]
         )->syncRoles('User');
 
@@ -55,7 +61,9 @@ class UserSeeder extends Seeder
                 'email' => 'uzman3@gmail.com',
                 'tc' => '333',
                 'phone' => '333',
-                'job_id' => 3
+                'job_id' => 3,
+                'email_verified_at' => now(),
+
 
             ]
         )->syncRoles('User');
@@ -67,7 +75,9 @@ class UserSeeder extends Seeder
                 'email' => 'doktor@gmail.com',
                 'tc' => '444',
                 'phone' => '444',
-                'job_id' => 4
+                'job_id' => 4,
+                'email_verified_at' => now(),
+
             ]
         )->syncRoles('User');
 
@@ -78,7 +88,9 @@ class UserSeeder extends Seeder
                 'email' => 'saglik@gmail.com',
                 'tc' => '555',
                 'phone' => '555',
-                'job_id' => 5
+                'job_id' => 5,
+                'email_verified_at' => now(),
+
             ]
         )->syncRoles('User');
 
@@ -89,7 +101,9 @@ class UserSeeder extends Seeder
                 'email' => 'ofis@gmail.com',
                 'tc' => '666',
                 'phone' => '666',
-                'job_id' => 6
+                'job_id' => 6,
+                'email_verified_at' => now(),
+
             ]
         )->syncRoles('User');
 
@@ -100,7 +114,9 @@ class UserSeeder extends Seeder
                 'email' => 'muhasebe@gmail.com',
                 'tc' => '777',
                 'phone' => '777',
-                'job_id' => 7
+                'job_id' => 7,
+                'email_verified_at' => now(),
+
             ]
         )->syncRoles('User');
 
@@ -110,7 +126,9 @@ class UserSeeder extends Seeder
                 'password' => '$2y$10$Dxxw9F77BWu3UMByi6XtguPanObmSuxSdZbegJwvz0i8/0reM0pli',
                 'email' => 'compadmin@gmail.com',
                 'tc' => '888',
-                'phone' => '888'
+                'phone' => '888',
+                'email_verified_at' => now(),
+
             ]
         )->syncRoles('CompanyAdmin');
 
@@ -121,6 +139,7 @@ class UserSeeder extends Seeder
                 'email' => 'compuser@gmail.com',
                 'tc' => '999',
                 'phone' => '999',
+                'email_verified_at' => now(),
             ]
         )->syncRoles('CompanyUser');
 

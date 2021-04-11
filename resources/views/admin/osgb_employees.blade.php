@@ -153,16 +153,16 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <label for="firstname"><strong>Adı</strong></label>
-                                <input type="text" class="form-control" placeholder="Adı" name="firstname"
-                                    id="name" required>
+                                <input type="text" class="form-control" placeholder="Adı" name="firstname" id="name"
+                                    required>
                             </div>
                         </div>
                         <br>
                         <div class="row">
                             <div class="col-sm-10">
                                 <label for="email"><strong>E-mail </strong></label>
-                                <input type="email" class="form-control" placeholder="E-mail" name="email"
-                                    id="email"  required>
+                                <input type="email" class="form-control" placeholder="E-mail" name="email" id="email"
+                                    required>
                             </div>
                         </div>
                         <br>
@@ -170,11 +170,11 @@
                             <div class="col-sm-6">
                                 <label for="phone"><strong>Telefon No </strong></label>
                                 <input type="tel" class="form-control" name="phone" placeholder="Tel: 05XXXXXXXXX"
-                                     maxlength="11" value="" id="phone" required>
+                                    maxlength="11" value="" id="phone" required>
                             </div>
                             <div class="col-sm-6">
                                 <label for="start_date"><strong>İşe Giriş Tarihi </strong></label>
-                                <input type="" class="form-control" placeholder="İşe giriş" name="start_date"
+                                <input type="date" class="form-control" placeholder="İşe giriş" name="start_date"
                                     id="recruitment_date2" required>
                             </div>
                         </div>
@@ -183,7 +183,7 @@
                             <div class="col-sm-6">
                                 <label for="tc"><strong>T.C Kimlik No </strong></label>
                                 <input type="number" class="form-control" placeholder="T.C Kimlik No" name="tc" min="11"
-                                    maxlength="11"   id="tc" required>
+                                    maxlength="11" id="tc" required>
                             </div>
                         </div>
                         <br>
@@ -212,6 +212,7 @@
     @push('scripts')
     <script>
         recruitment_date.max = new Date().toISOString().split("T")[0];
+        recruitment_date2.max = new Date().toISOString().split("T")[0];
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
     <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
@@ -230,7 +231,10 @@
                       {data: 'email', name: 'email'},
                       {data: 'tc', name: 'tc'},
                       {data: 'recruitment_date', name: 'recruitment_date'}
-                  ]
+                  ],
+                  "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Turkish.json"
+                    }
               });
 
               $('#example tbody').on('click', 'tr', function () {
