@@ -27,6 +27,10 @@ class CreateUsersTable extends Migration
             $table->foreignId('current_team_id')->nullable();
             $table->string('profile_photo_path')->default('default.png');
             $table->timestamps();
+            $table->softDeletes();
+            $table->longText('delete_not')->nullable();
+
+
             $table->foreign('job_id')->references('id')->on('jobs');
         });
     }

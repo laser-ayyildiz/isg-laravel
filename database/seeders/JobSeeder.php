@@ -21,5 +21,6 @@ class JobSeeder extends Seeder
         Job::create(['name' => 'Sağlık Personeli']);
         Job::create(['name' => 'Ofis Personeli']);
         Job::create(['name' => 'Muhasebeci']);
+        Job::create(['name' => 'Şirket Çalışanı']);
     }
 }

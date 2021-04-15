@@ -12,48 +12,24 @@ use Illuminate\Support\Facades\Auth;
 
 class CompanyController extends Controller
 {
-
     public function index($id)
     {
         $company = CoopCompany::where('id', $id)->first();
 
-        $employees = UserToCompany::whereHas('user', function ($query) {
-            return $query->whereBetween('auth_type', [1, 6])
-                ->orWhere('auth_type', 9);
+        $employees['osgbEmployees'] = UserToCompany::whereHas('user', function ($query) {
+            $query->whereBetween('job_id', [1, 7]);
         })->where('company_id', $id)->get();
-        $types = [
-            'İSG Uzmanı',
-            'İş Yeri Hekimi',
-            'Sağlık Personeli',
-            'Ofis Personeli',
-            'Muhasebeci'
-        ];
 
-        $osgbEmployees = null;
-        $coopEmployees = null;
-        $selectExperts = null;
+        $employees['coopEmployees'] = UserToCompany::whereHas('user', function ($query) {
+            $query->where('job_id', 8);
+        })->where('company_id', $id)->get();
 
-        foreach ($employees as $employee) {
-            $auth_type = $employee->user->auth_type;
-            if ($auth_type == 9) {
-                $coopEmployees[] = $employee;
-            }
-            if (isset($types[$auth_type])) {
-                $osgbEmployees[] = $employee->user->name . " - " . $types[$auth_type];
-            }
-        }
-        $selectExperts = null;
-        for ($i = 1; $i < 6; $i++) {
-            $selectExperts[] = User::where('auth_type', $i)->get();
-        }
-
+        //dd($employees);
         return (view(
             'admin.company',
             [
                 'company' => $company,
-                'osgbEmployees' => $osgbEmployees,
-                'coopEmployees' => $coopEmployees,
-                'selectExperts' => $selectExperts,
+                'employees' => $employees,
                 'deleted' => false
             ],
         ));
@@ -62,20 +38,15 @@ class CompanyController extends Controller
     public function deletedIndex($id)
     {
         $company = DeletedCompany::where('id', $id)->first();
-        $osgbEmployees = null;
-        $coopEmployees = null;
-        $selectExperts = null;
+        $employees = null;
 
         return (view(
             'admin.company',
             [
                 'company' => $company,
-                'osgbEmployees' => $osgbEmployees,
-                'coopEmployees' => $coopEmployees,
-                'selectExperts' => $selectExperts,
+                'osgbEmployees' => $employees,
                 'deleted' => true
             ],
-
         ));
     }
 
@@ -85,7 +56,7 @@ class CompanyController extends Controller
         if ($request->has('deleteRequest')) {
             $this->deleteRequest($id);
             return redirect()->route('admin.companies.index')->with('status', 'Silme talebiniz yöneticinize iletilmiştir!');
-        } else if ($request->has('changeRequest')) {
+        } elseif ($request->has('changeRequest')) {
             $this->changeRequest($request, $id);
             return redirect()->route('admin.companies.index')->with('status', 'Yaptığınız değişiklikler yöneticinize iletilmiştir. Lütfen onaylanana kadar bekleyiniz!');
         }
@@ -93,7 +64,6 @@ class CompanyController extends Controller
 
     private function changeRequest(Request $request, $id)
     {
-
         CoopCompany::create([
             'type' => $request->type,
             'name' => $request->name,

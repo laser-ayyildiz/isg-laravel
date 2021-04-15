@@ -9,14 +9,17 @@ use App\Http\Controllers\Controller;
 use Exception;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use SoftDeletes;
 
 class OsgbEmployeeController extends Controller
 {
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = User::select('*')->with('job')
-                ->where('job_id', '!=', null);
+            $data = User::select('*')
+                ->with('job')
+                ->where('job_id', '!=', null)
+                ->where('deleted_at', null);
             return DataTables::of($data)
                 ->make(true);
         }
@@ -30,7 +33,7 @@ class OsgbEmployeeController extends Controller
         $password = random_int(100000, 9999999);
         User::create([
             'job_id' => $request->job_id,
-            'recruitment_date' => $request->recruitment_date,
+            'recruitment_date' => $request->rec_date,
             'name' => $request->name,
             'email' => $request->email,
             'tc' => $request->tc,
@@ -61,8 +64,37 @@ class OsgbEmployeeController extends Controller
         return redirect()->route('admin.osgb_employees')->with('status', 'Çalışan eklenmiştir!');
     }
 
-    public function delete()
+    public function delete(Request $request, $id)
     {
-        dd("delete");
+        $user = User::where('id', $id);
+        $user->update($request->except('_token', 'deleteRequest', 'userId', 'email'));
+        $user->delete();
+    }
+
+    public function change(Request $request, $id)
+    {
+        $bool = User::where('id', $id)
+            ->update(
+                $request->except('_token', 'changeRequest', 'userId')
+            );
+        dd($bool);
+        //dd("change");
+    }
+
+    public function handle(Request $request)
+    {
+        $id = $request->input('userId');
+        if ($request->has('deleteRequest')) {
+            $this->delete($request, $id);
+            return redirect()->route('admin.osgb_employees')->with('status', 'Kullanıcı silinmiştir. Silinen çalışanları Arşiv bölümünde bulabilirsiniz!');
+        }
+        if ($request->has('changeRequest')) {
+            $this->change($request, $id);
+            return redirect()->route('admin.osgb_employees')->with('status', 'Değişiklikleriniz başarıyla uygulanmıştır!');
+        }
+        if ($request->has('saveRequest')) {
+            $this->create($request);
+            return redirect()->route('admin.osgb_employees')->with('status', 'Yeni kullanıcı başarıyla eklenmiştir!');
+        }
     }
 }

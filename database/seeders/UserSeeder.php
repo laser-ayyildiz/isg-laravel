@@ -15,6 +15,8 @@ class UserSeeder extends Seeder
     public function run()
     {
         // password = laser123
+        $date = now();
+        $date = $date->format('Y-m-d');
 
         User::create(
             [
@@ -24,6 +26,7 @@ class UserSeeder extends Seeder
                 'tc' => '11111111111',
                 'phone' => '1111111111',
                 'email_verified_at' => now(),
+                'recruitment_date' => $date,
 
             ]
         )->syncRoles('Admin');
@@ -37,6 +40,8 @@ class UserSeeder extends Seeder
                 'phone' => '111',
                 'job_id' => 1,
                 'email_verified_at' => now(),
+                'recruitment_date' => $date,
+
 
             ]
         )->syncRoles('User');
@@ -50,6 +55,8 @@ class UserSeeder extends Seeder
                 'phone' => '222',
                 'job_id' => 2,
                 'email_verified_at' => now(),
+                'recruitment_date' => $date,
+
 
             ]
         )->syncRoles('User');
@@ -63,6 +70,8 @@ class UserSeeder extends Seeder
                 'phone' => '333',
                 'job_id' => 3,
                 'email_verified_at' => now(),
+                'recruitment_date' => $date,
+
 
 
             ]
@@ -77,6 +86,8 @@ class UserSeeder extends Seeder
                 'phone' => '444',
                 'job_id' => 4,
                 'email_verified_at' => now(),
+                'recruitment_date' => $date,
+
 
             ]
         )->syncRoles('User');
@@ -90,6 +101,8 @@ class UserSeeder extends Seeder
                 'phone' => '555',
                 'job_id' => 5,
                 'email_verified_at' => now(),
+                'recruitment_date' => $date,
+
 
             ]
         )->syncRoles('User');
@@ -103,6 +116,8 @@ class UserSeeder extends Seeder
                 'phone' => '666',
                 'job_id' => 6,
                 'email_verified_at' => now(),
+                'recruitment_date' => $date,
+
 
             ]
         )->syncRoles('User');
@@ -116,6 +131,8 @@ class UserSeeder extends Seeder
                 'phone' => '777',
                 'job_id' => 7,
                 'email_verified_at' => now(),
+                'recruitment_date' => $date,
+
 
             ]
         )->syncRoles('User');
@@ -128,6 +145,8 @@ class UserSeeder extends Seeder
                 'tc' => '888',
                 'phone' => '888',
                 'email_verified_at' => now(),
+                'recruitment_date' => $date,
+
 
             ]
         )->syncRoles('CompanyAdmin');
@@ -140,6 +159,8 @@ class UserSeeder extends Seeder
                 'tc' => '999',
                 'phone' => '999',
                 'email_verified_at' => now(),
+                'recruitment_date' => $date,
+
             ]
         )->syncRoles('CompanyUser');
 

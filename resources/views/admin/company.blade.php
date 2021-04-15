@@ -167,10 +167,10 @@
                 <!--OSGB Çalışanları -->
                 <div class="tab-pane fade show " id="osgb_calisanlar" role="tabpanel" aria-labelledby="oc-tab">
                     <div class="text-center">
-                        @if (!empty($osgbEmployees))
-                        @foreach ($osgbEmployees as $employee )
+                        @if (!empty($employees['osgbEmployees']))
+                        @foreach ($employees['osgbEmployees'] as $employee )
                         <h3>
-                            {{ $employee }}
+                            <b>{{ Str::title($employee->user->name ) }}</b> ->  {{  $employee->user->job->name }}
                         </h3>
                         @endforeach
                         @else
@@ -181,7 +181,7 @@
                 @endif
                 <!--Devlet Bilgileri -->
                 <div class="tab-pane fade show " id="devlet_bilgileri" role="tabpanel" aria-labelledby="db-tab">
-                    <form action="index.php" method="POST">
+                    <form action="" method="POST">
                         <fieldset id="db_form">
                             <div class="row col-lg-12">
                                 <label for="nace_kodu">
@@ -318,17 +318,17 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if (!empty($coopEmployees))
-                                @foreach ($coopEmployees as $key => $employee )
+                                @if (!empty($employees['coopEmployees']))
+                                @foreach ($employees['coopEmployees'] as $key => $employee )
                                 <tr>
-                                    <td data-toggle="modal" data-target="#b{{ $key }}" data-whatever="@getbootstrap"
+                                    <td data-toggle="modal" data-target="#deleteEmployee{{ $key }}" data-whatever="@getbootstrap"
                                         style="cursor: pointer;">{{ $employee->user->name }}</td>
 
                                     <td>{{ $employee->user->tc }}</td>
                                     <td>{{ $employee->user->phone }}</td>
                                     <td>{{ $employee->user->email }}</td>
                                     <td>{{ $employee->user->recruitment_date }}</td>
-                                    <form action="../core/deleteWorker.php" method="POST">
+                                    <form action="" method="POST">
                                         <input type="number" name="company_id" value="" hidden>
                                         <input type="text" name="company_name" value="" hidden>
                                         <input type="number" name="TCWillDelete" value="" hidden readonly>
@@ -338,7 +338,7 @@
                                 </tr>
 
                                 <!-- Çalışan Dosyaları -->
-                                <div class="modal fade" id="b{{ $key }}" tabindex="-1" aria-labelledby="label"
+                                <div class="modal fade" id="deleteEmployee{{ $key }}" tabindex="-1" aria-labelledby="label"
                                     aria-hidden="true">
                                     <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
@@ -355,7 +355,7 @@
 
                                             </div>
                                             <div class="modal-footer bg-light">
-                                                <form method="POST" action="../core/addWorkerFile.php"
+                                                <form method="" action=""
                                                     enctype="multipart/form-data">
                                                     <fieldset id="ic_form3">
                                                         <label for="calisan_dosya"><b>Yeni Dosya Yükle-></b></label>
@@ -625,9 +625,9 @@
                         <div class="modal-footer">
                             <input type="hidden" name="companyId"
                                 value="{{ $company->id }}">
-                            <button class="btn btn-lg btn-danger mr-auto" data-dismiss="modal">İptal</button>
+                            <button class="btn btn btn-secondary mr-auto" data-dismiss="modal">İptal</button>
                             <button type="submit" name="deleteRequest"
-                                class="btn btn-lg btn-danger float-right">SİL</button>
+                                class="btn btn btn-danger float-right">SİL</button>
                         </div>
                     </form>
                 </div>

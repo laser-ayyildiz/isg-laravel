@@ -96,7 +96,7 @@
                     <div class="dropdown-content" aria-labelledby="dropdownMenu2">
                         <a class="dropdown-item" type="button" href="{{ route('admin.osgb_employees') }}"><i
                                 class="fas fa-stream"></i><span>&nbsp;Çalışan Listesi</span></a>
-                        <a class="dropdown-item" type="button" href="{{ route('admin.deleted_users') }}"><i
+                        <a class="dropdown-item" type="button" href="{{ route('admin.deleted_employees') }}"><i
                                 class="fas fa-eraser"></i><span>&nbsp;Silinen Çalışanlar</span></a>
                         <a class="dropdown-item" type="button" href="{{ route('admin.authentication') }}"><i
                                 class="fas fa-user-edit"></i><span>&nbsp;Yetkilendir</span></a>

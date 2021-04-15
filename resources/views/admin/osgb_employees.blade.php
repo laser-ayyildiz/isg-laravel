@@ -15,7 +15,7 @@
             <div>
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"
                     data-whatever="@getbootstrap">Yeni Çalışan Ekle</button>
-                <button type="button" class="btn btn-danger" onclick="window.location.href='deleted_workers.php'">Arşiv
+                <button type="button" class="btn btn-danger" onclick="window.location.href='{{ route('admin.deleted_employees') }}'">Arşiv
                 </button>
             </div>
             <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -29,7 +29,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form action="{{ route('admin.osgb_employees.create') }}" method="POST">
+                            <form action="{{ route('admin.osgb_employees.handle') }}" method="POST">
                                 @csrf
                                 <div class="row">
                                     <div class="col-sm-6">
@@ -73,9 +73,9 @@
                                             maxlength="11" required>
                                     </div>
                                     <div class="col-sm-6">
-                                        <label for="recruitment_date"><strong>İşe Giriş Tarihi </strong></label>
-                                        <input type="date" class="form-control" name="recruitment_date"
-                                            id="recruitment_date" required>
+                                        <label for="rec_date"><strong>İşe Giriş Tarihi </strong></label>
+                                        <input type="date" class="form-control" name="rec_date"
+                                            id="rec_date" required>
                                     </div>
                                 </div>
                                 <br>
@@ -88,8 +88,7 @@
                                 </div>
                                 <br>
                                 <div style="float: right;">
-                                    <button id="kayıt" name="kayıt" type="submit"
-                                        class="btn btn-success">Kaydet</button>
+                                    <button name="saveRequest" type="submit" class="btn btn-success">Kaydet</button>
                                     <button type="reset" class="btn btn-danger">Sıfırla</button>
                                 </div>
                         </div>
@@ -128,7 +127,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('admin.osgb_employees.delete') }}" method="DELETE">
+                    <form action="{{ route('admin.osgb_employees.handle') }}" method="POST">
                         @csrf
                         <div class="row">
                             <div class="col-sm-6">
@@ -152,8 +151,8 @@
                         <br>
                         <div class="row">
                             <div class="col-sm-6">
-                                <label for="firstname"><strong>Adı</strong></label>
-                                <input type="text" class="form-control" placeholder="Adı" name="firstname" id="name"
+                                <label for="name"><strong>Adı</strong></label>
+                                <input type="text" class="form-control" placeholder="Adı" name="name" id="name"
                                     required>
                             </div>
                         </div>
@@ -173,9 +172,9 @@
                                     maxlength="11" value="" id="phone" required>
                             </div>
                             <div class="col-sm-6">
-                                <label for="start_date"><strong>İşe Giriş Tarihi </strong></label>
-                                <input type="date" class="form-control" placeholder="İşe giriş" name="start_date"
-                                    id="recruitment_date2" required>
+                                <label for="recruitment_date"><strong>İşe Giriş Tarihi </strong></label>
+                                <input type="date" class="form-control" placeholder="İşe giriş" name="recruitment_date"
+                                    id="recruitment_date" required>
                             </div>
                         </div>
                         <br>
@@ -187,13 +186,14 @@
                             </div>
                         </div>
                         <br>
-                        <label for="not"><strong>Çalışan hakkında not </strong></label>
-                        <textarea class="form-control" id="not" name="not" rows="5" cols="120"
+                        <label for="delete_not"><strong>Çalışan hakkında not </strong></label>
+                        <textarea class="form-control" id="delete_not" name="delete_not" rows="5" cols="120"
                             style="max-width: 100%;"></textarea>
                         <br>
                         <div style="float: right;">
-                            <button id="onay" name="onay" type="submit" class="btn btn-success">Kaydet</button>
-                            <button type="submit" class="btn btn-danger" name="delete" id="delete">Sil</button>
+                            <input type="hidden" name="userId" id="userId" value="">
+                            <button type="submit" class="btn btn-success" name="changeRequest">Kaydet</button>
+                            <button type="submit" class="btn btn-danger" name="deleteRequest">Sil</button>
                         </div>
                 </div>
                 </form>
@@ -211,8 +211,8 @@
 
     @push('scripts')
     <script>
+        rec_date.max = new Date().toISOString().split("T")[0];
         recruitment_date.max = new Date().toISOString().split("T")[0];
-        recruitment_date2.max = new Date().toISOString().split("T")[0];
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
     <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
@@ -242,12 +242,16 @@
                 var job = data['job'];
 
                 $('#düzenle').modal('show');
+                console.log(data['id']);
+                $("#userId").val(data['id']);
                 $("#name").val(data['name']);
                 $("#email").val(data['email']);
                 $("#phone").val(data['phone']);
                 $("#tc").val(data['tc']);
-                $("#recruitment_date2").val(data['recruitment_date']);
+                $("#recruitment_date").val(data['recruitment_date']);
                 $("#job_id").val(job.id);
+
+
             });
         });
     </script>
