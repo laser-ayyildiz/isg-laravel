@@ -8,8 +8,8 @@
 </div>
 @endif
 <div class="card shadow-lg">
-    <div class="card-header">
-        <h1 class="text-dark mb-1 text-center"><b>İşletmeler</b></h1>
+    <div class="card-header bg-light">
+        <h1 class="text-dark mb-1" style="text-align: center;"><b>İşletmler</b></h1>
     </div>
 
     <div class="card-body">

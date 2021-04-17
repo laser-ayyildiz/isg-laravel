@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Common;
 
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 
-class NotificationController extends Controller
+class MessageController extends Controller
 {
     public function index()
     {
         return (view(
-            'admin.notifications'
+            'admin.messages'
         ));
     }
 }

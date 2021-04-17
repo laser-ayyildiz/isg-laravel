@@ -2,10 +2,12 @@
 @section('title')Mesajlar - @endsection
 @section('content')
 
-<h3 class="text-dark mb-4">Mesajlar</h3>
 <div class="card shadow-lg">
+    <div class="card-header bg-light">
+        <h1 class="text-dark mb-1" style="text-align: center;"><b>Mesajlar</b></h1>
+    </div>
     <div class="card-body">
-        <form method="POST" action="messages.php">
+        <form method="POST" action="">
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"
                 data-whatever="@getbootstrap">Yeni Mesaj</button>
             <button type="submit" class="btn btn-danger" name="hepsini_sil">Hepsini Sil</button>

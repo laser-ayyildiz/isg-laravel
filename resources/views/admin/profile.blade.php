@@ -1,7 +1,6 @@
 @extends('layouts.admin')
 @section('title')Profil - @endsection
 @section('content')
-<h3 class="text-dark mb-4">Profil</h3>
 <div class="row mb-3">
     <div class="col-lg-6" style="margin: auto; ">
         <div class="card shadow-lg mb-3">
@@ -80,24 +79,14 @@
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label for="email"><strong>E-mail</strong></label>
-                                        <input class="form-control" type="email" name="username" readonly value="">
+                                        <input class="form-control" type="email" name="username" readonly value="{{ auth()->user()->email }}">
                                     </div>
                                 </div>
-                            </div>
-                            <div class="form-row">
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label for="first_name">
                                             <strong>İsim</strong><br></label>
-                                        <input name="firstname" class="form-control" type="text" value="" required>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label for="last_name">
-                                            <strong>Soy İsim</strong><br></label>
-                                        <input name="lastname" class="form-control" type="text" value=""
-                                            required>
+                                        <input name="firstname" class="form-control" type="text" value="{{ auth()->user()->name }}" required>
                                     </div>
                                 </div>
                             </div>
@@ -107,7 +96,7 @@
                                     <div class="form-group">
                                         <label for="tc"><strong>T.C. Kimlik No</strong><br></label>
                                         <input class="form-control" type="phone" minlength="11" maxlength="11" name="tc"
-                                            value="" required>
+                                            value="{{ auth()->user()->tc }}" required>
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
@@ -116,24 +105,16 @@
                                             <strong>Telefon No</strong><br></label>
                                         <input name="phone" class="form-control" type="phone"
                                             pattern="(\d{4})(\d{3})(\d{2})(\d{2})" maxlength="11" minlength="11"
-                                            value="" required>
+                                            value="{{ auth()->user()->phone }}" required>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="col-sm-4">
                                     <div class="form-group">
-                                        <label for="user_type">
-                                            <strong>Kullanıcı Türü</strong><br></label>
-                                        <input name="user_type" class="form-control" type="text" value="" required
-                                            readonly>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="form-group">
                                         <label for="start_date">
                                             <strong>İşe Giriş Tarihi</strong><br></label>
-                                        <input name="start_date" class="form-control" type="date" value="" required>
+                                        <input name="start_date" class="form-control" type="date" value="{{ auth()->user()->recruitment_date }}" required>
                                     </div>
                                 </div>
                             </div>

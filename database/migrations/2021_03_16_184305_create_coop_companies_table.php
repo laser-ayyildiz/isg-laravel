@@ -28,6 +28,7 @@ class CreateCoopCompaniesTable extends Migration
             $table->string('katip_kurum_id')->nullable();
             $table->char('change', 2)->nullable()->default(0);
             $table->date('contract_at')->default(date('Y-m-d H:i:s'));
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -3,19 +3,26 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
+use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
 
 class DeletedEmployeeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $deleted_users = User::withTrashed()->where('job_id', '<=', 7)->paginate(15);
-        //dd($deleted_users);
+        if ($request->ajax()) {
+            $data = User::onlyTrashed()
+            ->where('job_id', '<=', 7)
+            ->with('job')
+            ->where('job_id', '!=', null);
+            return DataTables::of($data)
+                ->make(true);
+
+            //dd($data);
+        }
         return view(
-            'admin.deleted_users',
-            [
-                'deleted_users' => $deleted_users
-            ]
+            'admin.deleted_employees'
         );
     }
 }

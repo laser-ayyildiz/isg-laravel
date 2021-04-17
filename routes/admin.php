@@ -16,15 +16,10 @@ Route::post('/change_validate', [ChangeValidateController::class, 'deleteRequest
 
 Route::get('/osgb_employees', [OsgbEmployeeController::class, 'index'])->name('osgb_employees');
 Route::post('/osgb_employees', [OsgbEmployeeController::class, 'handle'])->name('osgb_employees.handle');
-//Route::delete('/osgb_employees', [OsgbEmployeeController::class, 'delete'])->name('osgb_employees.delete');
-
-
 
 Route::get('/deleted_employees', [DeletedEmployeeController::class, 'index'])->name('deleted_employees');
 
 Route::get('/authentication', [AuthenticateController::class, 'index'])->name('authentication');
-
-
 
 Route::get('/company/{id}', [CompanyController::class, 'index'])->name('company');
 Route::get('/company/deleted/{id}', [CompanyController::class, 'deletedIndex'])->name('deleted_company');
@@ -32,19 +27,6 @@ Route::post('/company', [CompanyController::class, 'handle'])->name('company.han
 
 
 
-
-Route::get('/profile', function () {
-    return view('admin/profile');
-})->name('profile');
-
-Route::get('/reports', function () {
-    return view('admin/reports');
-})->name('reports');
-
 Route::get('/settings', function () {
     return view('admin/settings');
 })->name('settings');
-
-Route::get('/upload_employee', function () {
-    return view('admin/upload_employee');
-})->name('upload_employee');

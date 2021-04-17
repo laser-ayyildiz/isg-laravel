@@ -21,37 +21,13 @@
                         </tr>
                     </thead>
                     <tbody>
-
-                        @foreach ($companies as $company)
-                        <tr>
-                            <td> <a href="/admin/company/deleted/{{ @Hashids::encode($company -> id) }}">{{ $company -> name }}</a> </td>
-                            <td> {{ $company -> type }} </td>
-                            <td> {{ $company -> phone }} </td>
-                            <td> {{ $company -> email }} </td>
-                            <td> {{ $company -> city }} </td>
-                            <td> {{ $company -> town }} </td>
-                            <td> {{ $company -> created_at }} </td>
-                        </tr>
-                        @endforeach
-
                     </tbody>
-                    <tfoot>
-                        <tr>
-                            <td><strong>İşletme Adı</strong></td>
-                            <td><strong>Sektör</strong></td>
-                            <td><strong>Telefon</strong></td>
-                            <td><strong>E-mail</strong></td>
-                            <td><strong>Şehir</strong></td>
-                            <td><strong>İlçe</strong></td>
-                            <td><strong>Silinme Tarihi</strong></td>
-                        </tr>
-                    </tfoot>
                 </table>
             </div>
         </div>
     </div>
 </div>
-<div class="float-right my-3">
-    {{ $companies -> links() }}
-</div>
+
+
+
 @endsection

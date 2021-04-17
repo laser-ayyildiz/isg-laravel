@@ -1,18 +1,20 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Common;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class RedirectController extends Controller
 {
-
     public function index()
     {
-        if (Auth::user()->hasRole('Admin'))
+        if (Auth::user()->hasRole('Admin')) {
             return redirect('/admin/home');
+        }
 
-        if (Auth::user()->hasRole('User'))
+        if (Auth::user()->hasRole('User')) {
             return redirect('/user/home');
+        }
     }
 }

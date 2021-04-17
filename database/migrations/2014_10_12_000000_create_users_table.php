@@ -29,8 +29,6 @@ class CreateUsersTable extends Migration
             $table->timestamps();
             $table->softDeletes();
             $table->longText('delete_not')->nullable();
-
-
             $table->foreign('job_id')->references('id')->on('jobs');
         });
     }

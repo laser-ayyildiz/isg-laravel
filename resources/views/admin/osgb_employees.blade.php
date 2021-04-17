@@ -6,16 +6,18 @@
     {{ session('status') }}
 </div>
 @endif
-<div class="card-header border text-dark bg-light">
-    <h1 style="text-align:center;"><b>Çalışanlar</b></h1>
-</div>
 <div class="card shadow-lg">
-    <div class="card-body border">
+    <div class="card-header bg-light">
+        <h1 class="text-dark mb-1" style="text-align: center;"><b>Çalışanlar</b></h1>
+    </div>
+
+    <div class="card-body">
         <div id="dataTable_filter">
             <div>
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"
                     data-whatever="@getbootstrap">Yeni Çalışan Ekle</button>
-                <button type="button" class="btn btn-danger" onclick="window.location.href='{{ route('admin.deleted_employees') }}'">Arşiv
+                <button type="button" class="btn btn-danger"
+                    onclick="window.location.href='{{ route('admin.deleted_employees') }}'">Arşiv
                 </button>
             </div>
             <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -74,8 +76,7 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <label for="rec_date"><strong>İşe Giriş Tarihi </strong></label>
-                                        <input type="date" class="form-control" name="rec_date"
-                                            id="rec_date" required>
+                                        <input type="date" class="form-control" name="rec_date" id="rec_date" required>
                                     </div>
                                 </div>
                                 <br>
@@ -114,8 +115,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="float-right my-3">
-        </div>
+
     </div>
     <div class="modal fade" id="düzenle" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -200,7 +200,7 @@
             </div>
         </div>
     </div>
-
+</div>
 
     @endsection
     @push('styles')
@@ -242,7 +242,6 @@
                 var job = data['job'];
 
                 $('#düzenle').modal('show');
-                console.log(data['id']);
                 $("#userId").val(data['id']);
                 $("#name").val(data['name']);
                 $("#email").val(data['email']);

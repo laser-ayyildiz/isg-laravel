@@ -9,7 +9,6 @@ use App\Http\Controllers\Controller;
 use Exception;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use SoftDeletes;
 
 class OsgbEmployeeController extends Controller
 {
@@ -18,7 +17,7 @@ class OsgbEmployeeController extends Controller
         if ($request->ajax()) {
             $data = User::select('*')
                 ->with('job')
-                ->where('job_id', '!=', null)
+                ->where('job_id', '<=', 7)
                 ->where('deleted_at', null);
             return DataTables::of($data)
                 ->make(true);

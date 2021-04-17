@@ -10,6 +10,7 @@
     <div class="card-header bg-light">
         <h1 class="text-dark mb-1" style="text-align: center;"><b>Onay Bekleyen Değişiklikler</b></h1>
     </div>
+
     <div class="card-body">
         <div>
             <div id="dataTable_filter">
