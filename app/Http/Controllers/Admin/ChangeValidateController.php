@@ -2,28 +2,28 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-
 use Hashids\Hashids;
 use App\Models\CoopCompany;
-use App\Models\DeletedCompany;
 use Illuminate\Http\Request;
+use App\Models\DeletedCompany;
+use Yajra\DataTables\DataTables;
+use App\Http\Controllers\Controller;
 
 class ChangeValidateController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $companies =
-            CoopCompany::where('change', 1)
-            ->orWhere('change', 2)
-            ->orderBy('updated_at', "DESC")
-            ->paginate(15);
+        if ($request->ajax()) {
+            $data = CoopCompany::select('*')
+            ->whereIn('change', [1, 2])
+            ->orderBy('updated_at', "DESC");
 
+            return DataTables::of($data)
+                ->make(true);
+            //dd($data);
+        }
         return view(
             'admin.change_validate',
-            [
-                'companies' => $companies
-            ]
         );
     }
 
@@ -39,7 +39,7 @@ class ChangeValidateController extends Controller
                     ]
                 );
             return redirect()->back()->with('deleteStatus', 'Silme talebi reddedildi!');
-        } else if ($request->has('acceptDelete')) {
+        } elseif ($request->has('acceptDelete')) {
             $willDelete = CoopCompany::find($id);
             DeletedCompany::create([
                 'name' => $willDelete->name,
@@ -61,7 +61,8 @@ class ChangeValidateController extends Controller
             ]);
             $willDelete->delete();
             return redirect()->back()->with('deleteStatus', 'İşletme Silindi! İşletmeye ait bilgilere arşiv bölümünden ulaşabilirsiniz');
-        } else
+        } else {
             return redirect()->back()->with('Bir hata ile karşılaşıldı. Tekrar Deneyiniz!');
+        }
     }
 }

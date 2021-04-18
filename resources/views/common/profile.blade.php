@@ -1,6 +1,11 @@
 @extends('layouts.admin')
 @section('title')Profil - @endsection
 @section('content')
+@if (session('status'))
+<div class="alert alert-success">
+    {{ session('status') }}
+</div>
+@endif
 <div class="row mb-3">
     <div class="col-lg-6" style="margin: auto; ">
         <div class="card shadow-lg mb-3">
@@ -14,7 +19,7 @@
                     <label>Profil Resmi Yükle</label>
                     <input type="file" name="avatar">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                    <input type="submit" style="width:200px;" class="pull-right btn btn-success" value="Değiştir">
+                    <input type="submit" name="update-picture"style="width:200px;" class="pull-right btn btn-success" value="Değiştir">
                 </form>
             </div>
         </div>
@@ -25,13 +30,13 @@
                 <p class="text-primary m-0 font-weight-bold">Şifre</p>
             </div>
             <div class="card-body text-center shadow">
-                <form action="/admin/profile" method="POST" enctype="multipart/form-data" autocomplete="off">
+                <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data" autocomplete="off">
                     <div class="form-group">
                         <label style="float:left;"><b>Mevcut Şifre</b></label>
                         <div class="input-group" id="show_hide_password">
-                            <input class="form-control" type="password" name="mevcut" autocomplete="off" required>
+                            <input class="form-control" type="password" name="old-password" autocomplete="off" required>
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1"><a href=""><i class="fa fa-eye-slash"
+                                <span class="input-group-text" id="basic-addon1"><a><i class="fa fa-eye-slash"
                                             aria-hidden="true"></i></a></span>
                             </div>
                         </div>
@@ -39,10 +44,10 @@
                     <div class="form-group">
                         <label style="float:left;"><b>Yeni Şifre</b></label>
                         <div class="input-group" id="show_hide_password">
-                            <input class="form-control" type="password" minlength="8" name="yeni"
-                                autocomplete="new-password" required>
+                            <input class="form-control" type="password" minlength="8" name="new-password"
+                                required>
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1"><a href=""><i class="fa fa-eye-slash"
+                                <span class="input-group-text" id="basic-addon1"><a><i class="fa fa-eye-slash"
                                             aria-hidden="true"></i></a></span>
                             </div>
                         </div>
@@ -50,16 +55,16 @@
                     <div class="form-group">
                         <label style="float:left;"><b>Yeni Şifre Tekrar</b></label>
                         <div class="input-group" id="show_hide_password">
-                            <input class="form-control" type="password" minlength="8" name="yeni_tekrar"
-                                autocomplete="new-password" required>
+                            <input class="form-control" type="password" minlength="8" name="new-password-again"
+                                 required>
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1"><a href=""><i class="fa fa-eye-slash"
+                                <span class="input-group-text" id="basic-addon1"><a><i class="fa fa-eye-slash"
                                             aria-hidden="true"></i></a></span>
                             </div>
                         </div>
                     </div>
                     <div>
-                        <button name="şifre" id="şifre" type="submit" style="width:200px;float:left"
+                        <button name="update-password" type="submit" style="width:200px;float:left"
                             class="btn btn-success">Değiştir</button>
                     </div>
                 </form>
@@ -90,7 +95,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="form-row">
                                 <div class="col-sm-4">
                                     <div class="form-group">

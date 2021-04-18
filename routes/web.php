@@ -27,4 +27,4 @@ Route::get('/messages', [MessageController::class, 'index'])->name('messages');
 Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications');
 
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
-Route::post('/profile', [ProfileController::class, 'updatePicture'])->name('profile.update');
+Route::post('/profile', [ProfileController::class, 'handle'])->name('profile.update');

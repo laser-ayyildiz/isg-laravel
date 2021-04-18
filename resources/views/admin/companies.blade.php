@@ -9,7 +9,7 @@
 @endif
 <div class="card shadow-lg">
     <div class="card-header bg-light">
-        <h1 class="text-dark mb-1" style="text-align: center;"><b>İşletmler</b></h1>
+        <h1 class="text-dark mb-1" style="text-align: center;"><b>İşletmeler</b></h1>
     </div>
 
     <div class="card-body">
