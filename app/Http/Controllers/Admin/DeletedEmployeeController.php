@@ -14,15 +14,36 @@ class DeletedEmployeeController extends Controller
         if ($request->ajax()) {
             $data = User::onlyTrashed()
             ->where('job_id', '<=', 7)
-            ->with('job')
-            ->where('job_id', '!=', null);
+            ->whereNotNull('job_id')
+            ->with('job');
             return DataTables::of($data)
                 ->make(true);
-
-            //dd($data);
         }
         return view(
             'admin.deleted_employees'
         );
+    }
+
+    public function handle(Request $request)
+    {
+        if ($request->has('activateRequest')) {
+            $this->activateRequest($request);
+            return redirect()->route('admin.osgb_employees')->with('status', 'Kullanıcı tekrar aktif hale gelmiştir');
+        }
+
+        if ($request->has('deleteRequest')) {
+            $this->deleteRequest($request);
+            return redirect()->route('admin.deleted_employees')->with('status', 'Kullanıcı tamamen silinmiştir!');
+        }
+    }
+
+    public function deleteRequest(Request $request)
+    {
+        User::where('id', $request->userId)->forceDelete();
+    }
+
+    public function activateRequest(Request $request)
+    {
+        User::where('id', $request->userId)->restore();
     }
 }

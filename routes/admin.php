@@ -18,6 +18,8 @@ Route::get('/osgb_employees', [OsgbEmployeeController::class, 'index'])->name('o
 Route::post('/osgb_employees', [OsgbEmployeeController::class, 'handle'])->name('osgb_employees.handle');
 
 Route::get('/deleted_employees', [DeletedEmployeeController::class, 'index'])->name('deleted_employees');
+Route::post('/deleted_employees', [DeletedEmployeeController::class, 'handle'])->name('deleted_employees.handle');
+
 
 Route::get('/authentication', [AuthenticateController::class, 'index'])->name('authentication');
 

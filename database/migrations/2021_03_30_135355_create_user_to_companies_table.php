@@ -20,7 +20,7 @@ class CreateUserToCompaniesTable extends Migration
             $table->timestamps();
 
             //Foreign keys
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('company_id')->references('id')->on('coop_companies')->onDelete('cascade');
         });
     }

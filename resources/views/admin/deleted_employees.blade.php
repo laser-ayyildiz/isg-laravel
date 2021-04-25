@@ -15,11 +15,10 @@
                         <th>E-mail</th>
                         <th>Telefon Numarası</th>
                         <th>T.C Kimlik No</th>
-                        <th>İşten Ayrılma Tarihi</th>
+                        <th>İşten Çıkış Tarihi</th>
                     </tr>
                 </thead>
-                <tbody>
-
+                <tbody class="body">
                 </tbody>
             </table>
         </div>
@@ -34,62 +33,43 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="deleted_workers.php" method="POST">
-                            <div class="col-sm-6">
-                                <label><strong>Kullanıcı türü</strong>
-                                    <select class="form-control" name="user_type" readonly id="user_type">
-                                        <option value="" disabled selected>
-                                        </option>
-                                    </select>
+                        <form action="{{ route('admin.deleted_employees.handle') }}" method="POST">
+                            @csrf
+                            <div class="mt-1 mx-1">
+                                <label for="job_id" class="mt-1"><strong>Kullanıcı türü</strong></label>
+                                <input class="form-control" name="job_id" id="job_id" value="" readonly />
                             </div>
-                            <br>
                             <div class="row">
-                                <div class="col-sm-6">
-                                    <label for="firstname"><strong>Adı</strong>
-                                        <input type="text" class="form-control" placeholder="Adı" name="firstname"
-                                            value="" readonly></label>
-                                </div>
-                                <div class="col-sm-6">
-                                    <label for="lastname"><strong>Soy Adı </strong>
-                                        <input type="text" class="form-control" placeholder="Soy Adı" name="lastname"
-                                            value="" readonly></label>
+                                <div class="mt-1 ml-3">
+                                    <label class="mt-1" for="name"><strong>Adı</strong></label>
+                                    <input type="text" class="form-control" name="name" id="name" value="" readonly>
                                 </div>
                             </div>
-                            <br>
-                            <div class="col-sm-12">
-                                <label for "email"><strong>E-mail </strong>
-                                    <input type="email" class="form-control" placeholder="E-mail" name="email" value=""
-                                        readonly></label>
+                            <div class="mt-1  mx-1">
+                                <label class="mt-1" for="email"><strong>E-mail </strong></label>
+                                <input type="email" class="form-control" name="email" id="email" value="" readonly>
                             </div>
-                            <br>
                             <div class="row">
-                                <div class="col-sm-6">
-                                    <label for="phone"><strong>Telefon No </strong>
-                                        <input type="tel" class="form-control" name="phone"
-                                            placeholder="Tel: 05XXXXXXXXX" pattern="(\d{4})(\d{3})(\d{2})(\d{2})"
-                                            maxlength="11" value="" readonly></label>
+                                <div class="mt-1 mx-3">
+                                    <label class="mt-1" for="phone"><strong>Telefon No </strong></label>
+                                    <input type="tel" class="form-control" id="phone" name="phone" value="" readonly>
                                 </div>
-                                <div class="col-sm-6">
-                                    <label for="start_date"><strong>İşe Giriş Tarihi </strong>
-                                        <input type="date" class="form-control" placeholder="İşe giriş"
-                                            name="start_date" value="" readonly></label>
+                                <div class="mt-1">
+                                    <label class="mt-1" for="recruitment_date"><strong>İşten Çıkış
+                                            Tarihi</strong></label>
+                                    <input class="form-control" name="deleted_at" id="deleted_at" value="" readonly>
                                 </div>
                             </div>
-                            <br>
-                            <label for="tc"><strong>T.C Kimlik No </strong>
-                                <input type="number" class="form-control" placeholder="T.C Kimlik No" name="tc" min="11"
-                                    maxlength="11" value="" readonly></label>
-                            <br>
-                            <label for="not"><strong>Çalışan hakkında not </strong>
-                                <textarea class="form-control" id="not" name="not" rows="5" cols="120"
-                                    style="max-width: 100%;"></textarea></label>
-                            <br>
-                            <div style="float: right;">
-                                <button id="kaydet" name="kaydet" type="submit" class="btn btn-success">Notu
-                                    Kaydet</button>
-                                <button id="tamamen_sil" name="tamamen_sil" type="submit" class="btn btn-danger">Tamamen
+                            <label class="mt-1 ml-1" for="tc"><strong>T.C Kimlik No </strong></label>
+                            <input class="form-control mt-1  mx-1" value="" name="tc" id="tc" readonly>
+                            <label class="mt-2  ml-1" for="delete_not"><strong>Çalışan hakkında not</strong></label>
+                            <textarea class="form-control mt-1" id="delete_not" name="delete_not" rows="5" cols="120"
+                                style="max-width: 100%;"></textarea>
+                                <input type="hidden" name="userId" id="userId" value=""/>
+                            <div class="float-right my-2">
+                                <button id="deleteRequest" name="deleteRequest" type="submit" class="btn btn-danger">Tamamen
                                     Sil</button>
-                                <button id="tekrar" name="tekrar" type="submit" class="btn btn-warning">Tekrar
+                                <button id="activateRequest" name="activateRequest" type="submit" class="btn btn-warning">Tekrar
                                     Aktifleştir</button>
                             </div>
                         </form>
@@ -107,16 +87,20 @@
 
 @push('scripts')
 
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
 <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap5.min.js"></script>
+
+
+
 
 <script type="text/javascript">
     $(function () {
           var table = $('.data-table').DataTable({
               processing: true,
+              responsive: true,
               serverSide: true,
+              autoWidth: false,
               DT_RowId: true,
               ajax: "{{ route('admin.deleted_employees') }}",
               columns: [
@@ -125,7 +109,12 @@
                   {data: 'phone', name: 'phone'},
                   {data: 'email', name: 'email'},
                   {data: 'tc', name: 'tc'},
-                  {data: 'deleted_at', name: 'deleted_at'}
+                  {data: 'deleted_at', render: function (data, type, row) {
+                      let date = data.toString().match(/([0-9]{4}-[0-9]{2}-[0-9]{2})T(.*)/);
+                        return type === 'export' ?
+                        data : date[1]
+                }
+            }
               ],
               "language": {
                 "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Turkish.json"
@@ -135,6 +124,8 @@
           $('#example tbody').on('click', 'tr', function () {
             var data = table.row( this ).data();
             var job = data['job'];
+            var date = data['deleted_at'];
+            date = date.toString().match(/([0-9]{4}-[0-9]{2}-[0-9]{2})T(.*)/);
 
             $('#düzenle').modal('show');
             $("#userId").val(data['id']);
@@ -142,12 +133,12 @@
             $("#email").val(data['email']);
             $("#phone").val(data['phone']);
             $("#tc").val(data['tc']);
-            $("#recruitment_date").val(data['recruitment_date']);
-            $("#job_id").val(job.id);
-
-
+            $("#deleted_at").val(date[1]);
+            $("#delete_not").val(data['delete_not']);
+            $("#job_id").val(job.name);
         });
     });
 </script>
+
 @endpush
 @endsection

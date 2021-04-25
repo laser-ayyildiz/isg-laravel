@@ -141,7 +141,7 @@
                                         <option value="2">İsg Uzmanı 2</option>
                                         <option value="3">İsg Uzmanı 3</option>
                                     </optgroup>
-                                    <option value="4">Hekim</option>
+                                    <option value="4">Doktor</option>
                                     <option value="5">Sağlık Personeli</option>
                                     <option value="6">Ofis Personeli</option>
                                     <option value="7">Muhasebeci</option>
@@ -223,12 +223,14 @@
                   processing: true,
                   serverSide: true,
                   DT_RowId: true,
+                  autoWidth: false,
+                  responsive: true,
                   ajax: "{{ route('admin.osgb_employees') }}",
                   columns: [
                       {data: 'name', name: 'name'},
                       {data: 'job.name', name: 'job.name'},
-                      {data: 'phone', name: 'phone'},
                       {data: 'email', name: 'email'},
+                      {data: 'phone', name: 'phone'},
                       {data: 'tc', name: 'tc'},
                       {data: 'recruitment_date', name: 'recruitment_date'}
                   ],
@@ -240,7 +242,6 @@
               $('#example tbody').on('click', 'tr', function () {
                 var data = table.row( this ).data();
                 var job = data['job'];
-
                 $('#düzenle').modal('show');
                 $("#userId").val(data['id']);
                 $("#name").val(data['name']);
@@ -248,9 +249,8 @@
                 $("#phone").val(data['phone']);
                 $("#tc").val(data['tc']);
                 $("#recruitment_date").val(data['recruitment_date']);
+                $("#delete_not").val(data['delete_not']);
                 $("#job_id").val(job.id);
-
-
             });
         });
     </script>

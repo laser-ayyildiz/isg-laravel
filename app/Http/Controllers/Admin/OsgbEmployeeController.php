@@ -72,12 +72,10 @@ class OsgbEmployeeController extends Controller
 
     public function change(Request $request, $id)
     {
-        $bool = User::where('id', $id)
+        User::where('id', $id)
             ->update(
                 $request->except('_token', 'changeRequest', 'userId')
             );
-        dd($bool);
-        //dd("change");
     }
 
     public function handle(Request $request)

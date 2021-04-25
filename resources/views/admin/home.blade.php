@@ -46,6 +46,7 @@
                         <div class="text-uppercase text-info font-weight-bold text-xs mb-1"><span>Toplam Ekipman
                                 sayısı</span>
                         </div>
+                        50
                         <div class="row no-gutters align-items-center">
                             <div class="col-auto">
                                 <div class="text-dark font-weight-bold h5 mb-0 mr-3"><span></span>
@@ -65,7 +66,7 @@
                     <div class="col mr-2">
                         <div class="text-uppercase text-warning font-weight-bold text-xs mb-1"><span>Toplam Etkinlik
                                 Sayısı</span></div>
-
+                        50
                         <div class="text-dark font-weight-bold h5 mb-0"><span></span></div>
                     </div>
                     <div class="col-auto"><i class="fas fa-pencil-alt fa-2x text-gray-300"></i></div>
@@ -75,39 +76,23 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-lg-7 col-xl-8">
+    <div class="col-lg-8">
         <div class="card shadow-lg mb-4">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h6 class="text-primary font-weight-bold m-0">Aylara göre anlaşılan işletme sayıları</h6>
             </div>
-
             <div class="card-body">
-                <div class="chart-area"><canvas
-                        data-bs-chart="{&quot;type&quot;:&quot;line&quot;,&quot;data&quot;:{&quot;labels&quot;:[&quot;Ocak&quot;,&quot;Şubat&quot;,&quot;Mart&quot;,&quot;Nisan&quot;,&quot;Mayıs&quot;,&quot;Haziran&quot;,&quot;Temmuz&quot;,&quot;Ağustos&quot;,&quot;Eylül&quot;,&quot;Ekim&quot;,&quot;Kasım&quot;,&quot;Aralık&quot;],&quot;datasets&quot;:[{&quot;label&quot;:&quot;İşletme Sayısı&quot;,&quot;fill&quot;:true,&quot;data&quot;:[&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;],&quot;backgroundColor&quot;:&quot;rgba(78, 115, 223, 0.05)&quot;,&quot;borderColor&quot;:&quot;rgba(78, 115, 223, 1)&quot;,&quot;borderWidth&quot;:&quot;3&quot;}]},&quot;options&quot;:{&quot;maintainAspectRatio&quot;:false,&quot;legend&quot;:{&quot;display&quot;:false},&quot;title&quot;:{&quot;display&quot;:false},&quot;scales&quot;:{&quot;xAxes&quot;:[{&quot;gridLines&quot;:{&quot;color&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;zeroLineColor&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;drawBorder&quot;:false,&quot;drawTicks&quot;:false,&quot;borderDash&quot;:[&quot;10&quot;],&quot;zeroLineBorderDash&quot;:[&quot;10&quot;],&quot;drawOnChartArea&quot;:true},&quot;ticks&quot;:{&quot;fontColor&quot;:&quot;#858796&quot;,&quot;beginAtZero&quot;:false,&quot;padding&quot;:20}}],&quot;yAxes&quot;:[{&quot;gridLines&quot;:{&quot;color&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;zeroLineColor&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;drawBorder&quot;:false,&quot;drawTicks&quot;:false,&quot;borderDash&quot;:[&quot;10&quot;],&quot;zeroLineBorderDash&quot;:[&quot;10&quot;]},&quot;ticks&quot;:{&quot;fontColor&quot;:&quot;#858796&quot;,&quot;beginAtZero&quot;:false,&quot;padding&quot;:20}}]}}}"></canvas>
-                </div>
+                <div id="lineChart"></div>
             </div>
         </div>
     </div>
-    <div class="col-lg-5 col-xl-4">
+    <div class="col-lg-4">
         <div class="card shadow-lg mb-4">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <h6 class="text-primary font-weight-bold m-0"></h6>
                 <h6 class="text-primary font-weight-bold m-0">Türlerine Göre işletmeler</h6>
-                <p></p>
             </div>
             <div class="card-body">
-
-                <div class="chart-area"><canvas
-                        data-bs-chart="{&quot;type&quot;:&quot;doughnut&quot;,&quot;data&quot;:{&quot;labels&quot;:[&quot;Hizmet&quot;,&quot;Sağlık&quot;,&quot;Sanayi&quot;,&quot;Tarım&quot;,&quot;Diğer&quot;],&quot;datasets&quot;:[{&quot;label&quot;:&quot;&quot;,&quot;backgroundColor&quot;:[&quot;#4e73df&quot;,&quot;#1cc88a&quot;,&quot;#36b9cc&quot;,&quot;rgba(255,0,0,0.7)&quot;,&quot;orange&quot;],&quot;borderColor&quot;:[&quot;#ffffff&quot;,&quot;#ffffff&quot;,&quot;#ffffff&quot;,&quot;#ffffff&quot;,&quot;#ffffff&quot;],&quot;data&quot;:[&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;]}]},&quot;options&quot;:{&quot;maintainAspectRatio&quot;:false,&quot;legend&quot;:{&quot;display&quot;:false},&quot;title&quot;:{&quot;display&quot;:false}}}"></canvas>
-                </div>
-                <div class="text-center small mt-4"><span class="mr-2"><i
-                            class="fas fa-circle text-primary"></i>Hizmet</span>
-                    <span class="mr-2"><i class="fas fa-circle text-success"></i>Sağlık</span>
-                    <span class="mr-2"><i class="fas fa-circle text-info"></i>Sanayi</span>
-                    <span class="mr-2"><i class="fas fa-circle text-primary"
-                            style="color: rgba(255,0,0,0.7);filter: brightness(103%) contrast(200%) grayscale(0%) hue-rotate(137deg) invert(0%);"></i>Tarım</span>
-                    <span class="mr-2"><i class="fas fa-circle text" style="color: orange;"></i>Diğer</span>
-                </div>
+                <div id="pieChart"></div>
             </div>
         </div>
     </div>
@@ -142,10 +127,86 @@
     </div>
 </div>
 @push('scripts')
-<script src="/js/chart.min.js"></script>
-<script src="/js/bs-init.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
-<script src="/js/theme.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+<script>
+    var options = {
+        chart: {
+            type: 'line',
+            height: 390,
+            toolbar: {
+                show: true,
+                tools: {
+                    download: true,
+                    selection: false,
+                    zoom: false,
+                    zoomin: false,
+                    zoomout: false,
+                    pan: false,
+                    reset: false,
+                }
+            },
+            animations: {
+                enabled: true,
+                easing: 'easeinout',
+                speed: 800,
+                animateGradually: {
+                    enabled: true,
+                    delay: 150
+                },
+                dynamicAnimation: {
+                    enabled: true,
+                    speed: 350
+                }
+            }
+        },
+        fill: {
+            type: 'gradient'
+        },
+
+        markers: {
+            size: 5,
+        },
+        theme: {
+            palette: 'palette7'
+        },
+        series: [{
+            name: 'işletme sayısı',
+            data: @json($month_counts)
+        }],
+        xaxis: {
+            categories: ["Ocak","Şubat","Mart","Nisan","Mayıs","Haziran","Temmuz","Ağustos","Eylül","Ekim","Kasım","Aralık"]
+        }
+    }
+
+    var chart = new ApexCharts(document.querySelector("#lineChart"), options);
+    chart.render();
+</script>
+
+<script>
+    var options = {
+          series: @json($values),
+          labels: @json($labels),
+          chart: {
+          type: 'donut',
+        },
+        responsive: [{
+          breakpoint: 480,
+          options: {
+            chart: {
+              width: 200
+            },
+            legend: {
+              position: 'bottom'
+            }
+          }
+        }]
+        };
+
+    var chart = new ApexCharts(document.querySelector("#pieChart"), options);
+    chart.render();
+</script>
+
 @endpush
 
 @endsection

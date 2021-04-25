@@ -295,10 +295,12 @@
                                         <select class="form-control" name="uzman_id" id="uzman_id" autocomplete="off"
                                             size="1">
                                             <option value="" disabled selected><b>1. İsg Uzmanı</b></option>
-
-
+                                            @foreach ($osgbEmployees as $employee )
+                                            @if (in_array($employee->job_id,[1,2,3]))
+                                            <option value="{{ $employee -> id }}"><b>{{ $employee -> name }}</b>
                                             </option>
-
+                                            @endif
+                                            @endforeach
                                         </select>
                                     </div>
                                     <div class="col-sm-4">
@@ -307,9 +309,13 @@
                                         </label>
                                         <select class="form-control" name="uzman_id_2" id="uzman_id_2"
                                             autocomplete="off" size="1">
-                                            <option value="" disabled selected>2. İsg Uzmanı</option>
-
+                                            <option value="" disabled selected><b>2. İsg Uzmanı</b></option>
+                                            @foreach ($osgbEmployees as $employee )
+                                            @if (in_array($employee->job_id,[1,2,3]))
+                                            <option value="{{ $employee -> id }}"><b>{{ $employee -> name }}</b>
                                             </option>
+                                            @endif
+                                            @endforeach
 
                                         </select>
                                     </div>
@@ -319,9 +325,13 @@
                                         </label>
                                         <select class="form-control" name="uzman_id_3" id="uzman_id_3"
                                             autocomplete="off" size="1">
-                                            <option value="" disabled selected>3. İsg Uzmanı</option>
-
+                                            <option value="" disabled selected><b>3. İsg Uzmanı</b></option>
+                                            @foreach ($osgbEmployees as $employee )
+                                            @if (in_array($employee->job_id,[1,2,3]))
+                                            <option value="{{ $employee -> id }}"><b>{{ $employee -> name }}</b>
                                             </option>
+                                            @endif
+                                            @endforeach
 
                                         </select>
                                     </div>
@@ -337,6 +347,12 @@
                                         <select class="form-control" name="hekim_id" id="hekim_id" autocomplete="off"
                                             size="1">
                                             <option value="" disabled selected>İş Yeri Hekimi</option>
+                                            @foreach ($osgbEmployees as $employee )
+                                            @if ($employee->job_id == 4))
+                                            <option value="{{ $employee -> id }}"><b>{{ $employee -> name }}</b>
+                                            </option>
+                                            @endif
+                                            @endforeach
 
                                         </select>
                                     </div>
@@ -348,8 +364,12 @@
                                             autocomplete="off" size="1">
                                             <option value="" disabled selected>İş Yeri Hekimi</option>
 
-                                            <option value=""></option>
-
+                                            @foreach ($osgbEmployees as $employee )
+                                            @if ($employee->job_id == 4))
+                                            <option value="{{ $employee -> id }}"><b>{{ $employee -> name }}</b>
+                                            </option>
+                                            @endif
+                                            @endforeach
                                         </select>
                                     </div>
                                     <div class="col-sm-4">
@@ -359,7 +379,12 @@
                                         <select class="form-control" name="hekim_id_3" id="hekim_id_3"
                                             autocomplete="off" size="1">
                                             <option value="" disabled selected>İş Yeri Hekimi</option>
-
+                                            @foreach ($osgbEmployees as $employee )
+                                            @if ($employee->job_id == 4))
+                                            <option value="{{ $employee -> id }}"><b>{{ $employee -> name }}</b>
+                                            </option>
+                                            @endif
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
@@ -373,8 +398,12 @@
                                             autocomplete="off" size="1">
                                             <option value="" disabled selected>Diğer Sağlık Personeli</option>
 
-                                            <option value=""></option>
-
+                                            @foreach ($osgbEmployees as $employee )
+                                            @if ($employee->job_id == 5))
+                                            <option value="{{ $employee -> id }}"><b>{{ $employee -> name }}</b>
+                                            </option>
+                                            @endif
+                                            @endforeach
                                         </select>
                                     </div>
                                     <div class="col-sm-4">
@@ -383,7 +412,12 @@
                                             size="1">
                                             <option value="" disabled selected>Ofis Personeli</option>
 
-                                            <option value=""></option>
+                                            @foreach ($osgbEmployees as $employee )
+                                            @if ($employee->job_id == 6))
+                                            <option value="{{ $employee -> id }}"><b>{{ $employee -> name }}</b>
+                                            </option>
+                                            @endif
+                                            @endforeach
 
                                         </select>
                                     </div>
@@ -393,7 +427,12 @@
                                             autocomplete="off" size="1">
                                             <option value="" disabled selected>Muhasebe Personeli</option>
 
-                                            <option value=""></option>
+                                            @foreach ($osgbEmployees as $employee )
+                                            @if ($employee->job_id == 7))
+                                            <option value="{{ $employee -> id }}"><b>{{ $employee -> name }}</b>
+                                            </option>
+                                            @endif
+                                            @endforeach
 
                                         </select>
                                     </div>
@@ -406,7 +445,12 @@
                                             autocomplete="off" size="1">
                                             <option value="" disabled selected>2.Diğer Sağlık Personeli</option>
 
-                                            <option value=""></option>
+                                            @foreach ($osgbEmployees as $employee )
+                                            @if ($employee->job_id == 5))
+                                            <option value="{{ $employee -> id }}"><b>{{ $employee -> name }}</b>
+                                            </option>
+                                            @endif
+                                            @endforeach
 
                                         </select>
                                     </div>
@@ -416,8 +460,12 @@
                                             autocomplete="off" size="1">
                                             <option value="" disabled selected>2.Ofis Personeli</option>
 
-                                            <option value=""></option>
-
+                                            @foreach ($osgbEmployees as $employee )
+                                            @if ($employee->job_id == 6))
+                                            <option value="{{ $employee -> id }}"><b>{{ $employee -> name }}</b>
+                                            </option>
+                                            @endif
+                                            @endforeach
                                         </select>
                                     </div>
                                     <div class="col-sm-4">
@@ -426,8 +474,12 @@
                                             autocomplete="off" size="1">
                                             <option value="" disabled selected>2.Muhasebe Personeli</option>
 
-                                            <option value=""></option>
-
+                                            @foreach ($osgbEmployees as $employee )
+                                            @if ($employee->job_id == 7))
+                                            <option value="{{ $employee -> id }}"><b>{{ $employee -> name }}</b>
+                                            </option>
+                                            @endif
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
@@ -681,6 +733,8 @@
               processing: true,
               serverSide: true,
               DT_RowId: true,
+              responsive: true,
+              autoWidth: false,
               ajax: "{{ route('admin.companies.index') }}",
               columns: [
                   {data: 'name', name: 'name'},
