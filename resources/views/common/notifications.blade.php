@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.common')
 @section('title')Bildirimler - @endsection
 @section('content')
 <div class="card shadow-lg">

@@ -15,9 +15,10 @@ class CreateCoopCompaniesTable extends Migration
             $table->string('employer', 150);
             $table->string('email', 150);
             $table->string('phone');
-            $table->string('address', 500);
+            $table->text('address');
             $table->string('city');
             $table->string('town');
+            $table->smallInteger('danger_type')->nullable();
             $table->integer('remi_freq')->nullable();
             $table->string('nace_kodu')->nullable();
             $table->string('mersis_no')->nullable();
@@ -26,7 +27,6 @@ class CreateCoopCompaniesTable extends Migration
             $table->string('vergi_dairesi')->nullable();
             $table->string('katip_is_yeri_id')->nullable();
             $table->string('katip_kurum_id')->nullable();
-            $table->char('change', 2)->nullable()->default(0);
             $table->date('contract_at')->default(date('Y-m-d H:i:s'));
             $table->softDeletes();
             $table->timestamps();

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\User;
 
 use App\Models\User;
 use App\Models\CoopCompany;
@@ -8,19 +8,26 @@ use Illuminate\Http\Request;
 use App\Models\UserToCompany;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class CoopCompanyController extends Controller
 {
     public function index(Request $request)
     {
-        $osgbEmployees = User::whereBetween('job_id',[1,7])->get();
+        $osgbEmployees = User::whereBetween('job_id', [1, 7])->get();
         if ($request->ajax()) {
-            $data = CoopCompany::query();
-            return DataTables::of($data)
+            $data = UserToCompany::with('company')->where('user_id', Auth::id())->get();
+            $companies = [];
+            foreach ($data as $value) {
+                if (isset($value->company)) {
+                    $companies[] = $value->company;
+                }
+            }
+            return DataTables::of($companies)
                 ->make(true);
         }
         return view(
-            'admin.companies',
+            'user.companies',
             ['osgbEmployees' => $osgbEmployees]
         );
     }
@@ -66,18 +73,18 @@ class CoopCompanyController extends Controller
         foreach ($employeeIds as $employeeId) {
 
             if (!empty($employeeId)) {
-                $employees[] =[
+                $employees[] = [
                     'user_id' => $employeeId,
                     'company_id' => $company->id,
                     'created_at' => now(),
                     'updated_at' => now()
                 ];
-            }
-            else
+            } else
                 continue;
         }
         UserToCompany::insert($employees);
 
-        return redirect()->route('admin.companies.index');
+
+        return redirect()->route('user.companies.index');
     }
 }

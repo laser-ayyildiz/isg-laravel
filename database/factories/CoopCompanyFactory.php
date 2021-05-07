@@ -31,6 +31,7 @@ class CoopCompanyFactory extends Factory
             'address' => $this->faker->address(),
             'city' => $this->faker->city(),
             'town' => $this->faker->city(),
+            'danger_type' => random_int(1,3),
             'contract_at' => $this->faker->dateTime($max = 'now'),
             'nace_kodu' => random_int(100, 999),
             'mersis_no' => random_int(100, 999),

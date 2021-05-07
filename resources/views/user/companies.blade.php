@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.user')
 @section('title')İşletmeler - @endsection
 @section('content')
 
@@ -15,12 +15,7 @@
     <div class="card-body">
         <button class="btn btn-primary" data-toggle="modal" data-target="#addCompany" data-whatever="@getbootstrap">Yeni
             İşletme Ekle</a>
-
-            <button type="button" onclick="window.location.href='{{ route('admin.change_validate') }}'"
-                class="btn btn-success ml-1">Onay Bekleyenler</button>
-
-            <button type="button" onclick="window.location.href='{{ route('admin.deleted_companies') }}'"
-                class="btn btn-danger ml-1">Arşiv</button>
+        </button>
 
             <div class="table table-responsive mt-2">
                 <table class="table table-striped table-bordered table-hover data-table" id="example">
@@ -43,7 +38,7 @@
 </div>
 <div class="modal fade" id="addCompany" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
-    <form action="{{ route('admin.companies.store') }}" method="POST">
+    <form action="{{ route('user.companies.store') }}" method="POST">
         @csrf
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
@@ -621,7 +616,7 @@
               DT_RowId: true,
               responsive: true,
               autoWidth: false,
-              ajax: "{{ route('admin.companies.index') }}",
+              ajax: "{{ route('user.companies.index') }}",
               columns: [
                   {data: 'name', name: 'name'},
                   {data: 'type', name: 'type'},

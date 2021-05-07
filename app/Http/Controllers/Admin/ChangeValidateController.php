@@ -2,67 +2,92 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Hashids\Hashids;
 use App\Models\CoopCompany;
 use Illuminate\Http\Request;
-use App\Models\DeletedCompany;
-use Yajra\DataTables\DataTables;
+use App\Models\DeleteRequest;
+use App\Models\UpdateRequest;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
 class ChangeValidateController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        if ($request->ajax()) {
-            $data = CoopCompany::select('*')
-            ->whereIn('change', [1, 2])
-            ->orderBy('updated_at', "DESC");
+        $deletes = DeleteRequest::with('company', 'user')->get();
+        $updates = UpdateRequest::with('company', 'user')->get();
 
-            return DataTables::of($data)
-                ->make(true);
-            //dd($data);
-        }
+        $demands = $deletes->merge($updates);
+        $demands = $demands->sortBy('created_at')->paginate(10);
+
         return view(
             'admin.change_validate',
+            ['demands' => $demands]
         );
     }
 
-    public function deleteRequest(Request $request)
+    public function update(UpdateRequest $demand, Request $request)
     {
-        $hash = new Hashids();
-        $id = $hash->decode($request->input('id'), 15, 298, 177)[0];
-        if ($request->has('rejectDelete')) {
-            CoopCompany::where('id', $id)
-                ->update(
-                    [
-                        'change' => '0'
-                    ]
-                );
-            return redirect()->back()->with('deleteStatus', 'Silme talebi reddedildi!');
-        } elseif ($request->has('acceptDelete')) {
-            $willDelete = CoopCompany::find($id);
-            DeletedCompany::create([
-                'name' => $willDelete->name,
-                'type' => $willDelete->type,
-                'employer' => $willDelete->name,
-                'email' => $willDelete->email,
-                'phone' => $willDelete->phone,
-                'address' => $willDelete->address,
-                'city' => $willDelete->city,
-                'town' => $willDelete->town,
-                'nace_kodu' => $willDelete->nace_kodu,
-                'mersis_no' => $willDelete->mersis_no,
-                'sgk_sicil' => $willDelete->sgk_sicil,
-                'vergi_no' => $willDelete->vergi_no,
-                'vergi_dairesi' => $willDelete->vergi_dairesi,
-                'katip_is_yeri_id' => $willDelete->katip_is_yeri_id,
-                'katip_kurum_id' => $willDelete->katip_kurum_id,
-                'contract_at' => $willDelete->contract_at
-            ]);
-            $willDelete->delete();
-            return redirect()->back()->with('deleteStatus', 'İşletme Silindi! İşletmeye ait bilgilere arşiv bölümünden ulaşabilirsiniz');
-        } else {
-            return redirect()->back()->with('Bir hata ile karşılaşıldı. Tekrar Deneyiniz!');
+        if ($request->has("rejectUpdate")) {
+            try {
+                UpdateRequest::where('id', $demand->id)->delete();
+            } catch (\Throwable $th) {
+                return redirect()->back()->with('rejectUpdateFail', 'İsteğiniz işlenirken bir hatayla karşıldı!');
+            }
+            return redirect()->back()->with('rejectUpdateSuccess', 'Değişiklik talebi başarıyla kaldırıldı!');
         }
+
+        if ($request->has("acceptUpdate")) {
+            $updateDemand = array_filter($demand->toArray());
+
+            $company = $demand->company->toArray();
+
+            $updatedData = array_diff_assoc($updateDemand, $company);
+
+            unset($updatedData["company"], $updatedData["id"], $updatedData["user_id"], $updatedData["company_id"], $updatedData["created_at"], $updatedData["updated_at"]);
+
+            try {
+                UpdateRequest::where('id', $demand->id)->delete();
+            } catch (\Throwable $th) {
+                return redirect()->back()->with('acceptUpdateFail', 'İsteğiniz işlenirken bir hatayla karşıldı!');
+            }
+
+            try {
+                CoopCompany::where('id', $company["id"])->update($updatedData);
+            } catch (\Throwable $th) {
+                DB::rollBack();
+                return redirect()->back()->with('acceptUpdateFail', 'Değişiklikler uygulanırken bir hatayla karşılaşıldı!');
+            }
+            return redirect()->back()->with('acceptUpdateSuccess', 'Değişiklikler başarıyla uygulandı!');
+        }
+
+        return redirect()->back()->with('warningStatus', 'Üzgünüz ama İsteğinizi anlayamadık :(');
+    }
+
+    public function delete(DeleteRequest $demand, Request $request)
+    {
+        if ($request->has("rejectDelete")) {
+            try {
+                DB::table('delete_requests')->where('company_id', $demand->company->id)->delete();
+            } catch (\Throwable $th) {
+                return redirect()->back()->with('rejectDeleteFail', 'Talep kaldırılırken bir hatayla karşılaşıldı!');
+            }
+            return redirect()->back()->with('rejectDeleteSuccess', 'Silme talebi başarıyla kaldırıldı!');
+        }
+        if ($request->has("acceptDelete")) {
+            try {
+                DB::table('delete_requests')->where('company_id', $demand->company->id)->delete();
+                DB::table('update_requests')->where('company_id', $demand->company->id)->delete();
+            } catch (\Throwable $th) {
+                return redirect()->back()->with('acceptDeleteFail', 'İşletme silinirken bir hatayla karşılaşıldı!');
+            }
+            try {
+                CoopCompany::where('id', $demand->company->id)->delete();
+            } catch (\Throwable $th) {
+                return redirect()->back()->with('acceptDeleteFail', 'İşletme silinirken bir hatayla karşılaşıldı!');
+            }
+            return redirect()->back()->with('accpetDeleteSuccess', 'İşletme başarıyla silindi. Silinen işletmelere ARŞİV bölümünden ulaşabilirsiniz!');
+        }
+
+        return redirect()->back()->with('warningStatus', 'Üzgünüz ama İsteğinizi anlayamadık :(');
     }
 }

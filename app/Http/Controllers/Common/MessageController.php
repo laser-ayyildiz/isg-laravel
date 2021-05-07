@@ -11,7 +11,7 @@ class MessageController extends Controller
     public function index()
     {
         return (view(
-            'admin.messages'
+            'common.messages'
         ));
     }
 }

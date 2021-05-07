@@ -14,11 +14,11 @@ class DeletedEmployeeController extends Controller
         if ($request->ajax()) {
             $data = User::onlyTrashed()
             ->where('job_id', '<=', 7)
-            ->whereNotNull('job_id')
-            ->with('job');
+            ->with('job')
+            ->get();
             return DataTables::of($data)
                 ->make(true);
-        }
+       }
         return view(
             'admin.deleted_employees'
         );

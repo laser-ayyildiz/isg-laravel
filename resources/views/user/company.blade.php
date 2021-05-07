@@ -1,26 +1,30 @@
-@extends('layouts.admin')
+@extends('layouts.user')
 @section('title'){{ Str::title($company->name) }} - @endsection
 @section('content')
 
-@if (session('updateFail'))
-<div class="alert alert-danger">
-    {{ session('updateFail') }}
+@if (session('existRequest'))
+<div class="alert alert-warning">
+    {{ session('existRequest') }}
 </div>
-@elseif (session('updateSuccess'))
+@endif
+
+@if (session('deleteRequestSuccess'))
 <div class="alert alert-success">
-    {{ session('updateSuccess') }}
+    {{ session('deleteRequestSuccess') }}
 </div>
-@elseif (session('deleteFail'))
+@elseif (session('deleteRequestFail'))
 <div class="alert alert-danger">
-    {{ session('deleteFail') }}
+    {{ session('deleteRequestFail') }}
 </div>
-@elseif (session('assignEmployeeSuccess'))
+@endif
+
+@if (session('updateRequestSuccess'))
 <div class="alert alert-success">
-    {{ session('assignEmployeeSuccess') }}
+    {{ session('updateRequestSuccess') }}
 </div>
-@elseif (session('assignEmployeeFail'))
+@elseif (session('updateRequestFail'))
 <div class="alert alert-danger">
-    {{ session('assignEmployeeFail') }}
+    {{ session('updateRequestFail') }}
 </div>
 @endif
 
@@ -48,31 +52,11 @@
                 <a class="nav-link " id="ic-tab" data-toggle="tab" href="#isletme_calisanlar" role="tab"
                     aria-controls="İşletme Çalışanları" aria-selected="false"><b>Çalışanlar</b></a>
             </li>
-
-            <li class="nav-item">
-                <a class="nav-link " id="it-tab" data-toggle="tab" href="#isletme_takvim" role="tab"
-                    aria-controls="İşletme Takvimi" aria-selected="false"><b>Takvim</b></a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link " id="ie-tab" data-toggle="tab" href="#isletme_ekipman" role="tab"
-                    aria-controls="İşletme Ekipmanları" aria-selected="false"><b>Ekipmanlar</b></a>
-            </li>
             @endif
-            <li class="nav-item">
-                <a class="nav-link " id="ir-tab" data-toggle="tab" href="#isletme_rapor" role="tab"
-                    aria-controls="İşletme Raporları" aria-selected="false"><b>Raporlar</b></a>
-            </li>
             <li class="nav-item">
                 <a class="nav-link " id="zr-tab" data-toggle="tab" href="#ziyaret_rapor" role="tab"
                     aria-controls="Ziyaret Raporları" aria-selected="false"><b>Ziyaret Raporları</b></a>
             </li>
-            @if ($deleted == false)
-            <li class="nav-item">
-                <a class="nav-link " id="sc-tab" data-toggle="tab" href="#silinen_calisanlar" role="tab"
-                    aria-controls="Silinen Çalışanlar"><b>Arşiv</b></a>
-            </li>
-            @endif
 
         </ul>
     </div>
@@ -87,10 +71,6 @@
                     <button class="btn btn-warning mx-1 float-right" data-toggle="modal" data-target="#changeCompany"
                         id="changeCompanyBtn" data-whatever="@getbootstrap">İşletme
                         Bilgilerini Değiştir</button>
-
-                    <button class="btn btn-success mx-1 float-right" data-toggle="modal" data-target="#assignEmployee"
-                        id="assignEmployeeBtn" name="assignEmployeeBtn" data-whatever="@getbootstrap">Çalışan
-                        Ata</button>
                     @endif
                     <div class="form-row">
                         <div class="form-group col-lg-3">
@@ -410,88 +390,7 @@
                 </div>
             </div>
 
-            <!--İşletme Takvimi -->
-            <div class="tab-pane fade show " id="isletme_takvim" role="tabpanel" aria-labelledby="it-tab">
-                <div id="calendar" style="margin: auto;" class="col-centered"></div>
-            </div>
-
-            <!--İşletme Ekipmanları -->
-            <div class="tab-pane fade show " id="isletme_ekipman" role="tabpanel" aria-labelledby="ie-tab">
-                <button class="btn btn-primary" id="ie_button" data-toggle="modal" data-target="#addEquipment"
-                    data-whatever="@getbootstrap">Yeni Ekipman Ekle</button>
-                <input type="text" class="form-control" style="float:right;max-width:600px;" id="myInput"
-                    onkeyup="myFunction()" placeholder="Ekipman Adı ile ara...">
-                <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
-                    <table class="table table-striped table-bordered table-hover" id="dataTable">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th>Ekipman Adı</th>
-                                <th>Ekipmanın Kullanım Amacı</th>
-                                <th>Ekipman Kontrol Sıklığı</th>
-                                <th>Kayıt Tarihi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td> Ay</td>
-                                <td></td>
-                            </tr>
-
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <td><strong>Ekipman Adı</strong></td>
-                                <td><strong>Ekipmanın Kullanım Amacı</strong></td>
-                                <td><strong>Ekipmaın Kontrol Sıklığı</strong></td>
-                                <td><strong>Kayıt Tarihi</strong></td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-            </div>
             @endif
-            <!--İşletme Raporları -->
-            <div class="tab-pane fade show " id="isletme_rapor" role="tabpanel" aria-labelledby="ir-tab">
-                @if ($deleted == false)
-                <button style="float: left;" class="btn btn-primary" id="ir_form" data-toggle="modal"
-                    data-target="#addReport" data-whatever="@getbootstrap">Yeni Rapor Hazırla</button>
-                <button style="float: right;" class="btn btn-primary" id="ir_form2" data-toggle="modal"
-                    data-target="#uploadReport" data-whatever="@getbootstrap">Rapor Yükle</button>
-                @endif
-                <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
-                    <table class="table table-striped table-bordered table-hover table-sm mt-2" id="dataTable">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th>Dosya Adı</th>
-                                <th>Dosya Tarihi</th>
-                                <th>İndir</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                            <tr>
-                                <td><b></b></td>
-                                <td><b></b></td>
-                                <td><input class="btn btn-success btn-sm" style="width:80px" type="button" value="İndir"
-                                        onclick="window.location.href='isletme_raporlari/';" /></td>
-                            </tr>
-
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <td><strong>Dosya Adı</strong></td>
-                                <td><strong>Dosya Tarihi</strong></td>
-                                <td><strong>İndir</strong></td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-            </div>
-
             <!--Ziyaret Raporları -->
             <div class="tab-pane fade show " id="ziyaret_rapor" role="tabpanel" aria-labelledby="zr-tab">
                 @if ($deleted == false)
@@ -527,94 +426,12 @@
                     </table>
                 </div>
             </div>
-            @if ($deleted == false)
-            <!--Silinen Çalışanlar -->
-            <div class="tab-pane fade show " id="silinen_calisanlar" role="tabpanel" aria-labelledby="tr-tab">
-                <b>Çalışana ait dosyalara erişmek için çalışanın isminin yazılı olduğu kutucuğa
-                    tıklayabilirsiniz</b>
-                <input type="text" class="form-control" style="float:right;max-width:600px; margin-bottom:15px;"
-                    id="myInput" onkeyup="myFunction()" placeholder="Çalışan Adı ile ara...">
-                <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
-                    <table class="table table-striped table-bordered table-hover" id="dataTable">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th>Çalışan Adı Soyadı</th>
-                                <th>Pozisyonu</th>
-                                <th>Cinsiyeti</th>
-                                <th>T.C Kimlik No</th>
-                                <th>Telefon No</th>
-                                <th>E-mail</th>
-                                <th>İşe Giriş Tarihi</th>
-                                <th>Geri Al</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                            <tr>
-                                <td data-toggle="modal" data-target="#c" data-whatever="@getbootstrap"
-                                    style="cursor: pointer;"></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <form action="../core/recruitAgain.php" method="POST">
-                                    <td><button class="btn btn-success" type="submit" name="recruitAgain">Geri
-                                            Al</button></td>
-                                    <input type="number" name="company_id" value="" hidden>
-                                    <input type="text" name="company_name" value="" hidden>
-                                    <input type="number" name="TCWillRecruit" value="" hidden readonly>
-                                </form>
-                            </tr>
-                            <!-- Çalışan Dosyaları -->
-                            <div class="modal fade" id="c" tabindex="-1" aria-labelledby="label" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content modal-lg">
-                                        <div class="modal-header bg-light">
-                                            <h5 class="modal-title" id="label"><b></b></h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-
-                                            <a href="" target="blank"></a><br>
-
-                                            <form method="POST" action="index.php" enctype="multipart/form-data">
-                                                <fieldset id="ic_form3">
-                                                    <label for="calisan_dosya"><b>Yeni Dosya Yükle-></b></label>
-                                                    <input name="cdir_name" type="tel" value="" hidden>
-                                                    <input type="file" class="btn btn-light btn-sm"
-                                                        name="calisan_dosya" />
-                                                    <input type="submit" class="btn btn-primary"
-                                                        name="calisan_dosya_yukle" value="Yükle" />
-                                                </fieldset>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <td><strong>Çalışan Adı Soyadı</strong></td>
-                                <td><strong>Pozisyonu</strong></td>
-                                <td><strong>Cinsiyeti</strong></td>
-                                <td><strong>T.C Kimlik No</strong></td>
-                                <td><strong>Telefon No</strong></td>
-                                <td><strong>E-mail</strong></td>
-                                <td><strong>İşe Giriş Tarihi</strong></td>
-                                <td><strong>Geri Al</strong></td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-            </div>
-            @endif
         </div><!-- tab content end -->
     </div><!-- card body end -->
+</div>
+<!--card end-->
+
+<div name="modals">
     @if ($deleted == false)
     <!-- Silme Talebi -->
     <div class="modal fade" id="areYouSure" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -626,29 +443,163 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="{{ route('admin.company.delete',['company' => $company]) }}" method="POST">
+                <form
+                    action="{{ route('user.company.deleteRequest',['company' => $company, 'user' => auth()->user()]) }}"
+                    method="POST">
                     @csrf
                     <div class="modal-body">
                         <h3>
-                            <b>{{ Str::title($company->name) }}</b> şirketini silmek istediğinizden emin misiniz?
-
+                            <b>
+                                Silme talebiniz yöneticinize iletilecektir,
+                                Emin misiniz?
+                            </b>
                         </h3>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn btn-secondary mr-auto btn-lg" data-dismiss="modal">İptal</button>
-                        <button type="submit" name="deleteRequest"
-                            class="btn btn btn-danger float-right btn-lg">SİL</button>
+                        <button class="btn btn btn-secondary mr-auto" data-dismiss="modal">İptal</button>
+                        <button type="submit" name="deleteRequest" class="btn btn btn-danger float-right">SİL</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
+    <!-- Yeni çalışan ekleme modal -->
+    <div class="modal fade" id="addWorker" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header bg-light">
+                    <h5 class="modal-title" id="exampleModalLabel"><b>Yeni Çalışan Ekle</b></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="" method="POST">
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="worker_name">
+                                    <h5><b>Çalışanın Adını ve Soyadını Giriniz</b></h5>
+                                </label>
+                                <input name="worker_name" id="worker_name" class="form-control" type="text"
+                                    maxlength="100" placeholder="Ad Soyad" required>
+                            </div>
+                            <div class="col-6">
+                                <label for="worker_tc">
+                                    <h5><b>Çalışanın T.C Kimlik Numarasını Giriniz</b></h5>
+                                </label>
+                                <input name="worker_tc" id="worker_tc" class="form-control" type="tel" maxlength="11"
+                                    minlength="11" placeholder="T.C Kimlik No" required>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="worker_mail">
+                                    <h5><b>Çalışanın E-mail adresini Giriniz</b></h5>
+                                </label>
+                                <input name="worker_mail" id="worker_mail" class="form-control" type="email"
+                                    maxlength="100" placeholder="E-mail" required>
+                            </div>
+                            <div class="col-6">
+                                <label for="worker_phone">
+                                    <h5><b>Çalışanın Telefon Numarasını Giriniz</b></h5>
+                                </label>
+                                <input name="worker_phone" id="worker_phone" class="form-control" type="tel"
+                                    maxlength="11" minlength="11" placeholder="05XXXXXXXXX" required>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="worker_position">
+                                    <h5><b>Çalışanın Posizyonu Giriniz</b></h5>
+                                </label>
+                                <input name="worker_position" id="worker_position" class="form-control" type="text"
+                                    maxlength="100" placeholder="Pozisyon" required>
+                            </div>
+                            <div class="col-6">
+                                <label for="worker_sex">
+                                    <h5><b>Çalışanının Cinsiyetini Giriniz</b></h5>
+                                </label>
+                                <select name="worker_sex" id="worker_sex" class="form-control" required>
+                                    <option value="" disabled selected>Çalışanın Cinsiyeti</option>
+                                    <option value="Erkek">Erkek</option>
+                                    <option value="Kadın">Kadın</option>
+                                </select>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row col-6">
+                            <label for="worker_contract_date">
+                                <h5><b>Çalışanın İşe Giriş Tarihi</b></h5>
+                            </label>
+                            <input name="worker_contract_date" id="worker_contract_date" class="form-control"
+                                type="date" required>
+                        </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    <input type="number" name="company_id" value="" hidden>
+                    <input type="text" name="company_name" value="" hidden>
+                    <button id="add_worker" name="add_worker" type="submit" style="float: right; width:150px;"
+                        class="btn btn-primary btn-lg">Ekle</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div> <!-- addWorker end-->
+
+    <!-- Yeni Ziyaret Raporu Ekleme modal-->
+    <div class="modal fade" id="addVisitReport" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-light">
+                    <h5 class="modal-title" id="exampleModalLabel"><b>Yeni Ziyaret Raporu Ekle</b></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="../core/addVisitReport.php" method="POST" enctype="multipart/form-data">
+                        <div class="row col-12">
+                            <label for="visit_report_name">
+                                <h5><b>Raporun Adını Giriniz</b></h5>
+                                <a style="color:red">*Lütfen dosya isminde "_" (alt çizgi) karakteri
+                                    kullanmayın!</a>
+                            </label>
+                            <input name="visit_report_name" id="visit_report_name" class="form-control" type="text"
+                                maxlength="20" placeholder="Rapor Adı" required>
+                        </div>
+                        <br>
+                        <div class="row col-12">
+                            <label for="visit_report_date">
+                                <h5><b>Raporun Tarihini Giriniz</b></h5>
+                            </label>
+                            <input name="visit_report_date" id="visit_report_date" class="form-control" type="date"
+                                required>
+                        </div>
+                        <br>
+                        <div class="modal-footer">
+                            <input type="number" name="company_id" value="" hidden>
+                            <input type="text" name="company_name" value="" hidden>
+                            <input type="file" class="btn btn-sm" name="ziyaret_dosyası" id="ziyaret_dosyası"
+                                style="margin-right:auto;" required>
+                            <button type="submit" class="btn btn-primary" name="ziyaret_dosyası_yukle"
+                                id="ziyaret_dosyası_yukle">Yükle</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div><!-- addVisitReport end-->
+
     <!-- İşletme bilgilerini değiştir-->
     <div class="modal fade" id="changeCompany" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
-                <form action="{{ route('admin.company.update',['company' => $company]) }}" method="POST">
+                <form
+                    action="{{ route('user.company.updateRequest',['company' => $company, 'user' => auth()->user()]) }}"
+                    method="POST">
                     @csrf
                     <div class="modal-c-tabs">
                         <ul class="nav nav-tabs justify-content-center bg-light" style="padding-top: 10px"
@@ -662,20 +613,23 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" id="link2-tab" data-toggle="tab" role="tab" href="#link2"
                                     aria-selected="false" aria-controls="link2">
+                                    <h5><b>Çalışan Ata</b></h5>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" id="link3-tab" data-toggle="tab" role="tab" href="#link3"
+                                    aria-selected="false" aria-controls="link3">
                                     <h5><b>Devlet Bilgileri</b></h5>
                                 </a>
                             </li>
-                            <div class="ml-auto">
-                                <li>
-                                    <a type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </a>
-                                </li>
-                            </div>
+                            <li class="nav-item">
+                                <a href="#" type="nav-link" class="nav-link" data-dismiss="modal" aria-label="Close"
+                                    style="color:red;">
+                                    <h5><b>Kapat</b></h5>
+                                </a>
+                            </li>
 
                         </ul>
-
-
                         <div class="tab-content">
                             <div class="tab-pane fade in show active" id="link1" role="tabpanel"
                                 aria-labelledby="link1-tab">
@@ -703,7 +657,8 @@
                                                 <h5><strong>İşletme Adı</strong></h5>
                                             </label>
                                             <input class="form-control" type="text" placeholder="Adı" name="name"
-                                                id="name" maxlength="250" required value="{{ $company->name }}">
+                                                id="name" maxlength="250" readonly required
+                                                value="{{ $company->name }}">
                                         </div>
                                         <div class="col-sm-6">
                                             <label for="mail">
@@ -888,7 +843,244 @@
                                 </div>
                             </div>
 
-                            <div class="tab-pane fade" id="link2" role="tabpanel" aria-labelledby="home-tab">
+                            <div class="tab-pane fade" id="link2" role="tabpanel" aria-labelledby="link2-tab">
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <!--1. İsg Uzmanı -->
+                                        <div class="col-lg-4">
+                                            <label for="uzman">
+                                                <h5><b>1. İsg Uzmanı</b></h5>
+                                            </label>
+
+                                            <select class="form-control" id="uzman" name="uzman" size="1">
+                                                @if (!empty($selectExperts[0]))
+                                                @foreach ($selectExperts[0] as $selectExpert)
+                                                <option value="{{ $selectExpert->id }}">{{ $selectExpert->name }}
+                                                </option>
+                                                @endforeach
+                                                @endif
+
+                                            </select>
+                                        </div>
+
+                                        <!--2. İsg Uzmanı -->
+                                        <div class="col-lg-4">
+                                            <label for="uzman_2">
+                                                <h5><b>2.İsg Uzmanı</b></h5>
+                                            </label>
+
+                                            <select class="form-control" id="uzman_2" name="uzman_2" size="1">
+
+                                                @if (!empty($selectExperts[0]))
+                                                @foreach ($selectExperts[0] as $selectExpert)
+                                                <option value="{{ $selectExpert->id }}">{{ $selectExpert->name }}
+                                                </option>
+                                                @endforeach
+                                                @endif
+
+                                            </select>
+                                        </div>
+
+                                        <!--3. İsg Uzmanı -->
+                                        <div class="col-lg-4">
+                                            <label for="uzman_3">
+                                                <h5><b>3.İsg Uzmanı</b></h5>
+                                            </label>
+
+                                            <select class="form-control" id="uzman_3" name="uzman_3" size="1">
+
+                                                @if (!empty($selectExperts[0]))
+                                                @foreach ($selectExperts[0] as $selectExpert)
+                                                <option value="{{ $selectExpert->id }}">{{ $selectExpert->name }}
+                                                </option>
+                                                @endforeach
+                                                @endif
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <hr style="border-top: 1px dashed red;">
+                                    <br>
+
+                                    <!--İş Yeri Hekimleri-->
+                                    <div class="row">
+
+                                        <!--1 İş Yeri Hekimi -->
+                                        <div class="col-lg-4">
+                                            <label for="hekim">
+                                                <h5><b>1. İş Yeri Hekimi</b></h5>
+                                            </label>
+
+                                            <select class="form-control" id="hekim" name="hekim" size="1">
+
+                                                @if (!empty($selectExperts[1]))
+                                                @foreach ($selectExperts[1] as $selectExpert)
+                                                <option value="{{ $selectExpert->id }}">{{ $selectExpert->name }}
+                                                </option>
+                                                @endforeach
+                                                @endif
+
+                                            </select>
+                                        </div>
+
+                                        <!--2. İş Yeri Hekimi -->
+                                        <div class="col-lg-4">
+                                            <label for="hekim_2">
+                                                <h5><b>2. İş Yeri Hekimi</b></h5>
+                                            </label>
+
+                                            <select class="form-control" id="hekim_2" name="hekim_2" size="1">
+
+                                                @if (!empty($selectExperts[1]))
+                                                @foreach ($selectExperts[1] as $selectExpert)
+                                                <option value="{{ $selectExpert->id }}">{{ $selectExpert->name }}
+                                                </option>
+                                                @endforeach
+                                                @endif
+
+                                            </select>
+                                        </div>
+
+                                        <!--3. İş Yeri Hekimi -->
+                                        <div class="col-lg-4">
+                                            <label for="hekim_3">
+                                                <h5><b>3. İş Yeri Hekimi</b></h5>
+                                            </label>
+
+                                            <select class="form-control" id="hekim_3" name="hekim_3" size="1">
+
+                                                @if (!empty($selectExperts[1]))
+                                                @foreach ($selectExperts[1] as $selectExpert)
+                                                <option value="{{ $selectExpert->id }}">{{ $selectExpert->name }}
+                                                </option>
+                                                @endforeach
+                                                @endif
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <hr style="border-top: 1px dashed red;">
+                                    <br>
+
+                                    <!--1. Personeller -->
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <label for="saglık">
+                                                <h5><b>Sağlık Personeli</b></h5>
+                                            </label>
+
+                                            <select class="form-control" id="saglık" name="saglık" size="1">
+
+                                                @if (!empty($selectExperts[2]))
+                                                @foreach ($selectExperts[2] as $selectExpert)
+                                                <option value="{{ $selectExpert->id }}">{{ $selectExpert->name }}
+                                                </option>
+                                                @endforeach
+                                                @endif
+                                            </select>
+                                        </div>
+
+                                        <div class="col-lg-4">
+                                            <label for="ofis">
+                                                <h5><b>Ofis Personeli</b></h5>
+                                            </label>
+
+                                            <select class="form-control" id="ofis" name="ofis" size="1">
+
+                                                @if (!empty($selectExperts[3]))
+                                                @foreach ($selectExperts[3] as $selectExpert)
+                                                <option value="{{ $selectExpert->id }}">{{ $selectExpert->name }}
+                                                </option>
+                                                @endforeach
+                                                @endif
+
+                                            </select>
+                                        </div>
+
+                                        <div class="col-lg-4">
+                                            <label for="muhasebe">
+                                                <h5><b>Muhasebe Personeli</b></h5>
+                                            </label>
+
+                                            <select class="form-control" id="muhasebe" name="muhasebe" size="1">
+
+                                                @if (!empty($selectExperts[4]))
+                                                @foreach ($selectExperts[4] as $selectExpert)
+                                                <option value="{{ $selectExpert->id }}">{{ $selectExpert->name }}
+                                                </option>
+                                                @endforeach
+                                                @endif
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <br>
+
+                                    <!--2. Personeller -->
+                                    <div class="row">
+                                        <!--2. Sağlık Personeli -->
+                                        <div class="col-lg-4">
+                                            <label for="saglık_2">
+                                                <h5><b>2.Sağlık Personeli</b></h5>
+                                            </label>
+
+                                            <select class="form-control" id="saglık_2" name="saglık_2" size="1">
+
+                                                @if (!empty($selectExperts[2]))
+                                                @foreach ($selectExperts[2] as $selectExpert)
+                                                <option value="{{ $selectExpert->id }}">{{ $selectExpert->name }}
+                                                </option>
+                                                @endforeach
+                                                @endif
+
+                                            </select>
+                                        </div>
+
+                                        <!--2. Ofis Personeli -->
+                                        <div class="col-lg-4">
+                                            <label for="ofis_2">
+                                                <h5><b>2.Ofis Personeli</b></h5>
+                                            </label>
+
+                                            <select class="form-control" id="ofis_2" name="ofis_2" size="1">
+
+                                                @if (!empty($selectExperts[3]))
+                                                @foreach ($selectExperts[3] as $selectExpert)
+                                                <option value="{{ $selectExpert->id }}">{{ $selectExpert->name }}
+                                                </option>
+                                                @endforeach
+                                                @endif
+                                            </select>
+                                        </div>
+
+                                        <!--2. Muhasebe Personeli -->
+                                        <div class="col-lg-4">
+                                            <label for="muhasebe_2">
+                                                <h5><b>2.Muhasebe Personeli</b></h5>
+                                            </label>
+
+                                            <select class="form-control" id="muhasebe_2" name="muhasebe_2" size="1">
+
+                                                @if (!empty($selectExperts[4]))
+                                                @foreach ($selectExperts[4] as $selectExpert)
+                                                <option value="{{ $selectExpert->id }}">{{ $selectExpert->name }}
+                                                </option>
+                                                @endforeach
+                                                @endif
+
+                                            </select>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                </div>
+                            </div>
+
+                            <div class="tab-pane fade" id="link3" role="tabpanel" aria-labelledby="home-tab">
                                 <div class="modal-body">
                                     <div class="row col-3">
                                         <label for="nace_kodu">
@@ -955,6 +1147,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
+                        <input type="hidden" name="companyId" value="{{ $company->id }}">
                         <button class="btn btn-primary btn-lg" type='submit' name='changeRequest'>Kaydet</button>
                     </div>
                 </form>
@@ -962,50 +1155,9 @@
         </div>
 
     </div>
-
-    <!-- Yeni Çalışan Ata -->
-    <div class="modal fade" id="assignEmployee" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header bg-light">
-                    <h5 class="modal-title" id="exampleModalLabel"><b>Yeni Kullanıcı Oluştur</b></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form action="{{ route('admin.company.assignEmployee',['company' => $company]) }}"
-                        id="authenticateForm" method="POST">
-                        @csrf
-                        <div class="row col-sm-10">
-                            <label><b>Şirket adı</b></label>
-                            <input class="form-control" name="userName" id="userName"
-                                value="{{ Str::title($company->name) }}" readonly>
-                        </div>
-                        <br>
-                        <div class="row col-sm-10">
-                            <label><b>Yetkilendirileceği işletmeyi seçin</b></label>
-                            <select class="form-control" name="user" required>
-                                <option value="" disabled>Çalışan</option>
-                                @foreach ($allEmployees->get() as $employee)
-                                <option value="{{ $employee->id }}">{{ $employee->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <br>
-                        <div style="float: right;">
-                            <button id="authenticate" name="yetkilendir" type="submit"
-                                class="btn btn-success">Yetkilendir</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
     @endif
 </div>
-<!--card end-->
-<!--container end-->
+<!-- modals -->
 @if ($deleted == false)
 @push('scripts')
 <script type="text/javascript">

@@ -15,6 +15,8 @@ class CreateDeleteRequestsTable extends Migration
     {
         Schema::create('delete_requests', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('company_id')->constrained('coop_companies')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ class CreateDeleteRequestsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('delete_requests');
+        Schema::dropIfExists('table_delete_requests');
     }
 }

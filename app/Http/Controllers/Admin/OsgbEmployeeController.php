@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
+use App\Models\Exception;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
-use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
@@ -15,7 +16,7 @@ class OsgbEmployeeController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = User::select('*')
+            $data = User::query()
                 ->with('job')
                 ->where('job_id', '<=', 7)
                 ->where('deleted_at', null);
@@ -55,8 +56,7 @@ class OsgbEmployeeController extends Controller
                     //$message->attach('pathToFile');
                 }
             );
-        } catch (Exception $e) {
-            //dd($e);
+        } catch (\Exception $e) {
             return redirect()->back()->with('status', $e);
         }
 
@@ -65,17 +65,33 @@ class OsgbEmployeeController extends Controller
 
     public function delete(Request $request, $id)
     {
-        $user = User::where('id', $id);
-        $user->update($request->except('_token', 'deleteRequest', 'userId', 'email'));
-        $user->delete();
+        try {
+            $user = User::where('id', $id);
+            $user->update($request->except('_token', 'deleteRequest', 'userId', 'email'));
+            $user->delete();
+        } catch (\Exception $error) {
+            Exception::create([
+                'user_id' => Auth::id(),
+                'exception' => $error,
+                'function_name' => 'OsgbEmployeeController->delete'
+            ]);
+        }
     }
 
     public function change(Request $request, $id)
     {
-        User::where('id', $id)
-            ->update(
-                $request->except('_token', 'changeRequest', 'userId')
-            );
+        try {
+            User::where('id', $id)
+                ->update(
+                    $request->except('_token', 'changeRequest', 'userId')
+                );
+        } catch (\Exception $error) {
+            Exception::create([
+                'user_id' => Auth::id(),
+                'exception' => $error,
+                'function_name' => 'OsgbEmployeeController->delete'
+            ]);
+        }
     }
 
     public function handle(Request $request)

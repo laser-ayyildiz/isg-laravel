@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.common')
 @section('title')Profil - @endsection
 @section('content')
 @if (session('status'))
@@ -7,19 +7,21 @@
 </div>
 @endif
 <div class="row mb-3">
-    <div class="col-lg-6" style="margin: auto; ">
+    <div class="col-lg-6" style="margin: auto;">
         <div class="card shadow-lg mb-3">
             <div class="card-header py-3">
                 <p class="text-primary m-0 font-weight-bold">Profil Resmi</p>
             </div>
             <div class="card-body text-center shadow">
-                <img class="img-thumbnail mb-3 mt-4" src="/uploads/profile_pictures/{{auth()->user()->profile_photo_path}}" width="218" height="300">
+                <img class="img-thumbnail mb-3 mt-4"
+                    src="/uploads/profile_pictures/{{auth()->user()->profile_photo_path}}" width="218" height="300">
                 <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <label>Profil Resmi Yükle</label>
                     <input type="file" name="avatar">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                    <input type="submit" name="update-picture"style="width:200px;" class="pull-right btn btn-success" value="Değiştir">
+                    <input type="submit" name="update-picture" style="width:200px;" class="pull-right btn btn-success"
+                        value="Değiştir">
                 </form>
             </div>
         </div>
@@ -30,7 +32,8 @@
                 <p class="text-primary m-0 font-weight-bold">Şifre</p>
             </div>
             <div class="card-body text-center shadow">
-                <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data" autocomplete="off">
+                <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data"
+                    autocomplete="off">
                     <div class="form-group">
                         <label style="float:left;"><b>Mevcut Şifre</b></label>
                         <div class="input-group" id="show_hide_password">
@@ -44,8 +47,7 @@
                     <div class="form-group">
                         <label style="float:left;"><b>Yeni Şifre</b></label>
                         <div class="input-group" id="show_hide_password">
-                            <input class="form-control" type="password" minlength="8" name="new-password"
-                                required>
+                            <input class="form-control" type="password" minlength="8" name="new-password" required>
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><a><i class="fa fa-eye-slash"
                                             aria-hidden="true"></i></a></span>
@@ -56,7 +58,7 @@
                         <label style="float:left;"><b>Yeni Şifre Tekrar</b></label>
                         <div class="input-group" id="show_hide_password">
                             <input class="form-control" type="password" minlength="8" name="new-password-again"
-                                 required>
+                                required>
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><a><i class="fa fa-eye-slash"
                                             aria-hidden="true"></i></a></span>
@@ -84,14 +86,16 @@
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label for="email"><strong>E-mail</strong></label>
-                                        <input class="form-control" type="email" name="username" readonly value="{{ auth()->user()->email }}">
+                                        <input class="form-control" type="email" name="username" readonly
+                                            value="{{ auth()->user()->email }}">
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label for="first_name">
                                             <strong>İsim</strong><br></label>
-                                        <input name="firstname" class="form-control" type="text" value="{{ auth()->user()->name }}" required>
+                                        <input name="firstname" class="form-control" type="text"
+                                            value="{{ auth()->user()->name }}" required>
                                     </div>
                                 </div>
                             </div>
@@ -118,7 +122,8 @@
                                     <div class="form-group">
                                         <label for="start_date">
                                             <strong>İşe Giriş Tarihi</strong><br></label>
-                                        <input name="start_date" class="form-control" type="date" value="{{ auth()->user()->recruitment_date }}" required>
+                                        <input name="start_date" class="form-control" type="date"
+                                            value="{{ auth()->user()->recruitment_date }}" required>
                                     </div>
                                 </div>
                             </div>
