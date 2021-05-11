@@ -2,25 +2,23 @@
 @section('title'){{ Str::title($company->name) }} - @endsection
 @section('content')
 
-@if (session('updateFail'))
+@if (session('fail'))
 <div class="alert alert-danger">
-    {{ session('updateFail') }}
+    {{ session('fail') }}
 </div>
-@elseif (session('updateSuccess'))
+@elseif (session('success'))
 <div class="alert alert-success">
-    {{ session('updateSuccess') }}
+    {{ session('success') }}
 </div>
-@elseif (session('deleteFail'))
+@endif
+
+@if ($errors->any())
 <div class="alert alert-danger">
-    {{ session('deleteFail') }}
-</div>
-@elseif (session('assignEmployeeSuccess'))
-<div class="alert alert-success">
-    {{ session('assignEmployeeSuccess') }}
-</div>
-@elseif (session('assignEmployeeFail'))
-<div class="alert alert-danger">
-    {{ session('assignEmployeeFail') }}
+    <ul>
+        @foreach ($errors->all() as $error)
+        <li>{{ $error }}</li>
+        @endforeach
+    </ul>
 </div>
 @endif
 
@@ -49,23 +47,10 @@
                     aria-controls="İşletme Çalışanları" aria-selected="false"><b>Çalışanlar</b></a>
             </li>
 
-            <li class="nav-item">
-                <a class="nav-link " id="it-tab" data-toggle="tab" href="#isletme_takvim" role="tab"
-                    aria-controls="İşletme Takvimi" aria-selected="false"><b>Takvim</b></a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link " id="ie-tab" data-toggle="tab" href="#isletme_ekipman" role="tab"
-                    aria-controls="İşletme Ekipmanları" aria-selected="false"><b>Ekipmanlar</b></a>
-            </li>
             @endif
             <li class="nav-item">
                 <a class="nav-link " id="ir-tab" data-toggle="tab" href="#isletme_rapor" role="tab"
                     aria-controls="İşletme Raporları" aria-selected="false"><b>Raporlar</b></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link " id="zr-tab" data-toggle="tab" href="#ziyaret_rapor" role="tab"
-                    aria-controls="Ziyaret Raporları" aria-selected="false"><b>Ziyaret Raporları</b></a>
             </li>
             @if ($deleted == false)
             <li class="nav-item">
@@ -306,12 +291,8 @@
             @if ($deleted == false)
             <!--İşletme Çalışanları -->
             <div class="tab-pane fade show " id="isletme_calisanlar" role="tabpanel" aria-labelledby="ic-tab">
-
-                <button class="btn btn-primary" id="ic_form2" data-toggle="modal" data-target="#addWorker"
+                <button class="btn btn-primary" id="ic_form2" data-toggle="modal" data-target="#addEmployee"
                     data-whatever="@getbootstrap">Yeni Çalışan Ekle</button>
-                <br><b>Çalışana ait dosyalara erişmek için çalışanın isminin yazılı olduğu kutucuğa
-                    tıklayabilirsiniz</b>
-
 
                 <form method="POST" action="" enctype="multipart/form-data">
                     <fieldset id="ic_form1">
@@ -323,10 +304,8 @@
                     </fieldset>
                 </form>
 
-                <input type="text" class="form-control" style="float:right;max-width:600px; margin-bottom:15px;"
-                    id="myInput" onkeyup="myFunction()" placeholder="Çalışan Adı ile ara...">
                 <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
-                    <table class="table table-striped table-bordered table-hover" id="dataTable">
+                    <table class="table table-striped table-bordered table-hover" id="example">
                         <thead class="thead-dark">
                             <tr>
                                 <th>Çalışan Adı Soyadı</th>
@@ -334,124 +313,17 @@
                                 <th>Telefon No</th>
                                 <th>E-mail</th>
                                 <th>İşe Giriş Tarihi</th>
-                                <th id="delete_header">Sil</th>
+                                <th>Çalışan Detay</th>
+                                <th>Sil</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @if (!empty($employees['coopEmployees']))
-                            @foreach ($employees['coopEmployees'] as $key => $employee )
-                            <tr>
-                                <td data-toggle="modal" data-target="#deleteEmployee{{ $key }}"
-                                    data-whatever="@getbootstrap" style="cursor: pointer;">{{ $employee->user->name }}
-                                </td>
-
-                                <td>{{ $employee->user->tc }}</td>
-                                <td>{{ $employee->user->phone }}</td>
-                                <td>{{ $employee->user->email }}</td>
-                                <td>{{ $employee->user->recruitment_date }}</td>
-                                <form action="" method="POST">
-                                    <input type="number" name="company_id" value="" hidden>
-                                    <input type="text" name="company_name" value="" hidden>
-                                    <input type="number" name="TCWillDelete" value="" hidden readonly>
-                                    <td><button class="btn btn-danger" type="submit" name="deleteWorkerButton"
-                                            id="deleteWorkerButton">Sil</button></td>
-                                </form>
-                            </tr>
-
-                            <!-- Çalışan Dosyaları -->
-                            <div class="modal fade" id="deleteEmployee{{ $key }}" tabindex="-1" aria-labelledby="label"
-                                aria-hidden="true">
-                                <div class="modal-dialog modal-lg">
-                                    <div class="modal-content">
-                                        <div class="modal-header bg-light">
-                                            <h5 class="modal-title" id="label"><b></b></h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-
-                                            <a href="" target="blank"></a><br>
-
-                                        </div>
-                                        <div class="modal-footer bg-light">
-                                            <form method="" action="" enctype="multipart/form-data">
-                                                <fieldset id="ic_form3">
-                                                    <label for="calisan_dosya"><b>Yeni Dosya Yükle-></b></label>
-                                                    <input name="coworker_tc" type="tel" value="" hidden>
-                                                    <input type="number" name="company_id" value="" hidden>
-                                                    <input type="text" name="company_name" value="" hidden>
-                                                    <input type="file" class="btn btn-light btn-sm" name="calisan_dosya"
-                                                        required />
-                                                    <input type="submit" class="btn btn-primary"
-                                                        name="calisan_dosya_yukle" value="Yükle" />
-                                                </fieldset>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            @endforeach
-                            @else
-                            <h1>Henüz bu işletme için çalışan atanmadı</h1>
-                            @endif
                         </tbody>
                         <tfoot>
-                            <tr>
-                                <td><strong>Çalışan Adı Soyadı</strong></td>
-                                <td><strong>T.C Kimlik No</strong></td>
-                                <td><strong>Telefon No</strong></td>
-                                <td><strong>E-mail</strong></td>
-                                <td><strong>İşe Giriş Tarihi</strong></td>
-                                <td id="delete_footer"><strong>Sil</strong></td>
-                            </tr>
                         </tfoot>
                     </table>
                 </div>
-            </div>
 
-            <!--İşletme Takvimi -->
-            <div class="tab-pane fade show " id="isletme_takvim" role="tabpanel" aria-labelledby="it-tab">
-                <div id="calendar" style="margin: auto;" class="col-centered"></div>
-            </div>
-
-            <!--İşletme Ekipmanları -->
-            <div class="tab-pane fade show " id="isletme_ekipman" role="tabpanel" aria-labelledby="ie-tab">
-                <button class="btn btn-primary" id="ie_button" data-toggle="modal" data-target="#addEquipment"
-                    data-whatever="@getbootstrap">Yeni Ekipman Ekle</button>
-                <input type="text" class="form-control" style="float:right;max-width:600px;" id="myInput"
-                    onkeyup="myFunction()" placeholder="Ekipman Adı ile ara...">
-                <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
-                    <table class="table table-striped table-bordered table-hover" id="dataTable">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th>Ekipman Adı</th>
-                                <th>Ekipmanın Kullanım Amacı</th>
-                                <th>Ekipman Kontrol Sıklığı</th>
-                                <th>Kayıt Tarihi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td> Ay</td>
-                                <td></td>
-                            </tr>
-
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <td><strong>Ekipman Adı</strong></td>
-                                <td><strong>Ekipmanın Kullanım Amacı</strong></td>
-                                <td><strong>Ekipmaın Kontrol Sıklığı</strong></td>
-                                <td><strong>Kayıt Tarihi</strong></td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
             </div>
             @endif
             <!--İşletme Raporları -->
@@ -492,41 +364,6 @@
                 </div>
             </div>
 
-            <!--Ziyaret Raporları -->
-            <div class="tab-pane fade show " id="ziyaret_rapor" role="tabpanel" aria-labelledby="zr-tab">
-                @if ($deleted == false)
-                <button class="btn btn-primary" id="zr_form" data-toggle="modal" data-target="#addVisitReport"
-                    data-whatever="@getbootstrap">Yeni Ziyaret Raporu Ekle</button>
-                @endif
-                <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
-                    <table class="table table-striped table-bordered table-hover table-sm" id="dataTable">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th>Dosya Adı</th>
-                                <th>Dosya Tarihi</th>
-                                <th>İndir</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                            <tr>
-                                <td><b></b></td>
-                                <td><b></b></td>
-                                <td><input class="btn btn-success btn-sm" style="width:80px" type="button" value="İndir"
-                                        onclick="window.location.href='ziyaret_raporlar" /></td>
-                            </tr>
-
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <td><strong>Dosya Adı</strong></td>
-                                <td><strong>Dosya Tarihi</strong></td>
-                                <td><strong>İndir</strong></td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-            </div>
             @if ($deleted == false)
             <!--Silinen Çalışanlar -->
             <div class="tab-pane fade show " id="silinen_calisanlar" role="tabpanel" aria-labelledby="tr-tab">
@@ -615,7 +452,10 @@
             @endif
         </div><!-- tab content end -->
     </div><!-- card body end -->
-    @if ($deleted == false)
+</div>
+<!--card end-->
+@if ($deleted == false)
+<div name="modals">
     <!-- Silme Talebi -->
     <div class="modal fade" id="areYouSure" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -1002,12 +842,156 @@
             </div>
         </div>
     </div>
-    @endif
+
+    <!-- İşletme Çalışanı ekle -->
+    <div class="modal fade" id="addEmployee" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-light">
+                    <h5 class="modal-title" id="exampleModalLabel"><b>Yeni Çalışan Ata</b></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('admin.company.addEmployee',['company' => $company]) }}" method="POST">
+                        @csrf
+
+                        <div class="row my-2">
+                            <div class="col-sm-6">
+                                <label for="empName"><b>Çalışan adı</b></label>
+                                <input class="form-control" type="text" name="calisanAd" required>
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="empPosition"><b>Pozisyon</b></label>
+                                <input class="form-control" type="text" name="calisanPozisyon">
+                            </div>
+
+                        </div>
+                        <div class="row my-2">
+                            <div class="col-sm-6">
+                                <label for="empTC"><b>T.C. Kimlik Numarası</b></label>
+                                <input class="form-control" type="phone" maxlength="11" name="calisanTc" required>
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="empPhone"><b>Telefon Numarası</b></label>
+                                <input class="form-control" type="phone" maxlength="11" name="calisanTelefon">
+                            </div>
+                        </div>
+                        <div class="row my-2">
+                            <div class="col-sm-8">
+                                <label for="empEmail"><b>E-mail</b></label>
+                                <input class="form-control" type="email" name="calisanEmail">
+                            </div>
+                            <div class="col-sm-4">
+                                <label for="empRecDate"><b>İşe Giriş Tarihi</b></label>
+                                <input class="form-control" type="date" name="calisanIseGirisTarihi" id="empRecDate"
+                                    required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="float-right">
+                                <button type="submit" class="btn btn-primary">Çalışan Ekle</button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- İşletme Çalışanı sil -->
+    <div class="modal fade" id="deleteEmpModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-light">
+                    <h5 class="modal-title" id="exampleModalLabel"><b>Çalışanı Sil</b></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="/admin/company/" method="POST" id="deleteEmpForm">
+                        @csrf
+                        <div class="row my-2">
+                            <h5 id="deleteEmpName" class="mx-2"></h5>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="float-right">
+                                <button id="deleteEmpRequest" type="submit" class="btn btn-danger">Sil</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<!--card end-->
 <!--container end-->
-@if ($deleted == false)
+
+@push('styles')
+
+<link href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+
+@endpush
+
 @push('scripts')
+<script>
+    empRecDate.max = new Date().toISOString().split("T")[0];
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap5.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+          var table = $('#example').DataTable({
+              processing: true,
+              serverSide: true,
+              DT_RowId: true,
+              autoWidth: false,
+              responsive: true,
+              ajax: "{{ route('admin.company',['id' => $company->id ]) }}",
+              columns: [
+                  {data: 'name', name: 'name'},
+                  {data: 'tc', name: 'tc'},
+                  {data: 'phone', name: 'phone'},
+                  {data: 'email', name: 'email'},
+                  {data: 'recruitment_date', name: 'recruitment_date'},
+                  {
+                    data: null,
+                    render: function ( data, type, row ) {
+                        return '<button type="button" id="empDetail" class="btn btn-primary"">Detaylar</button>';
+                    }
+                  },
+                  {
+                    data: null,
+                    render: function ( data, type, row ) {
+                        return '<button type="button" id="deleteEmpBtn" class="btn btn-danger" data-toggle="modal" data-target="#deleteEmpModal">Sil</button>';
+                    }
+                  },
+              ],
+              "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Turkish.json"
+                }
+          });
+          $('#example tbody').on( 'click', '#deleteEmpBtn', function () {
+            var data = table.row( $(this).parents('tr') ).data();
+            $('#deleteEmpName').html("<b>" + data['name'] + '</b> isimli çalışanı silmek istediğinize emin misiniz?');
+
+            $('#deleteEmpRequest').click(function(){
+                let action = $('#deleteEmpForm').attr('action');
+                $('#deleteEmpForm').attr('action', action+"{{ $company->id }}"+"/deleteEmployee/"+data['id']);
+            });
+        });
+        $('#example tbody').on( 'click', '#empDetail', function () {
+            var data = table.row( $(this).parents('tr') ).data();
+            window.location.href = "/admin/employee/"+data['id'];
+        });
+    });
+
+    
+</script>
 <script type="text/javascript">
     var citiesByState = {
     Adana: ["Aladağ", "Ceyhan", "Çukurova", "Feke", "İmamoğlu", "Karaisalı", "Karataş", "Kozan", "Pozantı", "Saimbeyli", "Sarıçam", "Seyhan", "Tufanbeyli", "Yumurtalık", "Yüreğir"],

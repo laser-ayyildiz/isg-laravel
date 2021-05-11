@@ -1,9 +1,13 @@
 @extends('layouts.common')
 @section('title')Profil - @endsection
 @section('content')
-@if (session('status'))
+@if (session('statusSuccess'))
 <div class="alert alert-success">
-    {{ session('status') }}
+    {{ session('statusSuccess') }}
+</div>
+@elseif (session('statusFail'))
+<div class="alert alert-danger">
+    {{ session('statusFail') }}
 </div>
 @endif
 <div class="row mb-3">
@@ -15,7 +19,7 @@
             <div class="card-body text-center shadow">
                 <img class="img-thumbnail mb-3 mt-4"
                     src="/uploads/profile_pictures/{{auth()->user()->profile_photo_path}}" width="218" height="300">
-                <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('profile.updatePicture') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <label>Profil Resmi Yükle</label>
                     <input type="file" name="avatar">
@@ -32,22 +36,24 @@
                 <p class="text-primary m-0 font-weight-bold">Şifre</p>
             </div>
             <div class="card-body text-center shadow">
-                <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data"
+                <form action="{{ route('profile.updatePassword') }}" method="POST" enctype="multipart/form-data"
                     autocomplete="off">
+                    @csrf
                     <div class="form-group">
                         <label style="float:left;"><b>Mevcut Şifre</b></label>
                         <div class="input-group" id="show_hide_password">
-                            <input class="form-control" type="password" name="old-password" autocomplete="off" required>
+                            <input class="form-control" type="password" name="oldPassword" autocomplete="off" required>
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><a><i class="fa fa-eye-slash"
                                             aria-hidden="true"></i></a></span>
                             </div>
                         </div>
+
                     </div>
                     <div class="form-group">
                         <label style="float:left;"><b>Yeni Şifre</b></label>
                         <div class="input-group" id="show_hide_password">
-                            <input class="form-control" type="password" minlength="8" name="new-password" required>
+                            <input class="form-control" type="password" minlength="8" name="newPassword" required>
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><a><i class="fa fa-eye-slash"
                                             aria-hidden="true"></i></a></span>
@@ -57,8 +63,7 @@
                     <div class="form-group">
                         <label style="float:left;"><b>Yeni Şifre Tekrar</b></label>
                         <div class="input-group" id="show_hide_password">
-                            <input class="form-control" type="password" minlength="8" name="new-password-again"
-                                required>
+                            <input class="form-control" type="password" minlength="8" name="newPasswordAgain" required>
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><a><i class="fa fa-eye-slash"
                                             aria-hidden="true"></i></a></span>
@@ -81,21 +86,31 @@
                         <p class="text-primary m-0 font-weight-bold">Kullanıcı Bilgileri</p>
                     </div>
                     <div class="card-body shadow">
-                        <form action="/admin/profile" method="POST">
+                        <form action="{{ route('profile.updateIdCard') }}" method="POST">
+                            @csrf
+                            @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                            @endif
                             <div class="form-row">
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label for="email"><strong>E-mail</strong></label>
-                                        <input class="form-control" type="email" name="username" readonly
+                                        <input class="form-control" type="email" name="email" 
                                             value="{{ auth()->user()->email }}">
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="form-group">
-                                        <label for="first_name">
+                                        <label for="name">
                                             <strong>İsim</strong><br></label>
-                                        <input name="firstname" class="form-control" type="text"
-                                            value="{{ auth()->user()->name }}" required>
+                                        <input name="name" class="form-control" type="text"
+                                            value="{{ auth()->user()->name }}">
                                     </div>
                                 </div>
                             </div>
@@ -120,15 +135,15 @@
                             <div class="form-row">
                                 <div class="col-sm-4">
                                     <div class="form-group">
-                                        <label for="start_date">
+                                        <label for="recruitment_date">
                                             <strong>İşe Giriş Tarihi</strong><br></label>
-                                        <input name="start_date" class="form-control" type="date"
+                                        <input name="recruitment_date" class="form-control" type="date"
                                             value="{{ auth()->user()->recruitment_date }}" required>
                                     </div>
                                 </div>
                             </div>
 
-                            <button name="bilgi_kaydet" id="bilgi_kaydet" type="submit" style="width:200px;"
+                            <button name="bilgi_kaydet" type="submit" style="width:200px;"
                                 class="btn btn-success">Kaydet</button>
                         </form>
                     </div>
@@ -137,4 +152,22 @@
         </div>
     </div>
 </div>
+@push('scripts')
+<script>
+    $(document).ready(function() {
+      $("#show_hide_password a").on('click', function(event) {
+        event.preventDefault();
+        if ($('#show_hide_password input').attr("type") == "text") {
+          $('#show_hide_password input').attr('type', 'password');
+          $('#show_hide_password i').addClass("fa-eye-slash");
+          $('#show_hide_password i').removeClass("fa-eye");
+        } else if ($('#show_hide_password input').attr("type") == "password") {
+          $('#show_hide_password input').attr('type', 'text');
+          $('#show_hide_password i').removeClass("fa-eye-slash");
+          $('#show_hide_password i').addClass("fa-eye");
+        }
+      });
+    });
+</script>
+@endpush
 @endsection

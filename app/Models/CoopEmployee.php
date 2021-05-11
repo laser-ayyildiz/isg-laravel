@@ -4,18 +4,24 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class CoopEmployee extends Model
 {
     use HasFactory;
+    use SoftDeletes;
     protected $fillable = [
-        'firstname',
-        'lastname',
+        'name',
+        'company_id',
         'email',
         'phone',
         'tc',
         'position',
-        'contract_at',
-        'deleted'
+        'recruitment_date',
     ];
+
+    public function company()
+    {
+        return $this->belongsTo(CoopCompany::class);
+    }
 }

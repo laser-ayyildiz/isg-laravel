@@ -24,17 +24,15 @@ class CoopEmployeeFactory extends Factory
      */
     public function definition()
     {
-        $count = CoopCompany::count();
+        //$count = CoopCompany::count();
         return [
-            'company_id' => random_int(1, $count),
-            'firstname' => $this->faker->name,
-            'lastname' => $this->faker->name,
+            'company_id' => random_int(1, 30),
+            'name' => $this->faker->name,
             'email' => $this->faker->unique()->safeEmail,
             'phone' => $this->faker->tollFreePhoneNumber,
             'tc' => random_int(10000000, 9999999999),
             'position' => $this->faker->word,
-            'deleted' => random_int(0, 1),
-            'contract_at' => $this->faker->dateTime($max = 'now'),
+            'recruitment_date' => $this->faker->dateTime($max = 'now'),
         ];
     }
 }

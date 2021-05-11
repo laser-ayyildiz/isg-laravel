@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Common;
 
+use Exception;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Intervention\Image\Facades\Image;
@@ -13,23 +14,14 @@ class ProfileController extends Controller
 {
     public function index()
     {
-        return view('common.profile');
-    }
-
-    public function handle(Request $request)
-    {
-        if ($request->has('update-password')) {
-            $this->updatePassword($request);
-            //return redirect()->route('admin.profile.index')->with('status', 'Silme talebiniz yöneticinize iletilmiştir!');
+        $role = null;
+        if (Auth::user()->hasRole('Admin')) {
+            $role = "admin";
         }
-        if ($request->has('update-picture')) {
-            if ($this->updatePicture($request)) {
-                return redirect()->route('profile.index')->with('status', 'Profil Resminiz başarıyla güncellenmiştir');
-            } else {
-                return redirect()->route('profile.index')->with('status', 'Hata');
-            }
-            //return redirect()->route('admin.profile.index')->with('status', 'Yaptığınız değişiklikler yöneticinize iletilmiştir. Lütfen onaylanana kadar bekleyiniz!');
+        if (Auth::user()->hasRole('User')) {
+            $role = "user";
         }
+        return view('common.profile', ['role' => $role]);
     }
 
     public function updatePicture(Request $request)
@@ -37,47 +29,67 @@ class ProfileController extends Controller
         try {
             if ($request->hasFile('avatar')) {
                 $avatar = $request->file('avatar');
-                dd($avatar);
                 $filename = time() . '.' . $avatar->getClientOriginalExtension();
-                Image::make($avatar)->resize(300, 300)->save(public_path('uploads/profile_pictures/' . $filename));
+                $image = Image::make($avatar)->resize(300, 300)->save(public_path('/uploads/profile_pictures/' . $filename));
                 $user = Auth::user();
                 $user->profile_photo_path = $filename;
                 $user->save();
-                return true;
             } else {
-                return false;
+                return redirect()->route('profile.index')->with('statusFail', 'Hata');
             }
         } catch (Exception $e) {
-            return false;
+            return redirect()->route('profile.index')->with('statusFail', 'Hata');
         }
+        return redirect()->route('profile.index')->with('statusSuccess', 'Profil Resminiz başarıyla güncellenmiştir');
     }
 
     public function updatePassword(Request $request)
     {
         $this->validate($request, [
-
-            'old-password' => 'required',
-            'new-password' => 'required',
-            'new-password-again' => 'required'
-            ]);
+            'oldPassword' => 'required',
+            'newPassword' => 'required',
+            'newPasswordAgain' => 'required'
+        ]);
 
         $hashedPassword = Auth::user()->password;
 
-        if (Hash::check($request->oldpassword, $hashedPassword)) {
-            if (!Hash::check($request->newpassword, $hashedPassword)) {
-                $users =admin::find(Auth::user()->id);
-                $users->password = bcrypt($request->newpassword);
-                admin::where('id', Auth::user()->id)->update(array( 'password' =>  $users->password));
-
-                session()->flash('message', 'password updated successfully');
-                return redirect()->back();
+        if (Hash::check($request->oldPassword, $hashedPassword)) {
+            if (!Hash::check($request->newPassword, $hashedPassword)) {
+                if ($request->newPassword == $request->newPasswordAgain) {
+                    $user = User::find(Auth::user()->id);
+                    $user->password = Hash::make($request->newPassword);
+                    try {
+                        User::where('id', $user->id)->update(array('password' =>  $user->password));
+                    } catch (\Throwable $th) {
+                        dd($th);
+                        return redirect()->route('profile.index')->with('statusFail', 'Bir hata ile karşılaşıldı!');
+                    }
+                    return redirect()->route('profile.index')->with('statusSuccess', 'Parolanız başarıyla güncellenmiştir');
+                } else {
+                    return redirect()->route('profile.index')->with('statusFail', 'Yeni parolalarınız birbiriyle eşleşmedi!');
+                }
             } else {
-                session()->flash('message', 'new password can not be the old password!');
-                return redirect()->back();
+                return redirect()->route('profile.index')->with('statusFail', 'Eski parolanız ile yeni parolanız aynı!');
             }
         } else {
-            session()->flash('message', 'old password doesnt matched ');
-            return redirect()->back();
+            return redirect()->route('profile.index')->with('statusFail', 'Eski parolanızı hatalı girdiniz!');
         }
+    }
+
+    public function updateIdCard(Request $request)
+    {
+        $this->validate($request, [
+            'email' => 'required|email|unique:users,email,' . Auth::id(),
+            'name' => 'required',
+            'tc' => 'required|unique:users,tc,' . Auth::id(),
+            'recruitment_date' => 'required',
+        ]);
+        try {
+            User::where('id', Auth::user()->id)->update($request->except(['_token', 'bilgi_kaydet']));
+        } catch (\Throwable $th) {
+            dd($th);
+            return redirect()->route('profile.index')->with('statusFail', 'Hata');
+        }
+        return redirect()->route('profile.index')->with('statusSuccess', 'Profil bilgileriniz başarıyla güncellenmiştir');
     }
 }
