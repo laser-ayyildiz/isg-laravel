@@ -161,6 +161,8 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
+
 
         /*
          * Package Service Providers...
@@ -234,9 +236,7 @@ return [
         'Image' => Intervention\Image\Facades\Image::class,
         'Hashids' => Torann\Hashids\Facade\Hashids::class,
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
-
-
-
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
     ],
 
 ];

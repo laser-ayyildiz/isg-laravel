@@ -15,7 +15,7 @@ class CreateCoopEmployeesTable extends Migration
             $table->char('name', 250);
             $table->char('email', 150)->nullable();
             $table->char('phone', 16)->nullable();
-            $table->char('tc', 11);
+            $table->char('tc', 11)->unique();
             $table->char('position', 200)->nullable();
             $table->date('recruitment_date')->nullable();
             $table->softDeletes();

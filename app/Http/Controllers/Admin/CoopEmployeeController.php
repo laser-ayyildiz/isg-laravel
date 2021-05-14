@@ -4,13 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\CoopCompany;
 use App\Models\CoopEmployee;
-use App\Models\UserToCompany;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cookie;
-use Illuminate\Support\Facades\Date;
-
+use App\Models\EmployeeToFile;
 class CoopEmployeeController extends Controller
 {
     public function index($employee)
@@ -20,6 +15,7 @@ class CoopEmployeeController extends Controller
         if (empty($demand))
             return redirect()->route('admin.deleted.coop_employee', ['employee' => $employee]);
 
+        $files = EmployeeToFile::where('employee_id', $employee)->with('file')->paginate(10);
         /*
         //this function for route('user.')
         $user = UserToCompany::with('company')->where('user_id',Auth::id())->first();
@@ -27,19 +23,36 @@ class CoopEmployeeController extends Controller
             abort(403);
         */
 
-        return view('admin.coop_employees', ['employee' => $demand, 'deleted' => false]);
+        return view(
+            'admin.coop_employees',
+            [
+                'employee' => $demand,
+                'deleted' => false,
+                'files' => $files,
+                'tab' => 'genel_bilgiler'
+            ]
+        );
     }
 
     public function deletedIndex($employee)
     {
         $employee = CoopEmployee::with('company')->where('id', $employee)->onlyTrashed()->first();
+        $files = EmployeeToFile::where('employee_id', $employee)->with('file')->get();
+
         /*
         //this function for route('user.')
         $user = UserToCompany::with('company')->where('user_id',Auth::id())->first();
         if ($user->company->id != $company) 
             abort(403);
         */
-        return view('admin.coop_employees', ['employee' => $employee, 'deleted' => true]);
+        return view(
+            'admin.coop_employees',
+            [
+                'employee' => $employee,
+                'deleted' => true,
+                'files' => $files,
+            ]
+        );
     }
 
     public function update(CoopEmployee $employee, Request $request)

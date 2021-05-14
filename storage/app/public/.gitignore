@@ -1,2 +1,7 @@
 *
 !.gitignore
+!uploads
+uploads/*
+!uploads/company-employee-lists
+uploads/company-employee-lists/*
+!uploads/company-employee-lists/employee-table.xlsx

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\CoopEmployee;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
@@ -36,6 +35,7 @@ Route::prefix('company')->group(function () {
     Route::post('/{company}/assignEmployee', [CompanyController::class, 'assignEmployee'])->name('company.assignEmployee');
     Route::post('/{company}/addEmployee', [CompanyController::class, 'addEmployee'])->name('company.addEmployee');
     Route::post('/{company}/deleteEmployee/{employee}', [CompanyController::class, 'deleteEmployee'])->name('company.deleteEmployee');
+
 });
 
 Route::prefix('employee')->group(function () {
@@ -44,7 +44,6 @@ Route::prefix('employee')->group(function () {
     Route::post('/update/{employee}', [CoopEmployeeController::class, 'update'])->name('coop_employee.update');
     Route::post('/delete/{employee}', [CoopEmployeeController::class, 'delete'])->name('coop_employee.delete');
 });
-
 
 
 Route::get('/settings', function () {

@@ -21,6 +21,36 @@
     </ul>
 </div>
 @endif
+{{ session()->get('failures') }}
+@if (session()->has('failures'))
+
+<table class="table table-danger">
+    <tr>
+        <th>Satır</th>
+        <th>Özellik</th>
+        <th>Hata</th>
+        <th>Girdi</th>
+    </tr>
+
+    @foreach (session()->get('failures') as $validation)
+    <tr>
+        <td>{{ $validation->row() }}</td>
+        <td>{{ $validation->attribute() }}</td>
+        <td>
+            <ul>
+                @foreach ($validation->errors() as $e)
+                <li>{{ $e }}</li>
+                @endforeach
+            </ul>
+        </td>
+        <td>
+            {{ $validation->values()[$validation->attribute()] }}
+        </td>
+    </tr>
+    @endforeach
+</table>
+
+@endif
 
 <div class="card shadow-lg">
     <div class="card-header tab-card-header text-center bg-light text-dark border">
@@ -291,19 +321,24 @@
             @if ($deleted == false)
             <!--İşletme Çalışanları -->
             <div class="tab-pane fade show " id="isletme_calisanlar" role="tabpanel" aria-labelledby="ic-tab">
-                <button class="btn btn-primary" id="ic_form2" data-toggle="modal" data-target="#addEmployee"
+                <button class="btn btn-primary" data-toggle="modal" data-target="#addEmployee"
                     data-whatever="@getbootstrap">Yeni Çalışan Ekle</button>
 
-                <form method="POST" action="" enctype="multipart/form-data">
-                    <fieldset id="ic_form1">
-                        <label for="calisan_list"><b>Çalışan Listesi Yükle-></b></label>
-                        <input type="number" name="company_id" value="" hidden>
-                        <input type="text" name="company_name" value="" hidden>
-                        <input type="file" class="btn btn-light btn-sm" name="calisan_list" />
-                        <input type="submit" class="btn btn-primary" name="calisan_yukle" value="Yükle" />
-                    </fieldset>
+                <div class="float-right">
+                    <form
+                        action="{{ route('download-file',['folder' => 'company-employee-lists', 'file_name' => 'employee-table.xlsx']) }}"
+                        method="post">
+                        @csrf
+                        <button class="btn btn-success ml-1">Örnek Excel Tablosu</button>
+                    </form>
+                </div>
+                <form class="my-3" method="POST" action="{{  route('store-excel',['company' => $company]) }}"
+                    enctype="multipart/form-data">
+                    @csrf
+                    Çalışan Listesi Yükle->
+                    <input type="file" class="btn btn-light btn-sm" name="employee-list" />
+                    <input type="submit" class="btn btn-primary" name="calisan_yukle" value="Yükle" />
                 </form>
-
                 <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
                     <table class="table table-striped table-bordered table-hover" id="example">
                         <thead class="thead-dark">
