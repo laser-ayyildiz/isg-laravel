@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use App\Models\UserToCompany;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
+use App\Models\CompanyToFile;
+use CreateCompanyToFilesTable;
 
 class CompanyController extends Controller
 {
@@ -30,6 +32,8 @@ class CompanyController extends Controller
             return DataTables::of($coopEmployees)->make(true);
         }
 
+        $mandatory_files = CompanyToFile::with('file','type')->where('company_id',$id)->get();
+
         return (view(
             'admin.company',
             [
@@ -37,6 +41,7 @@ class CompanyController extends Controller
                 'employees' => $employees,
                 'allEmployees' => $allEmployees,
                 'deleted' => false,
+                'mandatory_files' => $mandatory_files
             ],
         ));
     }
@@ -45,15 +50,18 @@ class CompanyController extends Controller
     {
         $company = CoopCompany::where('id', $id)->onlyTrashed()->first();
         $employees = null;
+        $mandatory_files = CompanyToFile::with('file','type')->where('company_id',$id)->get();
 
         return (view(
             'admin.company',
             [
                 'company' => $company,
                 'osgbEmployees' => $employees,
-                'deleted' => true
+                'deleted' => true,
+                'mandatory_files' => $mandatory_files
             ],
         ));
+
     }
 
     public function update(CoopCompany $company, Request $request)

@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             CompanySeeder::class,
             CoopEmployeeSeeder::class,
             UserToCompanySeeder::class,
-        ]);
+            CompanyFileTypeSeeder::class,
+            ]);
     }
 }

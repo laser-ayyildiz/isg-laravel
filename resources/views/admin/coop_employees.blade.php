@@ -27,21 +27,19 @@
         <h1><b>{{ Str::title($employee->name) }}</b></h1>
         <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" id="gb-tab"
-                    data-toggle="tab" href="#genel_bilgiler" role="tab" aria-controls="Genel Bilgiler"
-                    aria-selected="true"><b>Bilgiler</b></a>
+                <a class="nav-link active" id="gb-tab" data-toggle="tab" href="#genel_bilgiler" role="tab"
+                    aria-controls="Genel Bilgiler" aria-selected="true"><b>Bilgiler</b></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="files-tab" data-toggle="tab"
-                    href="#files" role="tab" aria-controls="Dosyalar" aria-selected="true"><b>Dosyalar</b></a>
+                <a class="nav-link" id="files-tab" data-toggle="tab" href="#files" role="tab" aria-controls="Dosyalar"
+                    aria-selected="true"><b>Dosyalar</b></a>
             </li>
         </ul>
     </div>
     <div class="card-body">
         <div class="tab-content" id="myTabContent">
             <!--Genel Bilgiler -->
-            <div class="tab-pane fade show active"
-                id="genel_bilgiler" role="tabpanel" aria-labelledby="gb-tab">
+            <div class="tab-pane fade show active" id="genel_bilgiler" role="tabpanel" aria-labelledby="gb-tab">
 
                 @if (!$deleted)
                 <form action="{{ route('admin.coop_employee.update',['employee' => $employee]) }}" method="POST">
@@ -116,8 +114,7 @@
                 @endif
             </div>
 
-            <div class="tab-pane fade show" id="files" role="tabpanel"
-                aria-labelledby="files-tab">
+            <div class="tab-pane fade show" id="files" role="tabpanel" aria-labelledby="files-tab">
 
                 <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#addFile"
                     data-whatever="@getbootstrap">Yeni Dosya Ekle</a></button>
@@ -179,11 +176,6 @@
             </div>
         </div>
     </div>
-
-
-
-
-
 </div>
 <script>
     function goToCompany() {

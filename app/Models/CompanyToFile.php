@@ -1,0 +1,33 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class CompanyToFile extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'company_id',
+        'file_id',
+        'file_type',
+        'assigned_at',
+    ];
+
+    public function type()
+    {
+        return $this->belongsTo(CompanyFileType::class, 'file_type');
+    }
+
+    public function company()
+    {
+        return $this->belongsTo(CoopCompany::class);
+    }
+
+    public function file()
+    {
+        return $this->belongsTo(File::class);
+    }
+}

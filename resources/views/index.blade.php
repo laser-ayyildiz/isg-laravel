@@ -39,7 +39,7 @@
                          <span class="icon icon-bar"></span>
                     </button>
                     <!-- lOGO -->
-                    <a href="index.html" class="navbar-brand">Özgür OSGB</a>
+                    <a href="/" class="navbar-brand">Özgür OSGB</a>
 
 
                </div>

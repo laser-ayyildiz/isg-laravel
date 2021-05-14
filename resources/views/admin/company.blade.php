@@ -8,7 +8,7 @@
 </div>
 @elseif (session('success'))
 <div class="alert alert-success">
-    {{ session('success') }}
+    {!! session('success') !!}
 </div>
 @endif
 
@@ -80,7 +80,7 @@
             @endif
             <li class="nav-item">
                 <a class="nav-link " id="ir-tab" data-toggle="tab" href="#isletme_rapor" role="tab"
-                    aria-controls="İşletme Raporları" aria-selected="false"><b>Raporlar</b></a>
+                    aria-controls="Zorunlu Dokümanlar" aria-selected="false"><b>Zorunlu Dokümanlar</b></a>
             </li>
             @if ($deleted == false)
             <li class="nav-item">
@@ -362,39 +362,45 @@
             </div>
             @endif
             <!--İşletme Raporları -->
+
             <div class="tab-pane fade show " id="isletme_rapor" role="tabpanel" aria-labelledby="ir-tab">
-                @if ($deleted == false)
-                <button style="float: left;" class="btn btn-primary" id="ir_form" data-toggle="modal"
-                    data-target="#addReport" data-whatever="@getbootstrap">Yeni Rapor Hazırla</button>
-                <button style="float: right;" class="btn btn-primary" id="ir_form2" data-toggle="modal"
-                    data-target="#uploadReport" data-whatever="@getbootstrap">Rapor Yükle</button>
-                @endif
+                <button class="btn btn-primary" data-toggle="modal" data-target="#addMandatoryFile"
+                    data-whatever="@getbootstrap">Zorunlu Doküman Ekle</button>
                 <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
-                    <table class="table table-striped table-bordered table-hover table-sm mt-2" id="dataTable">
+                    <table class="table table-striped table-bordered table-hover mt-2" id="dataTable">
                         <thead class="thead-dark">
                             <tr>
                                 <th>Dosya Adı</th>
-                                <th>Dosya Tarihi</th>
-                                <th>İndir</th>
+                                <th>Oluşturulma Tarihi</th>
+                                <th>Yüklenme Tarihi</th>
+                                <th style="width:  12%">İndir</th>
                             </tr>
                         </thead>
                         <tbody>
-
+                            @foreach ($mandatory_files as $file )
                             <tr>
-                                <td><b></b></td>
-                                <td><b></b></td>
-                                <td><input class="btn btn-success btn-sm" style="width:80px" type="button" value="İndir"
-                                        onclick="window.location.href='isletme_raporlari/';" /></td>
+                                <td><b>{{ $file->type->file_name }}</b></td>
+                                <td><b>{{ $file->assigned_at }}</b></td>
+                                <td><b>{{ $file->updated_at }}</b></td>
+                                <td class="text-center">
+                                    <form class="float-left mx-1"
+                                        action="{{ route('download-file',['folder' => 'company-mandatory-files', 'file_name' => $file->file->name]) }}"
+                                        method="post">
+                                        @csrf
+                                        <button class="btn btn-success btn-sm" type="submit">
+                                            <i class="fas fa-download"></i></button>
+                                    </form>
+                                    <form class="float-left mx-1"
+                                        action="{{ route('delete-file',['file' => $file->file, 'type' => 'CompanyToFile']) }}"
+                                        method="post">
+                                        @csrf
+                                        <button class="btn btn-danger btn-sm" type="submit">
+                                            <i class="fas fa-trash-alt"></i></button>
+                                    </form>
+                                </td>
                             </tr>
-
+                            @endforeach
                         </tbody>
-                        <tfoot>
-                            <tr>
-                                <td><strong>Dosya Adı</strong></td>
-                                <td><strong>Dosya Tarihi</strong></td>
-                                <td><strong>İndir</strong></td>
-                            </tr>
-                        </tfoot>
                     </table>
                 </div>
             </div>
@@ -962,6 +968,55 @@
             </div>
         </div>
     </div>
+
+    <!-- Zorunlu Doküman Ekle -->
+    <div class="modal fade" id="addMandatoryFile" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-light">
+                    <h5 class="modal-title" id="exampleModalLabel"><b>Dosya Yükle</b></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('mandatory-file-upload',['company' => $company]) }}" method="post"
+                        enctype="multipart/form-data">
+                        <h3 class="text-center mb-5">{{ Str::title($company->name) }} işletmesi için dosya yükle</h3>
+                        @csrf
+                        <div class="row my-2">
+                            <div class="col-6">
+                                <label for="file_type"><b>Dosya Tipi</b></label>
+                                <select class="form-control" name="file_type" required>
+                                    <option selected disabled>Seç...</option>
+                                    <option value="1">İş Yeri Uzman Sözleşmesi</option>
+                                    <option value="2">İş Yeri Hekim Sözleşmesi</option>
+                                    <option value="3">Acil Durum Eylem Planı</option>
+                                    <option value="4">Risk Analizi Dosyası</option>
+                                    <option value="5">Yıllık Çalışma Planı</option>
+                                    <option value="6">Dsp Sözleşmesi</option>
+                                    <option value="7">Yıl Sonu Değerlendirme Raporu</option>
+                                </select>
+                            </div>
+                            <div class="col-6">
+                                <label for="assigned_at"><b>Dosya Oluşturulma Tarihi</b></label>
+                                <input class="form-control" type="date" name="assigned_at" id="assigned_at">
+                            </div>
+                        </div>
+                        <div class="custom-file my-4">
+                            <input type="file" name="file" class="custom-file-input" id="chooseFile" required>
+                            <label class="custom-file-label" for="chooseFile"><b>Dosya Seç</b></label>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary btn-block mt-4">
+                                Yükle
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <!--container end-->
 
@@ -974,6 +1029,8 @@
 @push('scripts')
 <script>
     empRecDate.max = new Date().toISOString().split("T")[0];
+    assigned_at.max = new Date().toISOString().split("T")[0];
+
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
 <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
