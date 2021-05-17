@@ -27,7 +27,7 @@ class CreateUser extends Mailable
      */
     public function build()
     {
-        return $this->from('denemeosgb1@gmail.com')
+        return $this->from('info@ozgurosgb.com.tr')
             ->view('emails.orders.shipped');
     }
 }

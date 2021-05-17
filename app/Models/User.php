@@ -21,6 +21,7 @@ class User extends Authenticatable implements MustVerifyEmail
     use TwoFactorAuthenticatable;
     use HasRoles;
     use SoftDeletes;
+    use Notifiable;
 
 
     /**

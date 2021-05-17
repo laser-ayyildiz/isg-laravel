@@ -370,6 +370,7 @@
                     <table class="table table-striped table-bordered table-hover mt-2" id="dataTable">
                         <thead class="thead-dark">
                             <tr>
+                                <th>Dosya Türü</th>
                                 <th>Dosya Adı</th>
                                 <th>Oluşturulma Tarihi</th>
                                 <th>Yüklenme Tarihi</th>
@@ -380,6 +381,7 @@
                             @foreach ($mandatory_files as $file )
                             <tr>
                                 <td><b>{{ $file->type->file_name }}</b></td>
+                                <td><b>{{ $file->file->name }}</b></td>
                                 <td><b>{{ $file->assigned_at }}</b></td>
                                 <td><b>{{ $file->updated_at }}</b></td>
                                 <td class="text-center">

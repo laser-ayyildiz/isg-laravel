@@ -41,9 +41,9 @@
             <div>
                 <x-jet-label for="role" value="{{ __('Kullanıcı Tipi') }}" />
                 <select id="role" type="" class="form-select rounded-md shadow-sm mt-1 mb-1 block w-full" name="role" :value="old('role')" required autocomplete="role">
-                    @foreach ($roles as $role )
-                    <option value="{{ $role->name }}">{{ $role->name }}</option>
-                    @endforeach
+                    <option value="User">Çalışan</option>
+                    <option value="CompanyAdmin">İşletme Yöneticisi</option>
+                    <option value="CompanyUser">İşletme Çalışanı</option>
                 </select>
             </div>
 

@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
-use App\Models\Exception;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
+use App\Notifications\CreateOsgbEmployee;
 
 class OsgbEmployeeController extends Controller
 {
@@ -30,84 +29,68 @@ class OsgbEmployeeController extends Controller
 
     public function create(Request $request)
     {
-        $password = random_int(100000, 9999999);
-        User::create([
-            'job_id' => $request->job_id,
-            'recruitment_date' => $request->rec_date,
-            'name' => $request->name,
-            'email' => $request->email,
-            'tc' => $request->tc,
-            'phone' => $request->phone,
-            'password' => Hash::make($password)
-        ])->syncRoles('User');
-
+        $chars = "1234567890abcdefghijKLMNOPQRSTuvwxyzABCDEFGHIJklmnopqrstUVWXYZ0987654321+-/*-?=&%!";
+        $password = '';
+        for ($i = 0; $i < 16; $i++) {
+            $password .= $chars[rand() % 72];
+        }
         try {
-            Mail::send(
-                [],
-                [],
-                function ($message) use ($request, $password) {
-                    $message->from('firat@ozgurosgb.com.tr');
-                    //$message->sender('john@johndoe.com', 'John Doe');
-                    $message->to($request->email, $request->name);
-                    //$message->replyTo('john@johndoe.com', 'John Doe');
-                    $message->subject('Üye Kaydı');
-                    $message->setBody('Özgür OSGB üyeliğiiniz yapılmıştır. <br> Şifreniz : ' . $password, 'text/html');
-                    //$message->priority(3);
-                    //$message->attach('pathToFile');
-                }
-            );
-        } catch (\Exception $e) {
-            return redirect()->back()->with('status', $e);
+            $user = User::create([
+                'job_id' => $request->job_id,
+                'recruitment_date' => $request->rec_date,
+                'name' => $request->name,
+                'email' => $request->email,
+                'tc' => $request->tc,
+                'phone' => $request->phone,
+                'password' => Hash::make($password)
+            ])->syncRoles('User');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('fail', 'Çalışan kayıt edilirken bir hata ile karşılaşıldı!');
         }
 
-        return redirect()->route('admin.osgb_employees')->with('status', 'Çalışan eklenmiştir!');
-    }
-
-    public function delete(Request $request, $id)
-    {
         try {
-            $user = User::where('id', $id);
-            $user->update($request->except('_token', 'deleteRequest', 'userId', 'email'));
-            $user->delete();
-        } catch (\Exception $error) {
-            Exception::create([
-                'user_id' => Auth::id(),
-                'exception' => $error,
-                'function_name' => 'OsgbEmployeeController->delete'
-            ]);
+            $user->notify(new CreateOsgbEmployee($user, $password));
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+            return redirect()->back()->with('fail', 'Mail gönderme işleminde bir sıkıntı yaşıyoruz. Lütfen daha sonra tekrar deneyiniz!');
         }
-    }
-
-    public function change(Request $request, $id)
-    {
-        try {
-            User::where('id', $id)
-                ->update(
-                    $request->except('_token', 'changeRequest', 'userId')
-                );
-        } catch (\Exception $error) {
-            Exception::create([
-                'user_id' => Auth::id(),
-                'exception' => $error,
-                'function_name' => 'OsgbEmployeeController->delete'
-            ]);
-        }
+        return redirect()->back()->with('success', 'Çalışan oluşturuldu. Giriş bilgileri mail olarak gönderildi!');
     }
 
     public function handle(Request $request)
     {
         $id = $request->input('userId');
         if ($request->has('deleteRequest')) {
-            $this->delete($request, $id);
-            return redirect()->route('admin.osgb_employees')->with('status', 'Kullanıcı silinmiştir. Silinen çalışanları Arşiv bölümünde bulabilirsiniz!');
+            try {
+                $this->delete($request, $id);
+            } catch (\Throwable $th) {
+                return redirect()->back()->with('fail', 'İşleminiz gerçekleştrilirken bir hata ile karşılaşıldı!');
+            }
+            return redirect()->back()->with('success', 'Kullanıcı silinmiştir. Silinen çalışanları Arşiv bölümünde bulabilirsiniz!');
         }
         if ($request->has('changeRequest')) {
-            $this->change($request, $id);
-            return redirect()->route('admin.osgb_employees')->with('status', 'Değişiklikleriniz başarıyla uygulanmıştır!');
+            try {
+                $this->change($request, $id);
+            } catch (\Throwable $th) {
+                return redirect()->back()->with('fail', 'İşleminiz gerçekleştrilirken bir hata ile karşılaşıldı!');
+            }
+            return redirect()->back()->with('success', 'Değişiklikleriniz başarıyla uygulanmıştır!');
         }
-        if ($request->has('saveRequest')) {
-            $this->create($request);
-            return redirect()->route('admin.osgb_employees')->with('status', 'Yeni kullanıcı başarıyla eklenmiştir!');
-        }
+    }
+
+    public function delete(Request $request, $id)
+    {
+        $user = User::where('id', $id);
+        $user->update($request->except('_token', 'deleteRequest', 'userId', 'email'));
+        $user->delete();
+    }
+
+    public function change(Request $request, $id)
+    {
+        User::where('id', $id)
+            ->update(
+                $request->except('_token', 'changeRequest', 'userId')
+            );
     }
 }

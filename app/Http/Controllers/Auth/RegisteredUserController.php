@@ -20,7 +20,7 @@ class RegisteredUserController extends Controller
      */
     public function create()
     {
-        $roles = Role::all();
+        $roles = Role::get();
         return view('auth.register', compact('roles'));
     }
 
@@ -48,8 +48,8 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]));
         $user->syncRoles($request->role);
-        event(new Registered($user));
+        //event(new Registered($user));
 
-        return redirect(RouteServiceProvider::HOME);
+        return redirect("/");
     }
 }

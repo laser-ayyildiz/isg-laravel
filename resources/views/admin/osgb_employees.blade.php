@@ -1,9 +1,13 @@
 @extends('layouts.admin')
 @section('title')OSGB Çalışanları - @endsection
 @section('content')
-@if (session('status'))
+@if (session('success'))
 <div class="alert alert-success">
-    {{ session('status') }}
+    {{ session('success') }}
+</div>
+@elseif (session('fail'))
+<div class="alert alert-danger">
+    {{ session('fail') }}
 </div>
 @endif
 <div class="card shadow-lg">
@@ -31,7 +35,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form action="{{ route('admin.osgb_employees.handle') }}" method="POST">
+                            <form action="{{ route('admin.osgb_employees.create') }}" method="POST">
                                 @csrf
                                 <div class="row">
                                     <div class="col-sm-6">
@@ -202,23 +206,23 @@
     </div>
 </div>
 
-    @endsection
-    @push('styles')
+@endsection
+@push('styles')
 
-    <link href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap5.min.css" rel="stylesheet">
 
-    @endpush
+@endpush
 
-    @push('scripts')
-    <script>
-        rec_date.max = new Date().toISOString().split("T")[0];
-        recruitment_date.max = new Date().toISOString().split("T")[0];
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
-    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap5.min.js"></script>
-    <script type="text/javascript">
-        $(function () {
+@push('scripts')
+<script>
+    rec_date.max = new Date().toISOString().split("T")[0];
+    recruitment_date.max = new Date().toISOString().split("T")[0];
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap5.min.js"></script>
+<script type="text/javascript">
+    $(function () {
               var table = $('.data-table').DataTable({
                   processing: true,
                   serverSide: true,
@@ -253,5 +257,5 @@
                 $("#job_id").val(job.id);
             });
         });
-    </script>
-    @endpush
+</script>
+@endpush

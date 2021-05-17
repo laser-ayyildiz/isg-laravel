@@ -4,17 +4,19 @@ namespace App\Http\Controllers\User;
 
 use App\Models\User;
 use App\Models\CoopCompany;
+use App\Models\CoopEmployee;
 use Illuminate\Http\Request;
-use App\Models\UserToCompany;
-use App\Models\DeletedCompany;
-use App\Http\Controllers\Controller;
+use App\Models\CompanyToFile;
 use App\Models\DeleteRequest;
 use App\Models\UpdateRequest;
+use App\Models\UserToCompany;
+use Yajra\DataTables\DataTables;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class CompanyController extends Controller
 {
-    public function index($id)
+    public function index($id,Request $request)
     {
         $relation = UserToCompany::where('company_id', $id)->where('user_id', Auth::id())->count();
         if ($relation < 1) {
@@ -31,12 +33,21 @@ class CompanyController extends Controller
             $query->where('job_id', 8);
         })->where('company_id', $id)->get();
 
+        if ($request->ajax()) {
+            $coopEmployees = CoopEmployee::where('company_id', $id)->get();
+            return DataTables::of($coopEmployees)->make(true);
+        }
+
+        $mandatory_files = CompanyToFile::with('file', 'type')->where('company_id', $id)->get();
+
         return (view(
             'user.company',
             [
                 'company' => $company,
                 'employees' => $employees,
-                'deleted' => false
+                'deleted' => false,
+                'mandatory_files' => $mandatory_files
+
             ],
         ));
     }
@@ -45,13 +56,16 @@ class CompanyController extends Controller
     {
         $company = CoopCompany::onlyTrashed()->where('id', $id)->first();
         $employees = null;
+        $mandatory_files = CompanyToFile::with('file', 'type')->where('company_id', $id)->get();
 
         return (view(
             'user.company',
             [
                 'company' => $company,
                 'osgbEmployees' => $employees,
-                'deleted' => true
+                'deleted' => true,
+                'mandatory_files' => $mandatory_files
+
             ],
         ));
     }
@@ -80,7 +94,7 @@ class CompanyController extends Controller
 
         $changedData = array_diff_assoc($istekler, $company->getAttributes());
         if (empty($changedData)) {
-            return redirect()->route('user.company', ['id' => $company->id])->with('updateRequestFail', 'Hiçbir değişiklik yapmadığınızı fark ettik lütfen tekrar deneyiniz!');
+            return redirect()->route('user.company', ['id' => $company->id])->with('fail', 'Hiçbir değişiklik yapmadığınızı fark ettik lütfen tekrar deneyiniz!');
         }
         $changedData['user_id'] = $user->id;
         $changedData['company_id'] = $company->id;
@@ -89,10 +103,10 @@ class CompanyController extends Controller
             UpdateRequest::create($changedData);
         } catch (\Throwable $th) {
             dd($th);
-            return redirect()->route('user.company', ['id' => $company->id])->with('updateRequestFail', 'Talebiniz iletilirken bir sorunla karşılaşıldı!');
+            return redirect()->route('user.company', ['id' => $company->id])->with('fail', 'Talebiniz iletilirken bir sorunla karşılaşıldı!');
         }
 
-        return redirect()->route('user.company', ['id' => $company->id])->with('updateRequestSuccess', 'Değişiklik talebiniz yöneticinize iletilmiştir!');
+        return redirect()->route('user.company', ['id' => $company->id])->with('success', 'Değişiklik talebiniz yöneticinize iletilmiştir!');
     }
 
     public function deleteRequest(CoopCompany $company, User $user)
@@ -108,9 +122,9 @@ class CompanyController extends Controller
                 'company_id' => $company->id
             ]);
         } catch (\Throwable $th) {
-            return redirect()->route('user.company', ['id' => $company->id])->with('deleteRequestFail', 'Talebiniz iletilirken bir sorunla karşılaşıldı!');
+            return redirect()->route('user.company', ['id' => $company->id])->with('fail', 'Talebiniz iletilirken bir sorunla karşılaşıldı!');
         }
 
-        return redirect()->route('user.company', ['id' => $company->id])->with('deleteRequestSuccess', 'Silme talebiniz yöneticinize iletilmiştir!');
+        return redirect()->route('user.company', ['id' => $company->id])->with('success', 'Silme talebiniz yöneticinize iletilmiştir!');
     }
 }
