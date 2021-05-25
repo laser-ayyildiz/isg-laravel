@@ -10,7 +10,6 @@ use App\Models\UserToCompany;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
 use App\Models\CompanyToFile;
-use CreateCompanyToFilesTable;
 
 class CompanyController extends Controller
 {
@@ -32,16 +31,16 @@ class CompanyController extends Controller
             return DataTables::of($coopEmployees)->make(true);
         }
 
-        $mandatory_files = CompanyToFile::with('file','type')->where('company_id',$id)->get();
+        $mandatory_files = CompanyToFile::with('file', 'type')->where('company_id', $id)->get();
 
         return (view(
-            'admin.company',
+            'admin.company.index',
             [
                 'company' => $company,
                 'employees' => $employees,
                 'allEmployees' => $allEmployees,
                 'deleted' => false,
-                'mandatory_files' => $mandatory_files
+                'mandatory_files' => $mandatory_files,
             ],
         ));
     }
@@ -50,10 +49,10 @@ class CompanyController extends Controller
     {
         $company = CoopCompany::where('id', $id)->onlyTrashed()->first();
         $employees = null;
-        $mandatory_files = CompanyToFile::with('file','type')->where('company_id',$id)->get();
+        $mandatory_files = CompanyToFile::with('file', 'type')->where('company_id', $id)->get();
 
         return (view(
-            'admin.company',
+            'admin.company.index',
             [
                 'company' => $company,
                 'osgbEmployees' => $employees,
@@ -61,7 +60,6 @@ class CompanyController extends Controller
                 'mandatory_files' => $mandatory_files
             ],
         ));
-
     }
 
     public function update(CoopCompany $company, Request $request)
@@ -71,9 +69,9 @@ class CompanyController extends Controller
         try {
             $company->update($updatedData);
         } catch (\Throwable $th) {
-            return redirect()->back()->with('fail', 'Değişiklerinizi uygularken bir hatayla karşılaştık!');
+            return back()->with('fail', 'Değişiklerinizi uygularken bir hatayla karşılaştık!');
         }
-        return redirect()->back()->with('success', 'Yaptığınız değişiklikler başarıyla uygulanmıştır!');
+        return back()->with('success', 'Yaptığınız değişiklikler başarıyla uygulanmıştır!');
     }
 
     public function delete(CoopCompany $company)
@@ -94,9 +92,19 @@ class CompanyController extends Controller
                 'company_id' => $company->id
             ]);
         } catch (\Throwable $th) {
-            return redirect()->back()->with('fail', 'Bir hata ile karşılaşıldı!');
+            return back()->with(
+                [
+                    'fail' => 'Bir hata ile karşılaşıldı!',
+                    'tab' => 'osgb_calisanlar'
+                ]
+            );
         }
-        return redirect()->back()->with('success', 'Seçtiğiniz çalışan şirketiniz ile eşleştirildi!');
+        return back()->with(
+            [
+                'success' => 'Seçtiğiniz çalışan şirketiniz ile eşleştirildi!',
+                'tab' => 'osgb_calisanlar'
+            ]
+        );
     }
 
     public function addEmployee(CoopCompany $company, Request $request)
@@ -106,7 +114,6 @@ class CompanyController extends Controller
             'calisanAd' => 'required',
             'calisanTc' => 'required|unique:coop_employees,tc',
             'calisanIseGirisTarihi' => 'required',
-
         ]);
         try {
             CoopEmployee::create([
@@ -119,9 +126,19 @@ class CompanyController extends Controller
                 'position' => $request->calisanPozisyon,
             ]);
         } catch (\Throwable $th) {
-            return redirect()->back()->with('fail', 'Bir Hata ile Karşılaşıldı!');
+            return back()->with(
+                [
+                    'fail' => 'Bir hata ile karşılaşıldı!',
+                    'tab' => 'isletme_calisanlar'
+                ]
+            );
         }
-        return redirect()->back()->with('success', 'Yeni Çalışan Başarıyla Eklendi!');
+        return back()->with(
+            [
+                'success' => 'Yeni Çalışan Başarıyla Eklendi!',
+                'tab' => 'isletme_calisanlar'
+            ]
+        );
     }
 
     public function deleteEmployee($company, $employee, Request $request)
@@ -129,8 +146,18 @@ class CompanyController extends Controller
         try {
             CoopEmployee::where('id', $employee)->where('company_id', $company)->delete();
         } catch (\Throwable $th) {
-            return redirect()->back()->with('fail', 'Bir hata ile karşılaşıldı!');
+            return back()->with(
+                [
+                    'fail' => 'Bir hata ile karşılaşıldı!',
+                    'tab' => 'isletme_calisanlar'
+                ]
+            );
         }
-        return redirect()->back()->with('success', 'Çalışan başarıyla silindi. Silinen çalışanlara ARŞİV bölümünden ulaşabilirsiniz');
+        return back()->with(
+            [
+                'success' => 'Çalışan başarıyla silindi. Silinen çalışanlara ARŞİV bölümünden ulaşabilirsiniz',
+                'tab' => 'isletme_calisanlar'
+            ]
+        );
     }
 }

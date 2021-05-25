@@ -137,7 +137,7 @@
                                     <div class="form-group">
                                         <label for="recruitment_date">
                                             <strong>İşe Giriş Tarihi</strong><br></label>
-                                        <input name="recruitment_date" class="form-control" type="date"
+                                        <input name="recruitment_date" id="recruitment_date" class="form-control" type="date"
                                             value="{{ auth()->user()->recruitment_date }}" required>
                                     </div>
                                 </div>
@@ -153,6 +153,9 @@
     </div>
 </div>
 @push('scripts')
+<script>
+    recruitment_date.max = new Date().toISOString().split("T")[0];
+</script>
 <script>
     $(document).ready(function() {
       $("#show_hide_password a").on('click', function(event) {

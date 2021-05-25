@@ -35,11 +35,19 @@ class FileUploadController extends Controller
                 ]);
             }
         } catch (\Throwable $th) {
-            return redirect()->back()
-                ->with('fail', 'İşleminizi gerçekleştirirken bir hata ile karşılaşıldı.');
+            return back()->with(
+                [
+                    'fail' => 'İşleminizi gerçekleştirirken bir hata ile karşılaşıldı.',
+                    'tab' => 'files'
+                ]
+            );
         }
-        return redirect()->back()->with(['tab' => 'files'])
-            ->with('success', 'Dosyanız ' . $fileName . ' ismiyle başarıyla kayıt edildi.');
+        return back()->with(
+            [
+                'success' => 'Dosyanız ' . $fileName . ' ismiyle başarıyla kayıt edildi.',
+                'tab' => 'files'
+            ]
+        );
     }
 
     public function mandatoryFiles(CoopCompany $company, Request $request)
@@ -67,11 +75,19 @@ class FileUploadController extends Controller
                 ]);
             }
         } catch (\Throwable $th) {
-            throw $th;
-            return redirect()->back()
-                ->with('fail', 'İşleminizi gerçekleştirirken bir hata ile karşılaşıldı.');
+            //throw $th;
+            return back()->with(
+                [
+                    'fail' => 'İşleminizi gerçekleştirirken bir hata ile karşılaşıldı.',
+                    'tab' => 'isletme_rapor'
+                ]
+            );
         }
-        return redirect()->back()->with(['tab' => 'files'])
-            ->with('success', 'Dosyanız ' . $fileName . ' ismiyle başarıyla kayıt edildi.');
+        return back()->with(
+            [
+                'success' => 'Dosyanız ' . $fileName . ' ismiyle başarıyla kayıt edildi.',
+                'tab' => 'isletme_rapor'
+            ]
+        );
     }
 }

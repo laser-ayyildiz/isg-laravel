@@ -20,7 +20,7 @@ class CoopCompany extends Model
         'address',
         'city',
         'town',
-        'remi_freq',
+        'danger_type',
         'nace_kodu',
         'mersis_no',
         'sgk_sicil',
@@ -29,6 +29,9 @@ class CoopCompany extends Model
         'katip_is_yeri_id',
         'katip_kurum_id',
         'change',
-        'contract_at'
+        'contract_at',
+        'is_group',
+        'group_status',
+        'leader_company_id',
     ];
 }
