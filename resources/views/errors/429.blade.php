@@ -1,4 +1,4 @@
-@extends('errors::minimal')
+@extends('errors::illustrated-layout')
 
 @section('title', __('Çok Fazla İstek'))
 @section('code', '429')

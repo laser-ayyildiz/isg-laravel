@@ -112,19 +112,22 @@ class CoopCompanyController extends Controller
         }
 
         try {
-            FrontAccountant::create([
-                'company_id' => $company->id,
-                'name' => $request->front_acc_name,
-                'email' => $request->front_acc_email,
-                'phone' => $request->front_acc_phone,
-            ]);
-
-            OutAccountant::create([
-                'company_id' => $company->id,
-                'name' => $request->out_acc_name,
-                'email' => $request->out_acc_email,
-                'phone' => $request->out_acc_phone,
-            ]);
+            if (isset($request->front_acc_name)) {
+                FrontAccountant::create([
+                    'company_id' => $company->id,
+                    'name' => $request->front_acc_name,
+                    'email' => $request->front_acc_email,
+                    'phone' => $request->front_acc_phone,
+                ]);
+            }
+            if (isset($request->out_acc_email)) {
+                OutAccountant::create([
+                    'company_id' => $company->id,
+                    'name' => $request->out_acc_name,
+                    'email' => $request->out_acc_email,
+                    'phone' => $request->out_acc_phone,
+                ]);
+            }
         } catch (\Throwable $th) {
             return back()->with('fail', 'İşletmeye ait muhasebeciler eklenirken bir hata ile karşılaşıldı.');
         }

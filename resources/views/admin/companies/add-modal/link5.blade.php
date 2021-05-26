@@ -4,14 +4,14 @@
         <div class="row my-3">
             <div class="col-6">
                 <label for="front_acc_name">
-                    <h5><b>Ön Muhasebe Ad Soyad<a style="color:red">*</a></h5></b>
+                    <h5><b>Ön Muhasebe Ad Soyad</h5></b>
                 </label>
                 <input class="form-control" type="text" name="front_acc_name" value="{{ old('front_acc_name') }}"
                     placeholder="Ad Soyad">
             </div>
             <div class="col-6">
                 <label for="front_acc_email">
-                    <h5><b>Ön Muhasebe Email<a style="color:red">*</a></h5></b>
+                    <h5><b>Ön Muhasebe Email</h5></b>
                 </label>
                 <input class="form-control" type="text" name="front_acc_email" value="{{ old('front_acc_email') }}"
                     placeholder="Email">
@@ -20,7 +20,7 @@
         <div class="row my-3">
             <div class="col-6">
                 <label for="front_acc_phone">
-                    <h5><b>Ön Muhasebe Telefon No<a style="color:red">*</a></h5></b>
+                    <h5><b>Ön Muhasebe Telefon No</h5></b>
                 </label>
                 <input class="form-control" type="text" name="front_acc_phone" value="{{ old('front_acc_phone') }}"
                     placeholder="05XXXXXXXXX" maxlength="11">
@@ -31,14 +31,14 @@
         <div class="row my-3">
             <div class="col-6">
                 <label for="out_acc_name">
-                    <h5><b>Dış Muhasebe Ad Soyad<a style="color:red">*</a></h5></b>
+                    <h5><b>Dış Muhasebe Ad Soyad</h5></b>
                 </label>
                 <input class="form-control" type="text" name="out_acc_name" value="{{ old('out_acc_name') }}"
                     placeholder="Ad Soyad">
             </div>
             <div class="col-6">
                 <label for="out_acc_email">
-                    <h5><b>Dış Muhasebe Email<a style="color:red">*</a></h5></b>
+                    <h5><b>Dış Muhasebe Email</h5></b>
                 </label>
                 <input class="form-control" type="email" name="out_acc_email" value="{{ old('out_acc_email') }}"
                     placeholder="Email">
@@ -47,7 +47,7 @@
         <div class="row my-3">
             <div class="col-6">
                 <label for="out_acc_phone">
-                    <h5><b>Dış Muhasebe Telefon No<a style="color:red">*</a></h5></b>
+                    <h5><b>Dış Muhasebe Telefon No</h5></b>
                 </label>
                 <input class="form-control" type="phone" name="out_acc_phone" value="{{ old('out_acc_phone') }}"
                     placeholder="05XXXXXXXXX" maxlength="11">
