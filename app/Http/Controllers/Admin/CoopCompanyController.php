@@ -19,16 +19,17 @@ class CoopCompanyController extends Controller
     public function index(Request $request)
     {
         $osgbEmployees = User::whereBetween('job_id', [1, 7])->get();
-        $companies = CoopCompany::select('id', 'name', 'type', 'phone', 'email', 'city', 'town', 'contract_at');
+        $group_leaders = CoopCompany::select('id','name')->where('group_status','leader')->get();
         if ($request->ajax()) {
-            return DataTables::of($companies)
+            $data = CoopCompany::select('id', 'name', 'type', 'phone', 'email', 'city', 'town', 'contract_at');
+            return DataTables::of($data)
                 ->make(true);
         }
         return view(
             'admin.companies.index',
             [
                 'osgbEmployees' => $osgbEmployees,
-                'companies' => $companies
+                'group_leaders' => $group_leaders
             ]
         );
     }

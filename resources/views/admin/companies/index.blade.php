@@ -44,6 +44,7 @@
 <script>
     contract_at.max = new Date().toISOString().split("T")[0];
 </script>
+<script src="/js/core/admin/companies/modal-validation.js"></script>
 <script src="/js/core/admin/companies/group-comp.js"></script>
 <script src="/js/core/city-town.js"></script>
 {{-- dataTable --}}
@@ -82,7 +83,7 @@
 </script>
 <script>
     function populateList() {
-        var data = @json($companies->get());
+        var data = @json($group_leaders);
         for( var i = 0; i<data.length; i++){
             var id = data[i]['id'];
             var name = data[i]['name'];
@@ -90,6 +91,7 @@
         }
     }
 </script>
+
 
 @endpush
 

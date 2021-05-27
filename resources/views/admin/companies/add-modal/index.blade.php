@@ -1,6 +1,6 @@
 <div class="modal fade" id="addCompany" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
-    <form action="{{ route('admin.companies.store') }}" method="POST">
+    <form action="{{ route('admin.companies.store') }}" id="addCompanyForm" method="POST">
         @csrf
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">

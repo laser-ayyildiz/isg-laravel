@@ -6,25 +6,25 @@
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link text-dark" id="link2-tab" data-toggle="tab" role="tab" href="#link2" aria-selected="false"
+        <a class="nav-link text-dark disabled" id="link2-tab" data-toggle="tab" role="tab" href="#link2" aria-selected="false"
             aria-controls="link2">
             <h5><b>İşletme Detay</b></h5>
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link text-dark" id="link3-tab" data-toggle="tab" role="tab" href="#link3" aria-selected="false"
+        <a class="nav-link text-dark disabled" id="link3-tab" data-toggle="tab" role="tab" href="#link3" aria-selected="false"
             aria-controls="link2">
             <h5><b>OSGB Çalışanları</b></h5>
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link text-dark" id="link4-tab" data-toggle="tab" role="tab" href="#link4" aria-selected="false"
+        <a class="nav-link text-dark disabled" id="link4-tab" data-toggle="tab" role="tab" href="#link4" aria-selected="false"
             aria-controls="link3">
             <h5><b>Devlet Bilgileri</b></h5>
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link text-dark" id="link5-tab" data-toggle="tab" role="tab" href="#link5" aria-selected="false"
+        <a class="nav-link text-dark disabled" id="link5-tab" data-toggle="tab" role="tab" href="#link5" aria-selected="false"
             aria-controls="link4">
             <h5><b>Muhasebe Bilgileri</b></h5>
         </a>

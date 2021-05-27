@@ -1,40 +1,36 @@
-$('#next1').click(function () {
-    if ($('#comp_type').val() && $('#name').val() && $('#contract_date').val() && $('#address').val()
-        && $('#email').val() && $('#phone').val() && $('#citySelect').val()
-        && $('#countrySelect').val() && $('#is_veren').val()) {
-        $('.nav-tabs > .nav-item > .active').parent().next('li').find('a').trigger('click');
-    } else {
-        window.alert("Lütfen zorunlu(*) alanları doldurun");
-    }
-});
-$('#kaydet').click(function () {
-    if (!$('#comp_type').val() && !$('#name').val() && !$('#contract_date').val()
-        && !$('#address').val() && !$('#email').val() && !$('#phone').val()
-        && !$('#citySelect').val() && !$('#countrySelect').val() && !$('#is_veren').val()) {
-        window.alert("Lütfen zorunlu(*) alanları doldurun");
-        return false;
-    }
-});
-$('#next2').click(function () {
-    $('.nav-tabs > .nav-item > .active').parent().next('li').find('a').trigger('click');
-});
-$('.previous').click(function () {
-    $('.nav-tabs > .nav-item > .active').parent().prev('li').find('a').trigger('click');
-});
+let i = 2;
+let check = false;
 
-$('#link2-tab').click(function () {
-    if (!$('#comp_type').val() && !$('#name').val() && !$('#contract_date').val()
-        && !$('#address').val() && !$('#email').val() && !$('#phone').val()
-        && !$('#citySelect').val() && !$('#countrySelect').val() && !$('#is_veren').val()) {
-        window.alert("Lütfen zorunlu(*) alanları doldurun");
-        return false;
-    }
-});
-$('#link3-tab').click(function () {
-    if (!$('#comp_type').val() && !$('#name').val() && !$('#contract_date').val()
-        && !$('#address').val() && !$('#email').val() && !$('#phone').val()
-        && !$('#citySelect').val() && !$('#countrySelect').val() && !$('#is_veren').val()) {
-        window.alert("Lütfen zorunlu(*) alanları doldurun");
-        return false;
-    }
-});
+for (let index = 1; index < 5; index++) {
+    $('#next' + index).on('click', function () {
+        let field = document.getElementById("field" + index);
+        let invalids = field.querySelectorAll("input:invalid, select:invalid, textarea:invalid");
+        invalids.forEach(element => {
+            $(element).addClass("is-invalid");
+            $(element).on('keyup change DOMNodeInserted', function () {
+                if (element.checkValidity()) {
+                    $(element).removeClass("is-invalid");
+                    $(element).addClass("is-valid");
+                }
+            });
+        });
+
+        check = invalids.length === 0 ? true : false;
+        if (check) {
+            $('#link' + i + '-tab').removeClass('disabled');
+            i++;
+            $('#saveBtn').removeClass('disabled');
+            $('.nav-tabs > .nav-item > .active').parent().next('li').find('a').trigger('click');
+        } else {
+            $('#saveBtn').addClass('disabled');
+        }
+    });
+
+    $('#addCompanyForm').on('click change', function () {
+        if (addCompanyForm.checkValidity()) {
+            $('#saveBtn').removeClass('disabled');
+        } else {
+            $('#saveBtn').addClass('disabled');
+        }
+    })
+}

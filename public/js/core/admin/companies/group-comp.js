@@ -30,7 +30,7 @@ $(document).on('change', 'input[type=radio][name=company_status]', function() {
             );
         populateList();
     }
-    if (this.value == 'group') {
+    if (this.value == 'leader') {
         $("#leader-company-div").empty();
     }
 });
