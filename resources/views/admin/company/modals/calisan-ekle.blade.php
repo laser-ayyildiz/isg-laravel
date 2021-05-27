@@ -25,11 +25,11 @@
                     <div class="row my-2">
                         <div class="col-sm-6">
                             <label for="empTC"><b>T.C. Kimlik Numarası</b></label>
-                            <input class="form-control" type="phone" maxlength="11" name="calisanTc" required>
+                            <input class="form-control" type="phone" minlength="11" maxlength="11" name="calisanTc" required>
                         </div>
                         <div class="col-sm-6">
                             <label for="empPhone"><b>Telefon Numarası</b></label>
-                            <input class="form-control" type="phone" maxlength="11" name="calisanTelefon">
+                            <input class="form-control" type="phone" minlength="11" maxlength="11" name="calisanTelefon">
                         </div>
                     </div>
                     <div class="row my-2">
@@ -39,8 +39,7 @@
                         </div>
                         <div class="col-sm-4">
                             <label for="empRecDate"><b>İşe Giriş Tarihi</b></label>
-                            <input class="form-control" type="date" name="calisanIseGirisTarihi" id="empRecDate"
-                                required>
+                            <input class="form-control" type="date" name="calisanIseGirisTarihi" id="empRecDate">
                         </div>
                     </div>
                     <div class="modal-footer">

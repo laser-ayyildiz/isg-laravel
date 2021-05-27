@@ -110,10 +110,10 @@ class CompanyController extends Controller
     public function addEmployee(CoopCompany $company, Request $request)
     {
         $this->validate($request, [
-            'calisanEmail' => 'email|unique:coop_employees,email',
             'calisanAd' => 'required',
-            'calisanTc' => 'required|unique:coop_employees,tc',
-            'calisanIseGirisTarihi' => 'required',
+            'calisanTc' => 'required|unique:coop_employees,tc|digits:11',
+            'calisanEmail' => 'email|nullable|unique:coop_employees,email',
+            'calisanIseGirisTarihi' => 'nullable|before_or_equal:' . date("Y-m-d H:i:s"),
         ]);
         try {
             CoopEmployee::create([

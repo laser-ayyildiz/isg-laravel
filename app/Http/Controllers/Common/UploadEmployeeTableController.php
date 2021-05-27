@@ -22,8 +22,21 @@ class UploadEmployeeTableController extends Controller
                 return back()->withFailures($import->failures());
             }
         } catch (\Throwable $th) {
-            return redirect()->back()->with('fail', 'Bir hata ile karşılaşıldı. Lütfen excel tablonuzu kontrol edin!');
+            return back()->with(
+                [
+                    'fail' => 'Bir hata ile karşılaşıldı. Lütfen excel tablonuzu kontrol edin!',
+                    'tab' => 'isletme_calisanlar'
+                ]
+            );
         }
-        return redirect()->back()->with('success', 'Çalışanlar başarıyla güncellendi. Yanlış bilgiler bulunan satırlar es geçildi. Tekrarlanan TC kimlik numaralı veya tekrarlanan email adresli kullanıcılar es geçildi. Hata olduğunu düşünüyorsanız lütfen öncelikle excel tablonuzu kontrol ediniz!');
+        return back()->with(
+            [
+                'success' => 'Çalışanlar başarıyla güncellendi. Yanlış bilgiler bulunan satırlar eklenmedi.' .
+                    '<li>Tekrarlanan TC kimlik numaralı veya tekrarlanan email adresli kullanıcılar eklenmedi.</li>' .
+                    '<li>T.C Kimlik Numarası 11 hane olmayan kullanıcılar eklenmedi.</li>' .
+                    '<li>Hata olduğunu düşünüyorsanız lütfen öncelikle excel tablonuzu kontrol ediniz!</li>',
+                'tab' => 'isletme_calisanlar'
+            ]
+        );
     }
 }
