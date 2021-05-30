@@ -14,11 +14,11 @@ class JobSeeder extends Seeder
      */
     public function run()
     {
-        Job::create(['name' => 'İsg Uzmanı 1']);
-        Job::create(['name' => 'İsg Uzmanı 2']);
-        Job::create(['name' => 'İsg Uzmanı 3']);
-        Job::create(['name' => 'Doktor']);
-        Job::create(['name' => 'Sağlık Personeli']);
+        Job::create(['name' => 'İsg Uzmanı']);
+        Job::create(['name' => 'İsg Uzmanı']);
+        Job::create(['name' => 'İsg Uzmanı']);
+        Job::create(['name' => 'İş Yeri Hekimi']);
+        Job::create(['name' => 'Diğer Sağlık Personeli']);
         Job::create(['name' => 'Ofis Personeli']);
         Job::create(['name' => 'Muhasebeci']);
         Job::create(['name' => 'Şirket Çalışanı']);

@@ -90,4 +90,41 @@ class FileUploadController extends Controller
             ]
         );
     }
+
+    public function empBatchFileUpload(CoopCompany $company, Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:csv,txt,xlx,xls,xlsx,odt,odf,mp3,mp4,pdf,png,jpg,jpeg,doc,docx,ppt,pptx|max:51200'
+        ]);
+        $fileName = null;
+        $employeeIds = CoopEmployee::select('id')->where('company_id', $company->id)->get();
+        try {
+            if ($request->file()) {
+                $fileModel = new File;
+                $fileName = time() . '_' . $request->file->getClientOriginalName();
+                $filePath = $request->file('file')->storeAs('uploads/employee-files', $fileName, 'public');
+
+                $fileModel->name = time() . '_' . $request->file->getClientOriginalName();
+                $fileModel->file_path = '/storage/' . $filePath;
+                $fileModel->save();
+                EmployeeToFile::create([
+                    'employee_id' => $employee->id,
+                    'file_id' => $fileModel->id
+                ]);
+            }
+        } catch (\Throwable $th) {
+            return back()->with(
+                [
+                    'fail' => 'İşleminizi gerçekleştirirken bir hata ile karşılaşıldı.',
+                    'tab' => 'files'
+                ]
+            );
+        }
+        return back()->with(
+            [
+                'success' => 'Dosyanız ' . $fileName . ' ismiyle başarıyla kayıt edildi.',
+                'tab' => 'files'
+            ]
+        );
+    }
 }

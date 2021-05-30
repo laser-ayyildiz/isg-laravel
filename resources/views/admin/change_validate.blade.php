@@ -2,49 +2,20 @@
 @section('title')Onay Bekleyenler - @endsection
 @section('content')
 
-@if (session('rejectUpdateFail'))
-<div class="alert alert-danger">
-    {{ session('rejectUpdateFail') }}
-</div>
-@elseif (session('rejectUpdateSuccess'))
+@if (session('success'))
 <div class="alert alert-success">
-    {{ session('rejectUpdateSuccess') }}
+    {{ session('success') }}
 </div>
-@elseif (session('acceptUpdateFail'))
+@elseif (session('fail'))
 <div class="alert alert-danger">
-    {{ session('acceptUpdateFail') }}
+    {{ session('fail') }}
 </div>
-@elseif (session('acceptUpdateSuccess'))
-<div class="alert alert-success">
-    {{ session('acceptUpdateSuccess') }}
-</div>
-@elseif (session('warningStatus'))
+@elseif (session('warning'))
 <div class="alert alert-warning">
-    {{ session('warningStatus') }}
+    {{ session('warning') }}
 </div>
 @endif
 
-@if (session('rejectDeleteFail'))
-<div class="alert alert-danger">
-    {{ session('rejectDeleteFail') }}
-</div>
-@elseif (session('rejectDeleteSuccess'))
-<div class="alert alert-success">
-    {{ session('rejectDeleteSuccess') }}
-</div>
-@elseif (session('acceptDeleteFail'))
-<div class="alert alert-danger">
-    {{ session('acceptDeleteFail') }}
-</div>
-@elseif (session('accpetDeleteSuccess'))
-<div class="alert alert-success">
-    {{ session('accpetDeleteSuccess') }}
-</div>
-@elseif (session('warningStatus'))
-<div class="alert alert-warning">
-    {{ session('warningStatus') }}
-</div>
-@endif
 <div class="card shadow-lg">
     <div class="card-header bg-light">
         <h1 class="text-dark mb-1" style="text-align: center;"><b>Onay Bekleyen Değişiklikler</b></h1>
@@ -63,7 +34,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($demands as $key => $demand )
+                    @forelse ($demands as $key => $demand)
                     <tr>
                         <td>{{ Str::title($demand->company->name) }}</td>
                         <td>{{ $demand->company->phone }}</td>
@@ -199,14 +170,28 @@
                                             </div>
                                             @endif
 
+                                            @if ($demand->bill_address !== null)
+                                            <div class="col-sm-4">
+                                                <label for="eski_bill_address"><strong>Eski Fatura
+                                                        Adresi</strong></label>
+                                                <input class="form-control" type="text" name="eski_bill_address"
+                                                    value="{{ $demand->company->bill_address }}" readonly>
+                                                <label class="mt-1" for="bill_address" style="color:red"><strong>Yeni
+                                                        Fatura Adresi&emsp;</strong></label>
+                                                <input class="form-control mb-3" style="border: 2px solid red;"
+                                                    type="text" placeholder="Adres" name="bill_address"
+                                                    value="{{ $demand->bill_address }}" required>
+                                            </div>
+                                            @endif
+
                                             @if ($demand->address !== null)
                                             <div class="col-sm-4">
-                                                <label for="eski_address"><strong>Eski
+                                                <label for="eski_address"><strong>Eski İş Yeri
                                                         Adres</strong></label>
                                                 <input class="form-control" type="text" name="eski_address"
                                                     value="{{ $demand->company->address }}" readonly>
-                                                <label class="mt-1" for="address" style="color:red"><strong>Yeni
-                                                        Adres:&emsp;</strong></label>
+                                                <label class="mt-1" for="address" style="color:red"><strong>Yeni İş Yeri
+                                                        Adres&emsp;</strong></label>
                                                 <input class="form-control mb-3" style="border: 2px solid red;"
                                                     type="text" placeholder="Adres" name="address"
                                                     value="{{ $demand->address }}" required>
@@ -395,12 +380,15 @@
                                 </div>
                             </div>
                         </div>
-
                         @endif
-
                     </tr>
-                    @endforeach
-
+                    @empty
+                    <tr>
+                        <td valign="top" colspan="6" class="dataTables_empty text-center">
+                            <h4><b>Onay Bekleyen Bir Değişiklik Bulunamadı!</b></h4>
+                        </td>
+                    </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

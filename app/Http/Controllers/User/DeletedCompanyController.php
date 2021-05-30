@@ -37,14 +37,14 @@ class DeletedCompanyController extends Controller
 
         try {
             $company->forceDelete();
-            return redirect()->route('admin.deleted_companies')->with('success', 'İşletme Tamamen Kaldırıldı!');
+            return redirect()->route('user.deleted_companies')->with('success', 'İşletme Tamamen Kaldırıldı!');
         } catch (\Exception $error) {
             Exception::create([
                 'user_id' => Auth::id(),
                 'exception' => $error,
                 'function_name' => 'DeleteCompanyController->delete'
             ]);
-            return redirect()->route('admin.deleted_companies')->with('fail', 'Bir Hatayla Karşılaşıldı!');
+            return redirect()->route('user.deleted_companies')->with('fail', 'Bir Hatayla Karşılaşıldı!');
         }
     }
 
@@ -54,14 +54,14 @@ class DeletedCompanyController extends Controller
 
         try {
             $company->restore();
-            return redirect()->route('admin.deleted_companies')->with('success', 'İşletme Tekrar Aktifleştirildi!');
+            return redirect()->route('user.deleted_companies')->with('success', 'İşletme Tekrar Aktifleştirildi!');
         } catch (\Exception $error) {
             Exception::create([
                 'user_id' => Auth::id(),
                 'exception' => $error,
                 'function_name' => 'DeleteCompanyController->update'
             ]);
-            return redirect()->route('admin.deleted_companies')->with('fail', 'Bir Hatayla Karşılaşıldı!');
+            return redirect()->route('user.deleted_companies')->with('fail', 'Bir Hatayla Karşılaşıldı!');
         }
     }
 }

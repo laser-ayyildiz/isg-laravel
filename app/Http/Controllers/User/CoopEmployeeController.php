@@ -86,12 +86,13 @@ class CoopEmployeeController extends Controller
 
     public function delete(CoopEmployee $employee)
     {
+        dd($employee);
         $company = $employee->company->id;
         try {
             CoopEmployee::where('id', $employee->id)->delete();
         } catch (\Throwable $th) {
             return redirect()->back()->with('fail', 'Bir Hata ile Karşılaşıldı!');
         }
-        return redirect()->route('admin.company', ['id' => $company])->with('success', 'Çalışan silindi!');
+        return redirect()->route('user.company', ['id' => $company])->with('success', 'Çalışan silindi!');
     }
 }

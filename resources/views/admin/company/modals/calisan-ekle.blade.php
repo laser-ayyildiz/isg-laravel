@@ -14,32 +14,31 @@
                     <div class="row my-2">
                         <div class="col-sm-6">
                             <label for="empName"><b>Çalışan adı</b></label>
-                            <input class="form-control" type="text" name="calisanAd" required>
+                            <input class="form-control" type="text" name="name" required>
                         </div>
                         <div class="col-sm-6">
                             <label for="empPosition"><b>Pozisyon</b></label>
-                            <input class="form-control" type="text" name="calisanPozisyon">
+                            <input class="form-control" type="text" name="position">
                         </div>
-
                     </div>
                     <div class="row my-2">
                         <div class="col-sm-6">
                             <label for="empTC"><b>T.C. Kimlik Numarası</b></label>
-                            <input class="form-control" type="phone" minlength="11" maxlength="11" name="calisanTc" required>
+                            <input class="form-control" type="phone" minlength="11" maxlength="11" name="tc" required>
                         </div>
                         <div class="col-sm-6">
                             <label for="empPhone"><b>Telefon Numarası</b></label>
-                            <input class="form-control" type="phone" minlength="11" maxlength="11" name="calisanTelefon">
+                            <input class="form-control" type="phone" minlength="11" maxlength="11" name="phone">
                         </div>
                     </div>
                     <div class="row my-2">
                         <div class="col-sm-8">
                             <label for="empEmail"><b>E-mail</b></label>
-                            <input class="form-control" type="email" name="calisanEmail">
+                            <input class="form-control" type="email" name="email">
                         </div>
                         <div class="col-sm-4">
                             <label for="empRecDate"><b>İşe Giriş Tarihi</b></label>
-                            <input class="form-control" type="date" name="calisanIseGirisTarihi" id="empRecDate">
+                            <input class="form-control" type="date" name="recruitment_date" id="empRecDate">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -47,7 +46,6 @@
                             <button type="submit" class="btn btn-primary">Çalışan Ekle</button>
                         </div>
                     </div>
-
                 </form>
             </div>
         </div>

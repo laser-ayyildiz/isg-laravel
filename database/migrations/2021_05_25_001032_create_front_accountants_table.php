@@ -17,8 +17,8 @@ class CreateFrontAccountantsTable extends Migration
             $table->id();
             $table->foreignId('company_id')->constrained('coop_companies')->onDelete('cascade')->onUpdate('cascade');
             $table->string('name');
-            $table->string('phone');
-            $table->string('email');
+            $table->string('phone')->nullable();
+            $table->string('email')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

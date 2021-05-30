@@ -17,6 +17,7 @@ class CoopCompany extends Model
         'employer',
         'email',
         'phone',
+        'bill_address',
         'address',
         'city',
         'town',

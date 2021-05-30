@@ -42,13 +42,9 @@
                                         <label for="job_id"><strong>Kullanıcı türünü seçin</strong></label>
                                         <select class="form-control" list="job_id" name="job_id" required>
                                             <option value="" disabled selected>Kullanıcı Türü</option>
-                                            <optgroup label="İsg Uzmanı">
-                                                <option value="1">İsg Uzmanı 1</option>
-                                                <option value="2">İsg Uzmanı 2</option>
-                                                <option value="3">İsg Uzmanı 3</option>
-                                            </optgroup>
-                                            <option value="4">Doktor</option>
-                                            <option value="5">Sağlık Personeli</option>
+                                            <option value="1">İsg Uzmanı</option>
+                                            <option value="4">İş Yeri Hekimi</option>
+                                            <option value="5">Diğer Sağlık Personeli</option>
                                             <option value="6">Ofis Personeli</option>
                                             <option value="7">Muhasebeci</option>
                                         </select>

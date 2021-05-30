@@ -23,7 +23,8 @@ class CreateUpdateRequestsTable extends Migration
             $table->string('employer', 150)->nullable();
             $table->string('email', 150)->nullable();
             $table->string('phone')->nullable();
-            $table->string('address', 500)->nullable();
+            $table->text('bill_address', 500)->nullable();
+            $table->text('address', 500)->nullable();
             $table->string('city')->nullable();
             $table->string('town')->nullable();
             $table->smallInteger('danger_type')->nullable();

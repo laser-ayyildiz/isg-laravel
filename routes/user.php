@@ -26,6 +26,11 @@ Route::prefix('/company')->group(function () {
     Route::get('/deleted/{id}', [CompanyController::class, 'deletedIndex'])->name('deleted_company');
     Route::post('/deleteRequest/{company}/{user}', [CompanyController::class, 'deleteRequest'])->name('company.deleteRequest');
     Route::post('/updateRequest/{company}/{user}', [CompanyController::class, 'updateRequest'])->name('company.updateRequest');
+    Route::post('/{company}/assignEmployee', [CompanyController::class, 'assignEmployee'])->name('company.assignEmployee');
+    Route::post('/{company}/addEmployee', [CompanyController::class, 'addEmployee'])->name('company.addEmployee');
+    Route::post('/{company}/deleteEmployee/{employee}', [CompanyController::class, 'deleteEmployee'])->name('company.deleteEmployee');
+    Route::post('/{company}/add-accountant', [CompanyController::class, 'addAcc'])->name('company.add-accountant');
+    Route::post('/{company}/upload-accountant', [CompanyController::class, 'uploadAcc'])->name('company.upload-accountant');
 });
 
 Route::prefix('employee')->group(function () {
@@ -33,4 +38,5 @@ Route::prefix('employee')->group(function () {
     Route::get('/deleted/{employee}', [CoopEmployeeController::class, 'deletedIndex'])->name('deleted.coop_employee');
     Route::post('/update/{employee}', [CoopEmployeeController::class, 'update'])->name('coop_employee.update');
     Route::post('/delete/{employee}', [CoopEmployeeController::class, 'delete'])->name('coop_employee.delete');
+    
 });

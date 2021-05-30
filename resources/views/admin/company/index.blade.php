@@ -36,10 +36,10 @@
             @endif
 
             @include('admin.company.tabs.devlet-bilgileri')
-
-            @if ($deleted == false)
+            
+            @include('admin.company.tabs.muhasebe-bilgileri')
+            
             @include('admin.company.tabs.isletme-calisanlari')
-            @endif
 
             @include('admin.company.tabs.isletme-raporlari')
 
@@ -58,6 +58,8 @@
     @include('admin.company.modals.calisan-ekle')
     @include('admin.company.modals.calisan-sil')
     @include('admin.company.modals.zorunlu-dokuman-ekle')
+    @include('admin.company.modals.muhasebeci-ekle')
+
 </div>
 
 @push('styles')

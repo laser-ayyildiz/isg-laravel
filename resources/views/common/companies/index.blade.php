@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.common')
 @section('title')İşletmeler - @endsection
 @section('content')
 
@@ -29,10 +29,10 @@
     <div class="card-header bg-light">
         <h1 class="text-dark mb-1" style="text-align: center;"><b>İşletmeler</b></h1>
     </div>
-    @include('admin.companies.card-body')
+    @include('common.companies.card-body')
 </div>
 
-@include('admin.companies.add-modal.index')
+@include('common.companies.add-modal.index')
 
 @push('styles')
 {{-- dataTable --}}
@@ -44,13 +44,20 @@
 <script>
     contract_at.max = new Date().toISOString().split("T")[0];
 </script>
-<script src="/js/core/admin/companies/modal-validation.js"></script>
-<script src="/js/core/admin/companies/group-comp.js"></script>
+<script src="/js/core/common/companies/modal-validation.js"></script>
+<script src="/js/core/common/companies/group-comp.js"></script>
 <script src="/js/core/city-town.js"></script>
 {{-- dataTable --}}
 <script src="/js/jquery.dataTables.min.js"></script>
 <script src="/js/dataTables.bootstrap5.min.js"></script>
 <script src="/js/jquery.validate.js"></script>
+@php
+if (auth()->user()->hasRole('Admin'))
+    $ajax = route('admin.companies.index');
+else
+    $ajax = route('user.companies.index');
+@endphp
+
 <script type="text/javascript">
     $(function () {
           var table = $('.data-table').DataTable({
@@ -59,7 +66,7 @@
               DT_RowId: true,
               responsive: true,
               autoWidth: false,
-              ajax: "{{ route('admin.companies.index') }}",
+              ajax: "{{ $ajax }}",
               "order": [[ 6, "asc" ]],
               columns: [
                   {data: 'name', name: 'name'},

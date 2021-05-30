@@ -1,4 +1,4 @@
-<div class="tab-pane fade show {{ session('tab') == 'isletme_rapor' ? 'active' : '' }}" id="isletme_rapor" 
+<div class="tab-pane fade show {{ session('tab') == 'isletme_rapor' ? 'active' : '' }}" id="isletme_rapor"
     aria-labelledby="ir-tab">
     <button class="btn btn-primary" data-toggle="modal" data-target="#addMandatoryFile"
         data-whatever="@getbootstrap">Zorunlu Doküman Ekle</button>
@@ -14,13 +14,17 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($mandatory_files as $file )
+                @forelse ($mandatory_files as $file )
                 <tr>
                     <td><b>{{ $file->type->file_name }}</b></td>
                     <td><b>{{ $file->file->name }}</b></td>
                     <td><b>{{ $file->assigned_at }}</b></td>
                     <td><b>{{ $file->updated_at }}</b></td>
                     <td class="text-center">
+                        <button class="btn btn-warning btn-sm float-left mx-1"
+                            onclick="window.open('{{ url('/files/company-mandatory-files/' . $file->file->name) }}','_blank')">
+                            <i class="fas fa-eye"></i></button>
+
                         <form class="float-left mx-1"
                             action="{{ route('download-file',['folder' => 'company-mandatory-files', 'file_name' => $file->file->name]) }}"
                             method="post">
@@ -37,7 +41,12 @@
                         </form>
                     </td>
                 </tr>
-                @endforeach
+                @empty
+                <tr>
+                    <td valign="top" colspan="5" class="dataTables_empty text-center">Tabloda herhangi bir veri mevcut
+                        değil</td>
+                </tr>
+                @endforelse
             </tbody>
         </table>
     </div>

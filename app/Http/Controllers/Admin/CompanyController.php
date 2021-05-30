@@ -6,10 +6,14 @@ use App\Models\User;
 use App\Models\CoopCompany;
 use App\Models\CoopEmployee;
 use Illuminate\Http\Request;
+use App\Models\CompanyToFile;
+use App\Models\OutAccountant;
 use App\Models\UserToCompany;
+use App\Models\FrontAccountant;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
-use App\Models\CompanyToFile;
+use App\Http\Requests\StoreAccountantRequest;
+use App\Http\Requests\StoreCoopEmployeeRequest;
 
 class CompanyController extends Controller
 {
@@ -21,6 +25,9 @@ class CompanyController extends Controller
             return redirect()->route('admin.deleted_company', ['id' => $id]);
 
         $allEmployees = User::whereBetween('job_id', [1, 7])->getQuery();
+        $deletedEmployees = [];
+        $accountants['front'] = FrontAccountant::where('company_id', $id)->first();
+        $accountants['out'] = OutAccountant::where('company_id', $id)->first();
 
         $employees['osgbEmployees'] = UserToCompany::whereHas('user', function ($query) {
             $query->whereBetween('job_id', [1, 7]);
@@ -28,7 +35,8 @@ class CompanyController extends Controller
 
         if ($request->ajax()) {
             $coopEmployees = CoopEmployee::where('company_id', $id)->get();
-            return DataTables::of($coopEmployees)->make(true);
+            return DataTables::of($coopEmployees)
+                ->make(true);
         }
 
         $mandatory_files = CompanyToFile::with('file', 'type')->where('company_id', $id)->get();
@@ -39,6 +47,8 @@ class CompanyController extends Controller
                 'company' => $company,
                 'employees' => $employees,
                 'allEmployees' => $allEmployees,
+                'deletedEmployees' => $deletedEmployees,
+                'accountants' => $accountants, 
                 'deleted' => false,
                 'mandatory_files' => $mandatory_files,
             ],
@@ -81,7 +91,7 @@ class CompanyController extends Controller
         } catch (\Throwable $th) {
             return redirect()->back()->with('fail', 'Silme esnasında bir hatayla karşılaşıldı!');
         }
-        return redirect()->route('admin.companies.index')->with('success', 'Şirket başarıyla silinmiştir. Silinen işletmelere ARŞİV bölümünden ulaşabilirsiniz!');
+        return redirect()->route('common.companies.index')->with('success', 'Şirket başarıyla silinmiştir. Silinen işletmelere ARŞİV bölümünden ulaşabilirsiniz!');
     }
 
     public function assignEmployee(CoopCompany $company, Request $request)
@@ -107,24 +117,14 @@ class CompanyController extends Controller
         );
     }
 
-    public function addEmployee(CoopCompany $company, Request $request)
+    public function addEmployee(CoopCompany $company, StoreCoopEmployeeRequest $request)
     {
-        $this->validate($request, [
-            'calisanAd' => 'required',
-            'calisanTc' => 'required|unique:coop_employees,tc|digits:11',
-            'calisanEmail' => 'email|nullable|unique:coop_employees,email',
-            'calisanIseGirisTarihi' => 'nullable|before_or_equal:' . date("Y-m-d H:i:s"),
-        ]);
+        $request->validated();
+        
         try {
-            CoopEmployee::create([
-                'name' => $request->calisanAd,
-                'company_id' => $company->id,
-                'email' => $request->calisanEmail,
-                'tc' => $request->calisanTc,
-                'recruitment_date' => $request->calisanIseGirisTarihi,
-                'phone' => $request->calisanTelefon,
-                'position' => $request->calisanPozisyon,
-            ]);
+            $formData = $request->except('_token');
+            $formData['company_id'] = $company->id;
+            CoopEmployee::create($formData);
         } catch (\Throwable $th) {
             return back()->with(
                 [
@@ -159,5 +159,121 @@ class CompanyController extends Controller
                 'tab' => 'isletme_calisanlar'
             ]
         );
+    }
+
+    public function addAcc(CoopCompany $company, StoreAccountantRequest $request)
+    {
+        $request->validated();
+        if ($request->front_acc_name === null && $request->out_acc_name === null) {
+            return back()->with(
+                [
+                    'tab' => 'muhasebe_bilgileri',
+                    'fail' => 'Eksik bilgi girdiniz!'
+                ]
+            );
+        }
+
+        if ($request->front_acc_name !== null) {
+            try {
+                FrontAccountant::create([
+                    'name' => $request->front_acc_name,
+                    'company_id' => $company->id,
+                    'email' => $request->front_acc_email,
+                    'phone' => $request->front_acc_phone,
+                ]);
+            } catch (\Throwable $th) {
+                throw $th;
+                return back()->with(
+                    [
+                        'tab' => 'muhasebe_bilgileri',
+                        'fail' => 'Ön muhasebe eklenirken bir hata ile karşılaşıldı!'
+                    ]
+                );
+            }
+        }
+
+        if ($request->out_acc_name !== null) {
+            try {
+                OutAccountant::create([
+                    'name' => $request->out_acc_name,
+                    'company_id' => $company->id,
+                    'email' => $request->out_acc_email,
+                    'phone' => $request->out_acc_phone,
+                ]);
+            } catch (\Throwable $th) {
+                return back()->with(
+                    [
+                        'tab' => 'muhasebe_bilgileri',
+                        'fail' => 'Dış muhasebe eklenirken bir hata ile karşılaşıldı!'
+                    ]
+                );
+            }
+        }
+
+        return back()->with(
+            [
+                'tab' => 'muhasebe_bilgileri',
+                'success' => 'Muhasebeciler başarıyla eklendi!'
+            ]
+        );
+    }
+
+    public function uploadAcc(CoopCompany $company, StoreAccountantRequest $request)
+    {
+        $request->validated();
+        try {
+            $out_acc = OutAccountant::where('company_id', $company->id)->first();
+            $out_acc_demand = [
+                'name' => $request->out_acc_name,
+                'email' => $request->out_acc_email,
+                'phone' => $request->out_acc_phone,
+            ];
+            if ($out_acc !== null) {
+                $out_acc_change = array_diff_assoc($out_acc_demand, $out_acc->toArray());
+                if ($out_acc_change !== null && $out_acc_demand['name'] !== null) {
+                    $out_acc->update($out_acc_change);
+                }
+            }
+            if ($out_acc === null && $out_acc_demand['name'] !== null) {
+                $out_acc_demand['company_id'] = $company->id;
+                OutAccountant::create($out_acc_demand);
+            }
+        } catch (\Throwable $th) {
+            throw $th;
+            return back()->with([
+                'tab' => 'muhasebe_bilgileri',
+                'fail' => 'Bir Hata ile Karşılaşıldı!'
+            ]);
+        }
+
+        try {
+            $front_acc = FrontAccountant::where('company_id', $company->id)->first();
+            $front_acc_demand = [
+                'name' => $request->front_acc_name,
+                'email' => $request->front_acc_email,
+                'phone' => $request->front_acc_phone,
+            ];
+            if ($front_acc !== null) {
+                $front_acc_change = array_diff_assoc($front_acc_demand, $front_acc->toArray());
+                if ($front_acc_change !== null && $front_acc_demand['name'] !== null) {
+                    $front_acc->update($front_acc_change);
+                }
+            }
+            if ($front_acc === null && $front_acc_demand['name'] !== null) {
+                $front_acc_demand['company_id'] = $company->id;
+                FrontAccountant::create($front_acc_demand);
+            }
+        } catch (\Throwable $th) {
+            throw $th;
+            return back()->with([
+                'tab' => 'muhasebe_bilgileri',
+                'fail' => 'Bir Hata ile Karşılaşıldı!'
+            ]);
+        }
+
+        return back()->with([
+            'tab' => 'muhasebe_bilgileri',
+            'success' => 'Değişiklikleriniz başarıyla uygulanmıştır!'
+        ]);
     }
 }

@@ -23,7 +23,6 @@
                     @csrf
                     <label>Profil Resmi Yükle</label>
                     <input type="file" name="avatar">
-                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <input type="submit" name="update-picture" style="width:200px;" class="pull-right btn btn-success"
                         value="Değiştir">
                 </form>

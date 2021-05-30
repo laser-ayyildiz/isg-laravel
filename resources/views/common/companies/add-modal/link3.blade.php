@@ -132,9 +132,8 @@
             <h3 style="text-align: center;"><u><b>Personel Seç</b></u></h3>
             <div class="row">
                 <div class="col-sm-4">
-                    <label for="saglık_p_id"><strong>Diğer Sağlık Personeli<a style="color:red">*</a></strong></label>
-                    <select class="form-control" name="saglık_p_id" id="saglık_p_id" autocomplete="off" size="1"
-                        required>
+                    <label for="saglık_p_id"><strong>Diğer Sağlık Personeli</strong></label>
+                    <select class="form-control" name="saglık_p_id" id="saglık_p_id" autocomplete="off" size="1">
                         @if (old('saglık_p_id'))
                         <option value="{{ old('saglık_p_id') }}" selected>{{ old('saglık_p_id') }}
                         </option>

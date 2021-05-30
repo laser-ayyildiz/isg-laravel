@@ -31,9 +31,9 @@ class ChangeValidateController extends Controller
             try {
                 UpdateRequest::where('id', $demand->id)->delete();
             } catch (\Throwable $th) {
-                return redirect()->back()->with('rejectUpdateFail', 'İsteğiniz işlenirken bir hatayla karşıldı!');
+                return redirect()->back()->with('fail', 'İsteğiniz işlenirken bir hatayla karşıldı!');
             }
-            return redirect()->back()->with('rejectUpdateSuccess', 'Değişiklik talebi başarıyla kaldırıldı!');
+            return redirect()->back()->with('success', 'Değişiklik talebi başarıyla kaldırıldı!');
         }
 
         if ($request->has("acceptUpdate")) {
@@ -48,19 +48,19 @@ class ChangeValidateController extends Controller
             try {
                 UpdateRequest::where('id', $demand->id)->delete();
             } catch (\Throwable $th) {
-                return redirect()->back()->with('acceptUpdateFail', 'İsteğiniz işlenirken bir hatayla karşıldı!');
+                return redirect()->back()->with('fail', 'İsteğiniz işlenirken bir hatayla karşıldı!');
             }
 
             try {
                 CoopCompany::where('id', $company["id"])->update($updatedData);
             } catch (\Throwable $th) {
                 DB::rollBack();
-                return redirect()->back()->with('acceptUpdateFail', 'Değişiklikler uygulanırken bir hatayla karşılaşıldı!');
+                return redirect()->back()->with('fail', 'Değişiklikler uygulanırken bir hatayla karşılaşıldı!');
             }
-            return redirect()->back()->with('acceptUpdateSuccess', 'Değişiklikler başarıyla uygulandı!');
+            return redirect()->back()->with('success', 'Değişiklikler başarıyla uygulandı!');
         }
 
-        return redirect()->back()->with('warningStatus', 'Üzgünüz ama İsteğinizi anlayamadık :(');
+        return redirect()->back()->with('warning', 'Üzgünüz ama İsteğinizi anlayamadık :(');
     }
 
     public function delete(DeleteRequest $demand, Request $request)
@@ -69,25 +69,25 @@ class ChangeValidateController extends Controller
             try {
                 DB::table('delete_requests')->where('company_id', $demand->company->id)->delete();
             } catch (\Throwable $th) {
-                return redirect()->back()->with('rejectDeleteFail', 'Talep kaldırılırken bir hatayla karşılaşıldı!');
+                return redirect()->back()->with('fail', 'Talep kaldırılırken bir hatayla karşılaşıldı!');
             }
-            return redirect()->back()->with('rejectDeleteSuccess', 'Silme talebi başarıyla kaldırıldı!');
+            return redirect()->back()->with('success', 'Silme talebi başarıyla kaldırıldı!');
         }
         if ($request->has("acceptDelete")) {
             try {
                 DB::table('delete_requests')->where('company_id', $demand->company->id)->delete();
                 DB::table('update_requests')->where('company_id', $demand->company->id)->delete();
             } catch (\Throwable $th) {
-                return redirect()->back()->with('acceptDeleteFail', 'İşletme silinirken bir hatayla karşılaşıldı!');
+                return redirect()->back()->with('fail', 'İşletme silinirken bir hatayla karşılaşıldı!');
             }
             try {
                 CoopCompany::where('id', $demand->company->id)->delete();
             } catch (\Throwable $th) {
-                return redirect()->back()->with('acceptDeleteFail', 'İşletme silinirken bir hatayla karşılaşıldı!');
+                return redirect()->back()->with('fail', 'İşletme silinirken bir hatayla karşılaşıldı!');
             }
-            return redirect()->back()->with('accpetDeleteSuccess', 'İşletme başarıyla silindi. Silinen işletmelere ARŞİV bölümünden ulaşabilirsiniz!');
+            return redirect()->back()->with('success', 'İşletme başarıyla silindi. Silinen işletmelere ARŞİV bölümünden ulaşabilirsiniz!');
         }
 
-        return redirect()->back()->with('warningStatus', 'Üzgünüz ama İsteğinizi anlayamadık :(');
+        return redirect()->back()->with('warning', 'Üzgünüz ama İsteğinizi anlayamadık :(');
     }
 }

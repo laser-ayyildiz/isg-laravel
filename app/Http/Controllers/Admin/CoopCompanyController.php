@@ -26,7 +26,7 @@ class CoopCompanyController extends Controller
                 ->make(true);
         }
         return view(
-            'admin.companies.index',
+            'common.companies.index',
             [
                 'osgbEmployees' => $osgbEmployees,
                 'group_leaders' => $group_leaders
@@ -43,6 +43,7 @@ class CoopCompanyController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'address' => $request->address,
+                'bill_address' => $request->bill_address,
                 'phone' => $request->phone,
                 'employer' => $request->employer,
                 'city' => $request->countrySelect,
