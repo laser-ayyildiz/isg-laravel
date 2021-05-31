@@ -36,9 +36,9 @@
             @endif
 
             @include('admin.company.tabs.devlet-bilgileri')
-            
+
             @include('admin.company.tabs.muhasebe-bilgileri')
-            
+
             @include('admin.company.tabs.isletme-calisanlari')
 
             @include('admin.company.tabs.isletme-raporlari')
@@ -59,6 +59,7 @@
     @include('admin.company.modals.calisan-sil')
     @include('admin.company.modals.zorunlu-dokuman-ekle')
     @include('admin.company.modals.muhasebeci-ekle')
+    @include('admin.company.modals.calisanlara-dosya-ata')
 
 </div>
 
@@ -109,7 +110,10 @@
                 "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Turkish.json"
                 }
           });
-          $('#example tbody').on( 'click', '#deleteEmpBtn', function () {
+            
+            
+       
+        $('#example tbody').on( 'click', '#deleteEmpBtn', function () {
             var data = table.row( $(this).parents('tr') ).data();
             $('#deleteEmpName').html("<b>" + data['name'] + '</b> isimli çalışanı silmek istediğinize emin misiniz?');
 
@@ -118,6 +122,7 @@
                 $('#deleteEmpForm').attr('action', action+"{{ $company->id }}"+"/deleteEmployee/"+data['id']);
             });
         });
+
         $('#example tbody').on( 'click', '#empDetail', function () {
             var data = table.row( $(this).parents('tr') ).data();
             window.location.href = "/admin/employee/"+data['id'];

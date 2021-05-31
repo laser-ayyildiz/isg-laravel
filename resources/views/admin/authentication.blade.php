@@ -25,8 +25,8 @@
                     <tr>
                         <th>Ad Soyad</th>
                         <th>Çalışma Alanı</th>
-                        <th>E-mail</th>
                         <th>Telefon Numarası</th>
+                        <th>E-mail</th>
                         <th>T.C Kimlik No</th>
                         <th>İşe Giriş Tarihi</th>
                     </tr>

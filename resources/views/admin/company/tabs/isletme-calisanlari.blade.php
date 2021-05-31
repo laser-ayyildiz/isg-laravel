@@ -1,7 +1,9 @@
-<div class="tab-pane fade show {{ session('tab') == 'isletme_calisanlar' ? 'active' : '' }}" id="isletme_calisanlar" role="tabpanel" aria-labelledby="ic-tab">
+<div class="tab-pane fade show {{ session('tab') == 'isletme_calisanlar' ? 'active' : '' }}" id="isletme_calisanlar"
+    role="tabpanel" aria-labelledby="ic-tab">
     <button class="btn btn-primary" data-toggle="modal" data-target="#addEmployee" data-whatever="@getbootstrap">Yeni
         Çalışan Ekle</button>
-
+    <button class="btn btn-secondary" id="batchFileBtn" data-toggle="modal" data-target="#addBatchFile"
+        data-whatever="@getbootstrap">Çalışanlara Dosya Ata</button>
     <div class="float-right">
         <form
             action="{{ route('download-file',['folder' => 'company-employee-lists', 'file_name' => 'employee-table.xlsx']) }}"
@@ -32,9 +34,6 @@
             </thead>
             <tbody>
             </tbody>
-            <tfoot>
-            </tfoot>
         </table>
     </div>
-
 </div>

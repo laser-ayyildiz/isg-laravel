@@ -65,6 +65,7 @@
     @include('user.company.modals.calisan-sil')
     @include('user.company.modals.zorunlu-dokuman-ekle')
     @include('user.company.modals.muhasebeci-ekle')
+    @include('admin.company.modals.calisanlara-dosya-ata')
     @endif
 </div>
 @push('styles')
@@ -127,6 +128,12 @@
             window.location.href = "/user/employee/"+data['id']+"/company/{{ $company->id }}";
         });
     });
+</script>
+<script>
+    $('#chooseBatchFile').on('change',function(){
+        var fileName = $(this).val();
+        $(this).next('.custom-file-label').html(fileName);
+    })
 </script>
 @endpush
 @if ($deleted == false)

@@ -94,10 +94,13 @@ class FileUploadController extends Controller
     public function empBatchFileUpload(CoopCompany $company, Request $request)
     {
         $request->validate([
-            'file' => 'required|mimes:csv,txt,xlx,xls,xlsx,odt,odf,mp3,mp4,pdf,png,jpg,jpeg,doc,docx,ppt,pptx|max:51200'
+            'file' => 'required|mimes:csv,txt,xlx,xls,xlsx,odt,odf,pdf,png,jpg,jpeg,doc,docx,ppt,pptx|max:51200'
         ]);
         $fileName = null;
-        $employeeIds = CoopEmployee::select('id')->where('company_id', $company->id)->get();
+        $employeeIds = CoopEmployee::where('company_id', $company->id)->pluck('id')->toArray();
+        if (count($employeeIds) === 0)
+            return back()->with(['tab' => 'isletme_calisanlar', 'fail' => 'İşletmeye ait aktif çalışan bulunamadı!']);
+
         try {
             if ($request->file()) {
                 $fileModel = new File;
@@ -107,23 +110,30 @@ class FileUploadController extends Controller
                 $fileModel->name = time() . '_' . $request->file->getClientOriginalName();
                 $fileModel->file_path = '/storage/' . $filePath;
                 $fileModel->save();
-                EmployeeToFile::create([
-                    'employee_id' => $employee->id,
-                    'file_id' => $fileModel->id
-                ]);
+
+                /////////////////////////////////////////////////////////////////
+                $employeeToFiles = null;
+                foreach ($employeeIds as $id) {
+                    $employeeToFiles[] = [
+                        'employee_id' => $id,
+                        'file_id' => $fileModel->id
+                    ];
+                }
+                if ($employeeToFiles !== null)
+                    EmployeeToFile::insert($employeeToFiles);
             }
         } catch (\Throwable $th) {
             return back()->with(
                 [
                     'fail' => 'İşleminizi gerçekleştirirken bir hata ile karşılaşıldı.',
-                    'tab' => 'files'
+                    'tab' => 'isletme_calisanlar'
                 ]
             );
         }
         return back()->with(
             [
                 'success' => 'Dosyanız ' . $fileName . ' ismiyle başarıyla kayıt edildi.',
-                'tab' => 'files'
+                'tab' => 'isletme_calisanlar'
             ]
         );
     }

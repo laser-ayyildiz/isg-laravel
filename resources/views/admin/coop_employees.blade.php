@@ -115,7 +115,6 @@
             </div>
 
             <div class="tab-pane fade show" id="files" role="tabpanel" aria-labelledby="files-tab">
-
                 <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#addFile"
                     data-whatever="@getbootstrap">Yeni Dosya Ekle</a></button>
                 <table class="table table-bordered table-strip">
@@ -125,7 +124,7 @@
                         <th>İndir</th>
                     </thead>
                     <tbody>
-                        @foreach ($files as $file)
+                        @forelse ($files as $file)
                         <tr>
                             <td>{{ $file->file->name }}</td>
                             <td>{{ $file->file->created_at }}</td>
@@ -136,7 +135,12 @@
                                 <td><button type="submit" class="btn btn-success btn-sm">İndir</button> </td>
                             </form>
                         </tr>
-                        @endforeach
+                        @empty
+                        <tr>
+                            <td valign="top" colspan="3" class="text-center">Tabloda herhangi bir veri
+                                mevcut değil</td>
+                        </tr>
+                        @endforelse
                     </tbody>
                 </table>
                 <div class="float-right">
