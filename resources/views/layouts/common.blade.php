@@ -4,3 +4,6 @@
 @role('User')
     @include('layouts.user')
 @endrole
+@role('CompanyAdmin')
+    @include('layouts.company-admin')
+@endrole
