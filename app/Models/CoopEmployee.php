@@ -22,6 +22,6 @@ class CoopEmployee extends Model
 
     public function company()
     {
-        return $this->belongsTo(CoopCompany::class);
+        return $this->belongsTo(CoopCompany::class)->withTrashed();
     }
 }

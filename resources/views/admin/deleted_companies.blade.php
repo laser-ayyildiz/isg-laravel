@@ -26,7 +26,6 @@
                         <th>E-mail</th>
                         <th>Silinme Tarihi</th>
                         <th>Sil/Aktifleştir</th>
-                        <th>Görüntüle</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -47,6 +46,7 @@
             <div class="modal-body">
                 <form id="deleteForm" action="/admin/deleted_companies/delete/" method="POST">
                     @csrf
+                    <h3 class="mb-3" id="company_name"></h3>
                     <button id="deleteRequest" name="deleteRequest" type="submit"
                         class="btn btn-danger float-left">Tamamen
                         Sil</button>
@@ -100,20 +100,21 @@
                         return '<button type="button" id="requestButton" class="btn btn-warning" data-toggle="modal" data-target="#sil">Sil/Aktifleştir</button>';
                     }
                   },
-                  {
-                    data: null,
-                    render: function ( data, type, row ) {
-                        return '<button type="button" id="showButton" class="btn btn-primary">Şirketi Görüntüle</button>';
-                    }
-                  },
               ],
               "language": {
                     "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Turkish.json"
                 }
           });
+          $('#example tbody').on('click', 'tr', function (e) {
+            if (e.target.nodeName !== 'BUTTON') {
+                var data = table.row( this ).data();
+                window.location.href="/admin/company/deleted/"+data['id'];
+            }     
+          });
 
           $('#example tbody').on( 'click', '#requestButton', function () {
             var data = table.row( $(this).parents('tr') ).data();
+            document.getElementById("company_name").innerHTML = "<b>" + data['name'] + "</b> işletmesinin durumunu değiştir";
 
             $('#activateRequest').click(function(){
                 let action = $('#activateForm').attr('action');
@@ -125,11 +126,6 @@
                 $('#deleteForm').attr('action', action+data['id']);
             });
         });
-        
-        $('#example tbody').on( 'click', '#showButton', function () {
-            var data = table.row( $(this).parents('tr') ).data();
-            window.location.href="/admin/company/deleted/"+data['id'];
-        }); 
     });
 </script>
 @endpush

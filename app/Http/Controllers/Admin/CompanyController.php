@@ -17,6 +17,79 @@ use App\Http\Requests\StoreCoopEmployeeRequest;
 
 class CompanyController extends Controller
 {
+    public function index($id)
+    {
+        $company = CoopCompany::where('id', $id)->first();
+
+        if (empty($company))
+            return redirect()->route('admin.deleted_company', ['id' => $id]);
+
+        $employees['osgbEmployees'] = UserToCompany::whereHas('user', function ($query) {
+            $query->where('job_id',1)->where('job_id', 4);
+        })->where('company_id', $id)->get();
+
+        $mandatory_files = CompanyToFile::with('file', 'type')->where('company_id', $id)->get();
+
+        return view(
+            'admin.company.home.index',
+            [
+                'company' => $company,
+                'employees' => $employees,
+                'mandatory_files' => $mandatory_files,
+            ],
+        );
+    }
+
+    public function showInfo($id)
+    {
+        $company = CoopCompany::where('id', $id)->first();
+        if (empty($company))
+            return redirect()->route('admin.deleted_company', ['id' => $id]);
+
+        $allEmployees = User::whereBetween('job_id', [1, 7])->getQuery();
+        $accountants['front'] = FrontAccountant::where('company_id', $id)->first();
+        $accountants['out'] = OutAccountant::where('company_id', $id)->first();
+
+        $employees['osgbEmployees'] = UserToCompany::whereHas('user', function ($query) {
+            $query->whereBetween('job_id', [1, 7]);
+        })->where('company_id', $id)->get();
+
+        return (view(
+            'admin.company.informations.index',
+            [
+                'company' => $company,
+                'employees' => $employees,
+                'accountants' => $accountants,
+                'allEmployees' => $allEmployees,
+            ],
+        ));
+    }
+
+    public function showEmployees($id, Request $request)
+    {
+        $company = CoopCompany::where('id', $id)->first();
+
+        if (empty($company))
+            return redirect()->route('admin.deleted_company', ['id' => $id]);
+
+        $deletedEmployees = [];
+
+        if ($request->ajax()) {
+            $coopEmployees = CoopEmployee::where('company_id', $id)->get();
+            return DataTables::of($coopEmployees)
+                ->make(true);
+        }
+
+
+        return view(
+            'admin.company.employees.index',
+            [
+                'company' => $company,
+                'deletedEmployees' => $deletedEmployees,
+            ],
+        );
+    }
+    /*
     public function index($id, Request $request)
     {
         $company = CoopCompany::where('id', $id)->first();
@@ -42,31 +115,37 @@ class CompanyController extends Controller
         $mandatory_files = CompanyToFile::with('file', 'type')->where('company_id', $id)->get();
 
         return (view(
-            'admin.company.index',
+            'admin.company.bilgiler.index',
             [
                 'company' => $company,
                 'employees' => $employees,
                 'allEmployees' => $allEmployees,
                 'deletedEmployees' => $deletedEmployees,
-                'accountants' => $accountants, 
-                'deleted' => false,
+                'accountants' => $accountants,
                 'mandatory_files' => $mandatory_files,
             ],
         ));
     }
-
-    public function deletedIndex($id)
+    */
+    public function deletedIndex($id, Request $request)
     {
         $company = CoopCompany::where('id', $id)->onlyTrashed()->first();
-        $employees = null;
+        if ($request->ajax()) {
+            $coopEmployees = CoopEmployee::where('company_id', $id)->get();
+            return DataTables::of($coopEmployees)
+                ->make(true);
+        }
         $mandatory_files = CompanyToFile::with('file', 'type')->where('company_id', $id)->get();
+        $accountants['front'] = FrontAccountant::where('company_id', $id)->first();
+        $accountants['out'] = OutAccountant::where('company_id', $id)->first();
+                
 
         return (view(
-            'admin.company.index',
+            'admin.deleted_company.index',
             [
                 'company' => $company,
-                'osgbEmployees' => $employees,
-                'deleted' => true,
+                'osgbEmployees' => null,
+                'accountants' => $accountants,
                 'mandatory_files' => $mandatory_files
             ],
         ));
@@ -79,9 +158,13 @@ class CompanyController extends Controller
         try {
             $company->update($updatedData);
         } catch (\Throwable $th) {
-            return back()->with('fail', 'Değişiklerinizi uygularken bir hatayla karşılaştık!');
+            return redirect()
+                ->route('admin.company.informations.index', ['id' => $company->id])
+                ->with('fail', 'Değişiklerinizi uygularken bir hatayla karşılaştık!');
         }
-        return back()->with('success', 'Yaptığınız değişiklikler başarıyla uygulanmıştır!');
+        return redirect()
+            ->route('admin.company.informations.index', ['id' => $company->id])
+            ->with('success', 'Yaptığınız değişiklikler başarıyla uygulanmıştır!');
     }
 
     public function delete(CoopCompany $company)
@@ -89,9 +172,13 @@ class CompanyController extends Controller
         try {
             CoopCompany::where('id', $company->id)->delete();
         } catch (\Throwable $th) {
-            return redirect()->back()->with('fail', 'Silme esnasında bir hatayla karşılaşıldı!');
+            return redirect()
+                ->route('admin.company.informations.index', ['id' => $company->id])
+                ->with('fail', 'Silme esnasında bir hatayla karşılaşıldı!');
         }
-        return redirect()->route('common.companies.index')->with('success', 'Şirket başarıyla silinmiştir. Silinen işletmelere ARŞİV bölümünden ulaşabilirsiniz!');
+        return redirect()
+            ->route('admin.companies.index')
+            ->with('success', 'Şirket başarıyla silinmiştir. Silinen işletmelere ARŞİV bölümünden ulaşabilirsiniz!');
     }
 
     public function assignEmployee(CoopCompany $company, Request $request)
@@ -102,43 +189,27 @@ class CompanyController extends Controller
                 'company_id' => $company->id
             ]);
         } catch (\Throwable $th) {
-            return back()->with(
-                [
-                    'fail' => 'Bir hata ile karşılaşıldı!',
-                    'tab' => 'osgb_calisanlar'
-                ]
-            );
+            return redirect()
+                ->route('admin.company.informations.osgb', ['id' => $company->id])
+                ->with('fail', 'Bir hata ile karşılaşıldı!',);
         }
-        return back()->with(
-            [
-                'success' => 'Seçtiğiniz çalışan şirketiniz ile eşleştirildi!',
-                'tab' => 'osgb_calisanlar'
-            ]
-        );
+        return redirect()
+            ->route('admin.company.informations.osgb', ['id' => $company->id])
+            ->with('success', 'Seçtiğiniz çalışan şirketiniz ile eşleştirildi!');
     }
 
     public function addEmployee(CoopCompany $company, StoreCoopEmployeeRequest $request)
     {
         $request->validated();
-        
+
         try {
             $formData = $request->except('_token');
             $formData['company_id'] = $company->id;
             CoopEmployee::create($formData);
         } catch (\Throwable $th) {
-            return back()->with(
-                [
-                    'fail' => 'Bir hata ile karşılaşıldı!',
-                    'tab' => 'isletme_calisanlar'
-                ]
-            );
+            return back()->with('fail', 'Bir hata ile karşılaşıldı!');
         }
-        return back()->with(
-            [
-                'success' => 'Yeni Çalışan Başarıyla Eklendi!',
-                'tab' => 'isletme_calisanlar'
-            ]
-        );
+        return back()->with('success', 'Yeni Çalışan Başarıyla Eklendi!');
     }
 
     public function deleteEmployee($company, $employee, Request $request)
@@ -146,31 +217,25 @@ class CompanyController extends Controller
         try {
             CoopEmployee::where('id', $employee)->where('company_id', $company)->delete();
         } catch (\Throwable $th) {
-            return back()->with(
-                [
-                    'fail' => 'Bir hata ile karşılaşıldı!',
-                    'tab' => 'isletme_calisanlar'
-                ]
-            );
+            return redirect()
+                ->route('admin.company.employees.deleted', ['id' => $company->id])
+                ->with('fail', 'Bir hata ile karşılaşıldı!');
         }
-        return back()->with(
-            [
-                'success' => 'Çalışan başarıyla silindi. Silinen çalışanlara ARŞİV bölümünden ulaşabilirsiniz',
-                'tab' => 'isletme_calisanlar'
-            ]
-        );
+        return redirect()
+            ->route('admin.company.employees.deleted', ['id' => $company->id])
+            ->with(
+                'success',
+                'Çalışan başarıyla silindi. Silinen çalışanlara ARŞİV bölümünden ulaşabilirsiniz',
+            );
     }
 
     public function addAcc(CoopCompany $company, StoreAccountantRequest $request)
     {
         $request->validated();
         if ($request->front_acc_name === null && $request->out_acc_name === null) {
-            return back()->with(
-                [
-                    'tab' => 'muhasebe_bilgileri',
-                    'fail' => 'Eksik bilgi girdiniz!'
-                ]
-            );
+            return redirect()
+                ->route('admin.company.informations.acc', ['id' => $company->id])
+                ->with('fail', 'Eksik bilgi girdiniz!');
         }
 
         if ($request->front_acc_name !== null) {
@@ -183,12 +248,9 @@ class CompanyController extends Controller
                 ]);
             } catch (\Throwable $th) {
                 throw $th;
-                return back()->with(
-                    [
-                        'tab' => 'muhasebe_bilgileri',
-                        'fail' => 'Ön muhasebe eklenirken bir hata ile karşılaşıldı!'
-                    ]
-                );
+                return redirect()
+                    ->route('admin.company.informations.acc', ['id' => $company->id])
+                    ->with('fail', 'Ön muhasebe eklenirken bir hata ile karşılaşıldı!');
             }
         }
 
@@ -201,21 +263,15 @@ class CompanyController extends Controller
                     'phone' => $request->out_acc_phone,
                 ]);
             } catch (\Throwable $th) {
-                return back()->with(
-                    [
-                        'tab' => 'muhasebe_bilgileri',
-                        'fail' => 'Dış muhasebe eklenirken bir hata ile karşılaşıldı!'
-                    ]
-                );
+                return redirect()
+                    ->route('admin.company.informations.acc', ['id' => $company->id])
+                    ->with('fail', 'Dış muhasebe eklenirken bir hata ile karşılaşıldı!');
             }
         }
 
-        return back()->with(
-            [
-                'tab' => 'muhasebe_bilgileri',
-                'success' => 'Muhasebeciler başarıyla eklendi!'
-            ]
-        );
+        return redirect()
+            ->route('admin.company.informations.acc', ['id' => $company->id])
+            ->with('success', 'Muhasebeciler başarıyla eklendi!');
     }
 
     public function uploadAcc(CoopCompany $company, StoreAccountantRequest $request)
@@ -240,10 +296,9 @@ class CompanyController extends Controller
             }
         } catch (\Throwable $th) {
             throw $th;
-            return back()->with([
-                'tab' => 'muhasebe_bilgileri',
-                'fail' => 'Bir Hata ile Karşılaşıldı!'
-            ]);
+            return redirect()
+                ->route('admin.company.informations.acc', ['id' => $company->id])
+                ->with('fail', 'Bir Hata ile Karşılaşıldı!');
         }
 
         try {
@@ -265,15 +320,13 @@ class CompanyController extends Controller
             }
         } catch (\Throwable $th) {
             throw $th;
-            return back()->with([
-                'tab' => 'muhasebe_bilgileri',
-                'fail' => 'Bir Hata ile Karşılaşıldı!'
-            ]);
+            return redirect()
+                ->route('admin.company.informations.acc', ['id' => $company->id])
+                ->with('fail', 'Bir Hata ile Karşılaşıldı!');
         }
 
-        return back()->with([
-            'tab' => 'muhasebe_bilgileri',
-            'success' => 'Değişiklikleriniz başarıyla uygulanmıştır!'
-        ]);
+        return redirect()
+            ->route('admin.company.informations.acc', ['id' => $company->id])
+            ->with('success', 'Değişiklikleriniz başarıyla uygulanmıştır!');
     }
 }

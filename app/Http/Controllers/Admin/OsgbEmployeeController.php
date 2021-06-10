@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use App\Notifications\CreateOsgbEmployee;
+use Illuminate\Support\Facades\Auth;
 
 class OsgbEmployeeController extends Controller
 {
@@ -29,6 +31,23 @@ class OsgbEmployeeController extends Controller
 
     public function create(Request $request)
     {
+        $this->validate($request, [
+            'job_id' => ['required','numeric',Rule::in([1,4,5,6,7])],
+            'email' => 'required|email|unique:users,email',
+            'name' => 'required|string',
+            'phone' => 'required|numeric|digits:11',
+            'tc' => 'required|numeric|digits:11|unique:users,tc',
+            'rec_date' => 'required|before_or_equal:' . date("Y-m-d H:i:s"),
+        ],[],
+        [
+            'job_id' => 'Kullanıcı Türü',
+            'email' => 'Email',
+            'tc' => 'T.C. Kimlik No',
+            'name' => 'Ad Soyad',
+            'phone' => 'Telefon No',
+            'rec_date' => 'İşe Giriş Tarihi'
+        ]);
+        
         $chars = "1234567890abcdefghijKLMNOPQRSTuvwxyzABCDEFGHIJklmnopqrstUVWXYZ0987654321+-/*-?=&%!";
         $password = '';
         for ($i = 0; $i < 16; $i++) {

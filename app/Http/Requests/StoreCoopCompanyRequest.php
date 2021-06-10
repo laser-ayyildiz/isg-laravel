@@ -27,7 +27,7 @@ class StoreCoopCompanyRequest extends FormRequest
             'contract_at' => 'required|before_or_equal:' . date("Y-m-d H:i:s"),
             'nace_kodu' => 'required|string',
             'mersis_no' => 'bail|nullable||numeric|unique:coop_companies,mersis_no|digits:16',
-            'sgk_sicil' => 'bail|required|numeric|unique:coop_companies,sgk_sicil|digits:26',
+            'sgk_sicil' => 'bail|required|numeric|unique:coop_companies,sgk_sicil|digits_between:9,26',
             'vergi_no' => 'bail|required|numeric|unique:coop_companies,vergi_no|digits:10',
             'vergi_dairesi' => 'required|string',
             'front_acc_name' => 'nullable|string',

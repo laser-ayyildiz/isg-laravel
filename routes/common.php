@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 
-Route::get('/redirect', [RedirectController::class, 'index']);
+Route::get('/redirect', [RedirectController::class, 'index'])->name('redirect');
 
 Route::get('/messages', [MessageController::class, 'index'])->name('messages');
 
@@ -21,6 +21,8 @@ Route::prefix('/profile')->group(function () {
     Route::post('/updatePassword', [ProfileController::class, 'updatePassword'])->name('profile.updatePassword');
     Route::post('/updateIdCard', [ProfileController::class, 'updateIdCard'])->name('profile.updateIdCard');
 });
+
+Route::post('assign-company-admin/{company}', [AssignCompanyAdminController::class, 'assign'])->name('assign-company-admin');
 
 Route::prefix('upload-file')->group(function () {
     Route::post('/{employee}', [FileUploadController::class, 'empFileUpload'])->name('employee-file-upload');

@@ -4,6 +4,8 @@ namespace App\Http\Controllers\User;
 
 use Illuminate\Support\Facades\Route;
 
+Route::redirect('/', '/user/home');
+
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 ////////////////////////////////////////////////////////////////////////

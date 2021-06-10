@@ -1,6 +1,5 @@
 <div class="tab-pane fade" id="link4" role="tabpanel" aria-labelledby="link4-tab">
     <fieldset id="field4">
-
         <div class="modal-body">
             <div class="row col-6">
                 <label for="nace_kodu">
@@ -23,8 +22,8 @@
                         <h4><b>SGK Sicil No<a style="color:red">*</a></b></h4>
                     </label>
                     <input class="form-control" id="sgk_sicil" name="sgk_sicil" type="tel"
-                        value="{{ old('sgk_sicil') }}" minlength="26" maxlength="26" placeholder="SGK Sicil No"
-                        required>
+                        value="{{ old('sgk_sicil') }}" minlength="9" maxlength="26" placeholder="SGK Sicil No"
+                        data-toggle="modal" data-target="#fill_modal" required>
                 </div>
             </div>
             <br>

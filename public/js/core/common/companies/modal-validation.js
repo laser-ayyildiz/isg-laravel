@@ -34,3 +34,28 @@ for (let index = 1; index < 5; index++) {
         }
     })
 }
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+var no = "";
+var elm = document.getElementById("sgk_fill_form");
+
+$("#sgk_fill_form").on('keyup', function () {
+    console.log("a")
+    if (elm.checkValidity()) {
+        $('#sgk_fill_btn').removeClass('disabled');
+        $('#sgk_fill_btn').attr('data-dismiss', 'modal');
+    }
+    else {
+        $('#sgk_fill_btn').addClass('disabled');
+        $('#sgk_fill_btn').removeAttr('data-dismiss');
+    }
+});
+
+$('#sgk_fill_btn').on('click', function () {
+    $("#fill_modal :input").each(function (e) {
+        no += this.value;
+    });
+    $('#sgk_sicil').val(no);
+});

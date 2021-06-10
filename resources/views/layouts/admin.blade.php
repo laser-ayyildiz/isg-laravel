@@ -41,13 +41,29 @@
         .dropdown:hover>.dropdown-menu {
             display: block;
         }
+
+        .nav-link .nav-text {
+            display: none;
+        }
+
+        .nav-link:hover .nav-text {
+            display: inline;
+        }
+
+        a i {
+            color: black;
+        }
+
+        a {
+            font-weight: bold;
+        }
     </style>
     @stack('styles')
 
 </head>
 
 <body id="page-top">
-    <nav class="navbar navbar-expand-lg navbar-light bg-warning" style="min-height: 60px;">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-info" style="min-height: 50px;">
         <a class="navbar-brand" href="{{ route('admin.home') }}"><b>Özgür OSGB</b></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler"
             aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,10 +73,10 @@
         <div class="collapse navbar-collapse" id="navbarToggler">
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                 <li class="nav-item dropdown no-arrow active">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown"
+                    <a class="nav-link dropdown-toggle id=" navbarDropdownMenuLink" role="button" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-building"></i>
-                        İşletmeler
+                        <div class="nav-text">İşletmeler</div>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <a class="dropdown-item" href="{{ route('admin.companies.index') }}"><i
@@ -72,15 +88,17 @@
                     </div>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="{{ route('admin.settings') }}"><i class="fas fa-wrench"></i>Ayarlar<span
-                            class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="{{ route('admin.settings') }}"><i class="fas fa-wrench"></i>
+                        <div class="nav-text">Ayarlar</div>
+                        <span class="sr-only">(current)</span>
+                    </a>
                 </li>
 
                 <li class="nav-item dropdown no-arrow active">
                     <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-users"></i>
-                        Çalışanlar
+                        <div class="nav-text">Çalışanlar</div>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <a class="dropdown-item" href="{{ route('admin.osgb_employees') }}"><i
@@ -96,7 +114,7 @@
             <div class="form-inline my-2 my-lg-0" style="list-style: none;">
                 <li class="nav-item active">
                     <a class="nav-link" href="{{ route('notifications') }}" data-bs-hover-animate="rubberBand"><i
-                            class="fas fa-bell fa-fw" style="color: black"></i></a>
+                            class="fas fa-bell fa-fw" style="color:black "></i></a>
                 </li>
 
                 <li class="nav-item">
@@ -108,14 +126,14 @@
                     <div class="nav-item">
                         <a href="{{ route('profile.index') }}" class="nav-link" title="Profil">
                             <span style="color:black;"
-                                class="d-none d-lg-inline mr-2 text-600">{{ auth()->user()->name }}</span><img
+                                class="d-none d-lg-inline mr-2 text-600 text-white">{{ auth()->user()->name }}</span><img
                                 class="rounded-circle img-profile" width="25px" height="25px"
                                 src="/uploads/profile_pictures/{{ auth()->user()->profile_photo_path }}"></a>
                 </li>
                 <div class="d-none d-sm-block topbar-divider"></div>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <li class="nav-item"><a style="color: black;" title="Çıkış" class="nav-link"
+                    <li class="nav-item"><a style="color: rgb(92, 90, 90);" title="Çıkış" class="nav-link"
                             href="{{ route('logout') }}"
                             onclick="event.preventDefault(); this.closest('form').submit();"><i
                                 class="fas fa-sign-out-alt"></i><span>&nbsp;Çıkış</span></a></li>

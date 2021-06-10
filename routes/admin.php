@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Support\Facades\Route;
 
+Route::redirect('/', '/admin/home');
+
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 ////////////////////////////////////////////////////////////////////////
@@ -46,9 +48,19 @@ Route::prefix('authentication')->group(function () {
 });
 
 ////////////////////////////////////////////////////////////////////////
+Route::redirect('/company/{id}', '/admin/company/{id}/informations');
 
-Route::prefix('company')->group(function () {
-    Route::get('/{id}', [CompanyController::class, 'index'])->name('company');
+Route::prefix('company')->group(function () {    
+    Route::prefix('{id}')->group(function () {
+        Route::get('/', [CompanyController::class, 'index'])->name('company');
+        Route::get('/informations', [CompanyController::class, 'showInfo'])->name('company.informations.index');
+        Route::get('/informations/osgb', [CompanyController::class, 'showInfo'])->name('company.informations.osgb');
+        Route::get('/informations/formal', [CompanyController::class, 'showInfo'])->name('company.informations.formal');
+        Route::get('/informations/acc', [CompanyController::class, 'showInfo'])->name('company.informations.acc');        
+        Route::get('/employees', [CompanyController::class, 'showEmployees'])->name('company.employees');
+        Route::get('/employees/deleted', [CompanyController::class, 'showEmployees'])->name('company.employees.deleted');
+        Route::get('/documents', [CompanyController::class, 'showDocuments'])->name('company.documents');
+    });
     Route::get('/deleted/{id}', [CompanyController::class, 'deletedIndex'])->name('deleted_company');
     Route::post('/delete/{company}', [CompanyController::class, 'delete'])->name('company.delete');
     Route::post('/update/{company}', [CompanyController::class, 'update'])->name('company.update');
@@ -57,7 +69,6 @@ Route::prefix('company')->group(function () {
     Route::post('/{company}/deleteEmployee/{employee}', [CompanyController::class, 'deleteEmployee'])->name('company.deleteEmployee');
     Route::post('/{company}/add-accountant', [CompanyController::class, 'addAcc'])->name('company.add-accountant');
     Route::post('/{company}/upload-accountant', [CompanyController::class, 'uploadAcc'])->name('company.upload-accountant');
-
 });
 
 Route::prefix('employee')->group(function () {

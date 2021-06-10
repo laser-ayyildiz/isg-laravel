@@ -18,7 +18,7 @@
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link text-dark disabled" id="link4-tab" data-toggle="tab" role="tab" href="#link4" aria-selected="false"
+        <a class="nav-link text-dark" id="link4-tab" data-toggle="tab" role="tab" href="#link4" aria-selected="false"
             aria-controls="link3">
             <h5><b>Devlet Bilgileri</b></h5>
         </a>

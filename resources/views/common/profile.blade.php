@@ -10,6 +10,15 @@
     {{ session('statusFail') }}
 </div>
 @endif
+@if ($errors->any())
+<div class="alert alert-danger">
+    <ul>
+        @foreach ($errors->all() as $error)
+        <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif
 <div class="row mb-3">
     <div class="col-lg-6" style="margin: auto;">
         <div class="card shadow-lg mb-3">
@@ -32,14 +41,14 @@
     <div class="col-lg-6">
         <div class="card shadow-lg mb-3">
             <div class="card-header py-3">
-                <p class="text-primary m-0 font-weight-bold">Şifre</p>
+                <p class="text-primary m-0 font-weight-bold">Parola</p>
             </div>
             <div class="card-body text-center shadow">
                 <form action="{{ route('profile.updatePassword') }}" method="POST" enctype="multipart/form-data"
                     autocomplete="off">
                     @csrf
                     <div class="form-group">
-                        <label style="float:left;"><b>Mevcut Şifre</b></label>
+                        <label style="float:left;"><b>Mevcut Parola</b></label>
                         <div class="input-group" id="show_hide_password">
                             <input class="form-control" type="password" name="oldPassword" autocomplete="off" required>
                             <div class="input-group-prepend">
@@ -50,7 +59,7 @@
 
                     </div>
                     <div class="form-group">
-                        <label style="float:left;"><b>Yeni Şifre</b></label>
+                        <label style="float:left;"><b>Yeni Parola</b></label>
                         <div class="input-group" id="show_hide_password">
                             <input class="form-control" type="password" minlength="8" name="newPassword" required>
                             <div class="input-group-prepend">
@@ -60,7 +69,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label style="float:left;"><b>Yeni Şifre Tekrar</b></label>
+                        <label style="float:left;"><b>Yeni Parola Tekrar</b></label>
                         <div class="input-group" id="show_hide_password">
                             <input class="form-control" type="password" minlength="8" name="newPasswordAgain" required>
                             <div class="input-group-prepend">
@@ -87,20 +96,11 @@
                     <div class="card-body shadow">
                         <form action="{{ route('profile.updateIdCard') }}" method="POST">
                             @csrf
-                            @if ($errors->any())
-                            <div class="alert alert-danger">
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                            @endif
                             <div class="form-row">
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label for="email"><strong>E-mail</strong></label>
-                                        <input class="form-control" type="email" name="email" 
+                                        <input class="form-control" type="email" name="email"
                                             value="{{ auth()->user()->email }}">
                                     </div>
                                 </div>
@@ -113,6 +113,7 @@
                                     </div>
                                 </div>
                             </div>
+                            @if (!auth()->user()->hasRole('CompanyAdmin'))
                             <div class="form-row">
                                 <div class="col-sm-4">
                                     <div class="form-group">
@@ -136,12 +137,12 @@
                                     <div class="form-group">
                                         <label for="recruitment_date">
                                             <strong>İşe Giriş Tarihi</strong><br></label>
-                                        <input name="recruitment_date" id="recruitment_date" class="form-control" type="date"
-                                            value="{{ auth()->user()->recruitment_date }}" required>
+                                        <input name="recruitment_date" id="recruitment_date" class="form-control"
+                                            type="date" value="{{ auth()->user()->recruitment_date }}" required>
                                     </div>
                                 </div>
                             </div>
-
+                            @endif
                             <button name="bilgi_kaydet" type="submit" style="width:200px;"
                                 class="btn btn-success">Kaydet</button>
                         </form>

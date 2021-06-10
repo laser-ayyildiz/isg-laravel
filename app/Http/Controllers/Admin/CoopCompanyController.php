@@ -11,6 +11,7 @@ use App\Models\UserToCompany;
 use App\Models\CompanyToGroup;
 use App\Models\FrontAccountant;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCoopCompanyRequest;
 
@@ -19,7 +20,8 @@ class CoopCompanyController extends Controller
     public function index(Request $request)
     {
         $osgbEmployees = User::whereBetween('job_id', [1, 7])->get();
-        $group_leaders = CoopCompany::select('id','name')->where('group_status','leader')->get();
+        $group_leaders = CoopCompany::select('id', 'name')->where('group_status', 'leader')->get();
+        
         if ($request->ajax()) {
             $data = CoopCompany::select('id', 'name', 'type', 'phone', 'email', 'city', 'town', 'contract_at');
             return DataTables::of($data)
@@ -140,3 +142,18 @@ class CoopCompanyController extends Controller
                 Str::title($company->name) . ' İşletmesine Git</a>');
     }
 }
+
+/*
+        $data = CoopCompany::select('id', 'name', 'type', 'phone', 'email', 'city', 'town', 'contract_at')->get();
+        
+        
+        $extra =  DB::select(
+            DB::raw('select * from `coop_companies` where exists (select * from `user_to_companies` where `coop_companies`.`id` = `user_to_companies`.`company_id` and exists (select * from `users` where `user_to_companies`.`user_id` = `users`.`id` and `job_id` = 4 and `users`.`deleted_at` is null)) and `coop_companies`.`deleted_at` is null')
+        );
+        
+        //dd($extra);
+        //dd();
+        $merged = array_merge($data->toArray(), $extra);
+        
+        dd($merged);
+        */

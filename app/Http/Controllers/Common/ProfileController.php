@@ -14,14 +14,7 @@ class ProfileController extends Controller
 {
     public function index()
     {
-        $role = null;
-        if (Auth::user()->hasRole('Admin')) {
-            $role = "admin";
-        }
-        if (Auth::user()->hasRole('User')) {
-            $role = "user";
-        }
-        return view('common.profile', ['role' => $role]);
+        return view('common.profile');
     }
 
     public function updatePicture(Request $request)
@@ -49,6 +42,11 @@ class ProfileController extends Controller
             'oldPassword' => 'required',
             'newPassword' => 'required',
             'newPasswordAgain' => 'required'
+        ],[],
+        [
+            'oldPassword' => 'Mevcut Parola',
+            'newPassword' => 'Yeni Parola',
+            'newPasswordAgain' => 'Yeni Parola Tekrar',
         ]);
 
         $hashedPassword = Auth::user()->password;
@@ -78,12 +76,31 @@ class ProfileController extends Controller
 
     public function updateIdCard(Request $request)
     {
-        $this->validate($request, [
-            'email' => 'required|email|unique:users,email,' . Auth::id(),
-            'name' => 'required',
-            'tc' => 'required|unique:users,tc,' . Auth::id(),
-            'recruitment_date' => 'required',
-        ]);
+        if (Auth::user()->hasRole('CompanyAdmin')) {
+            $this->validate($request, [
+                'email' => 'required|email|unique:users,email,' . Auth::id(),
+                'name' => 'required|string'
+            ],[],
+            [
+                'email' => 'Email',
+                'name' => 'Ad Soyad',
+            ]);
+        } else {
+            $this->validate($request, [
+                'email' => 'required|email|unique:users,email,' . Auth::id(),
+                'name' => 'required|string',
+                'phone' => 'required|numeric|digits:11',
+                'tc' => 'required|numeric|digits:11|unique:users,tc,' . Auth::id(),
+                'recruitment_date' => 'required|before_or_equal:' . date("Y-m-d H:i:s"),
+            ],[],
+            [
+                'email' => 'Email',
+                'tc' => 'T.C. Kimlik No',
+                'name' => 'Ad Soyad',
+                'phone' => 'Telefon No',
+                'recruitment_date' => 'İşe Giriş Tarihi'
+            ]);
+        }
         try {
             User::where('id', Auth::user()->id)->update($request->except(['_token', 'bilgi_kaydet']));
         } catch (\Throwable $th) {

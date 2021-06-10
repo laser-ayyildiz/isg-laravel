@@ -33,6 +33,7 @@
 </div>
 
 @include('common.companies.add-modal.index')
+@include('common.companies.sgk-sicil')
 
 @push('styles')
 {{-- dataTable --}}
@@ -51,11 +52,12 @@
 <script src="/js/jquery.dataTables.min.js"></script>
 <script src="/js/dataTables.bootstrap5.min.js"></script>
 <script src="/js/jquery.validate.js"></script>
+
 @php
 if (auth()->user()->hasRole('Admin'))
-    $ajax = route('admin.companies.index');
+$ajax = route('admin.companies.index');
 else
-    $ajax = route('user.companies.index');
+$ajax = route('user.companies.index');
 @endphp
 
 <script type="text/javascript">
@@ -81,11 +83,11 @@ else
                     "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Turkish.json"
                 }
           });
+          //console.log(table.context[0].aoData);
           $('#example tbody').on('click', 'tr', function () {
             var data = table.row( this ).data();
             window.location.href="company/"+data['id'];
-
-            });
+          });
     });
 </script>
 <script>
