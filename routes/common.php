@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Common;
 
 use App\Models\File;
 use App\Models\CompanyToFile;
+use App\Models\EmployeeToFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Redirect;
@@ -31,7 +32,7 @@ Route::prefix('upload-file')->group(function () {
 });
 
 Route::post('files/{folder}/{file_name}', function ($folder = null, $file_name = null) {
-    $path = storage_path() . '/' . 'app' . '/public/uploads/' . $folder . '/' . $file_name;
+    $path = storage_path() . '/app/public/uploads/' . $folder . '/' . $file_name;
     try {
         return Response::download($path);
     } catch (\Throwable $th) {
@@ -73,4 +74,26 @@ Route::post('delete-file/{type}/{file}', function ($type = null, $file = null) {
         );
 })->name('delete-file');
 
+Route::get('/files/company-employee-lists/employee-table.xlsx', function () {
+    return Response::download(storage_path() . '/app/public/uploads/company-employee-lists/employee-table.xlsx');
+});
+
 Route::post('/upload-excel/{company}/employee-list', [UploadEmployeeTableController::class, 'store'])->name('store-excel');
+
+Route::post('delete-employee-file/{file}', function (File $file) {
+    DB::transaction(function () use($file) {
+        try {
+            $file->delete();
+            EmployeeToFile::where('file_id', $file->id)->delete();
+        } catch (\Throwable $th) {
+            return back()->with([
+                'tab' => 'files',
+                'fail' => 'Bir hata ile karşılaşıldı!'
+            ]);
+        }
+    });
+    return back()->with([
+        'tab' => 'files',
+        'success' => 'Dosya Silindi!'
+    ]);
+})->name('delete-employee-file');

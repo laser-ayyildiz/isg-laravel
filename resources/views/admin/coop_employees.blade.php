@@ -21,25 +21,24 @@
     </ul>
 </div>
 @endif
-{{ session('tab') }}
 <div class="card shadow-lg">
     <div class="card-header tab-card-header text-center bg-light text-dark border">
         <h1><b>{{ Str::title($employee->name) }}</b></h1>
         <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" id="gb-tab" data-toggle="tab" href="#genel_bilgiler" role="tab"
-                    aria-controls="Genel Bilgiler" aria-selected="true"><b>Bilgiler</b></a>
+                <a class="nav-link {{ session('tab') === null ? 'active' : ''}}" id="gb-tab" data-toggle="tab" href="#genel_bilgiler" role="tab"
+                    aria-controls="Genel Bilgiler" aria-selected="true">Bilgiler</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="files-tab" data-toggle="tab" href="#files" role="tab" aria-controls="Dosyalar"
-                    aria-selected="true"><b>Dosyalar</b></a>
+                <a class="nav-link {{ session('tab') === 'files' ? 'active' : ''}}" id="files-tab" data-toggle="tab" href="#files" role="tab" aria-controls="Dosyalar"
+                    aria-selected="true">Dosyalar</a>
             </li>
         </ul>
     </div>
     <div class="card-body">
         <div class="tab-content" id="myTabContent">
             <!--Genel Bilgiler -->
-            <div class="tab-pane fade show active" id="genel_bilgiler" role="tabpanel" aria-labelledby="gb-tab">
+            <div class="tab-pane fade show {{ session('tab') === null ? 'active' : ''}}" id="genel_bilgiler" role="tabpanel" aria-labelledby="gb-tab">
 
                 @if (!$deleted)
                 <form action="{{ route('admin.coop_employee.update',['employee' => $employee]) }}" method="POST">
@@ -114,30 +113,46 @@
                 @endif
             </div>
 
-            <div class="tab-pane fade show" id="files" role="tabpanel" aria-labelledby="files-tab">
+            <div class="tab-pane fade show {{ session('tab') === 'files' ? 'active' : ''}}" id="files" role="tabpanel" aria-labelledby="files-tab">
                 <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#addFile"
                     data-whatever="@getbootstrap">Yeni Dosya Ekle</a></button>
-                <table class="table table-bordered table-strip">
+                <table class="table table-bordered table-striped table-responsive">
                     <thead class="bg-dark text-light">
                         <th>Dosya Adı</th>
+                        <th>Dosya Oluşturulma Tarihi</th>
                         <th>Yüklenme Tarihi</th>
-                        <th>İndir</th>
+                        <th style="width: 5%">İndir/Görüntüle</th>
                     </thead>
                     <tbody>
                         @forelse ($files as $file)
                         <tr>
                             <td>{{ $file->file->name }}</td>
+                            <td>{{ $file->file->signed_at }}</td>
                             <td>{{ $file->file->created_at }}</td>
-                            <form
-                                action="{{ route('download-file',['folder' => 'employee-files', 'file_name' => $file->file->name]) }}"
-                                method="post">
-                                @csrf
-                                <td><button type="submit" class="btn btn-success btn-sm">İndir</button> </td>
-                            </form>
+                            <td class="text-center">
+                                <button class="btn btn-warning btn-sm float-left mr-1"
+                                    onclick="window.open('{{ url('/files/employee-files/' . $file->file->name) }}','_blank')"><i class="fas fa-eye"></i></button>
+                                <form
+                                    action="{{ route('download-file',['folder' => 'employee-files', 'file_name' => $file->file->name]) }}"
+                                    method="post">
+                                    @csrf
+                                    <button type="submit" class="btn btn-success btn-sm float-left">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                </form>
+                                <form
+                                    action="{{ route('delete-employee-file',['file' => $file->file]) }}"
+                                    method="post">
+                                    @csrf
+                                    <button type="submit" class="btn btn-danger btn-sm float-left ml-1">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
                         </tr>
                         @empty
                         <tr>
-                            <td valign="top" colspan="3" class="text-center">Tabloda herhangi bir veri
+                            <td valign="top" colspan="4" class="text-center">Tabloda herhangi bir veri
                                 mevcut değil</td>
                         </tr>
                         @endforelse
@@ -185,5 +200,8 @@
     function goToCompany() {
         window.location = "/admin/company/{{ $employee->company->id }}";
     }
+    $('#chooseFile').on('change',function(){
+        $(this).next('.custom-file-label').html($(this).val());
+    });
 </script>
 @endsection

@@ -7,28 +7,40 @@ use App\Models\CoopCompany;
 use App\Http\Controllers\Controller;
 use App\Models\UserToCompany;
 use App\Notifications\CreateCompanyAdmin;
-use GuzzleHttp\Psr7\Request;
+use Illuminate\Http\Request;
 
 class AssignCompanyAdminController extends Controller
 {
     public function assign(CoopCompany $company, Request $request)
     {
+        $this->validate($request, [
+            'email' => 'required|email|unique:users,email',
+            'name' => 'required|string',
+            'phone' => 'nullable|numeric|digits:11',
+            'tc' => 'nullable|numeric|digits:11'
+        ],[],
+        [
+            'email' => 'Email',
+            'name' => 'Ad Soyad',
+            'phone' => 'Telefon No',
+            'tc' => 'T.C. Kimlik No'
+        ]);
+
         try {
-            $this->createUser($company, $request->email);
+            $this->createUser($company, $request);
         } catch (\Throwable $th) {
             return back()->with('fail', 'İşveren/vekili kayıt edilirken bir hata ile karşılaşıldı!');
         }
         return back()->with('success', 'İşveren/vekili hesabı oluşturuldu. Giriş bilgileri mail olarak gönderildi!');
     }
 
-    public function createUser(CoopCompany $company, $email)
+    public function createUser(CoopCompany $company, $request)
     {
         $password = $this->passGenerator();
-        $email = null;
         $user = User::create([
             'recruitment_date' => date('Y-m-d'),
-            'name' => $company->employer,
-            'email' => $email,
+            'name' => $request->name,
+            'email' => $request->email,
             'password' => bcrypt($password)
         ])->syncRoles('CompanyAdmin');
 

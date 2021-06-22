@@ -50,8 +50,8 @@ Route::prefix('authentication')->group(function () {
 ////////////////////////////////////////////////////////////////////////
 Route::redirect('/company/{id}', '/admin/company/{id}/informations');
 
-Route::prefix('company')->group(function () {    
-    Route::prefix('{id}')->group(function () {
+Route::prefix('/company')->group(function () {    
+    Route::prefix('/{id}')->group(function () {
         Route::get('/', [CompanyController::class, 'index'])->name('company');
         Route::get('/informations', [CompanyController::class, 'showInfo'])->name('company.informations.index');
         Route::get('/informations/osgb', [CompanyController::class, 'showInfo'])->name('company.informations.osgb');
@@ -60,6 +60,8 @@ Route::prefix('company')->group(function () {
         Route::get('/employees', [CompanyController::class, 'showEmployees'])->name('company.employees');
         Route::get('/employees/deleted', [CompanyController::class, 'showEmployees'])->name('company.employees.deleted');
         Route::get('/documents', [CompanyController::class, 'showDocuments'])->name('company.documents');
+        Route::get('/documents/mandatory-files', [CompanyController::class, 'showDocuments'])->name('company.documents.mandatoryFiles');
+
     });
     Route::get('/deleted/{id}', [CompanyController::class, 'deletedIndex'])->name('deleted_company');
     Route::post('/delete/{company}', [CompanyController::class, 'delete'])->name('company.delete');

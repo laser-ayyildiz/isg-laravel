@@ -48,68 +48,62 @@
 
     @include('admin.company.employees.modals.calisanlara-dosya-ata')
 
+    @include('admin.company.employees.modals.isveren-hesap-ekle')
+
+    @include('admin.company.employees.modals.calisan-listesi-yukle')
+
+
 </div>
-
-@push('styles')
-
-<link href="/css/dataTables.bootstrap5.min.css" rel="stylesheet">
-
-@endpush
 
 @push('scripts')
 <script>
     empRecDate.max = new Date().toISOString().split("T")[0];
-</script>
-<script src="/js/core/city-town.js"></script>
-<script src="/js/jquery.dataTables.min.js"></script>
-<script src="/js/dataTables.bootstrap5.min.js"></script>
-<script src="/js/jquery.validate.js"></script>
-<script type="text/javascript">
-    $(function () {
-          var table = $('#example').DataTable({
-              processing: true,
-              serverSide: true,
-              DT_RowId: true,
-              autoWidth: false,
-              responsive: true,
-              ajax: "{{ route('admin.company.employees',['id' => $company->id,'tab' => 'isletme-calisanlari']) }}",
-              columns: [
-                  {data: 'name', name: 'name'},
-                  {data: 'tc', name: 'tc'},
-                  {data: 'phone', name: 'phone'},
-                  {data: 'email', name: 'email'},
-                  {data: 'recruitment_date', name: 'recruitment_date'},
-                  {
-                    data: null,
-                    render: function ( data, type, row ) {
-                        return '<button type="button" id="deleteEmpBtn" class="btn btn-danger" data-toggle="modal" data-target="#deleteEmpModal">Sil</button>';
-                    }
-                  },
-              ],
-              "language": {
-                "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Turkish.json"
-                }
-          });
-          $('#example tbody').on('click', 'tr', function (e) {
-            if (e.target.nodeName !== 'BUTTON') {
-                var data = table.row( this ).data();
-                window.location.href = "/admin/employee/"+data['id'];       
-            }     
-        });
-        $('#example tbody').on('click', '#deleteEmpBtn', function (e) {
-            var data = table.row( $(this).parents('tr') ).data();
-            $('#deleteEmpName').html("<b>" + data['name'] + '</b> isimli çalışanı silmek istediğinize emin misiniz?');
+    file_date.max = new Date().toISOString().split("T")[0];
+
+    $('#example tbody').on('click', 'tr', function(e) {
+        var tr = $(this).closest('tr');
+        if (e.target.nodeName !== 'BUTTON') window.location.href = "/admin/employee/"+ tr.attr('id');
+        else{
+            var name = tr.find('td').first().text();
+            $('#deleteEmpName').html("<b>" + name + '</b> isimli çalışanı silmek istediğinize emin misiniz?');
 
             $('#deleteEmpRequest').click(function(){
                 let action = $('#deleteEmpForm').attr('action');
-                $('#deleteEmpForm').attr('action', action+"{{ $company->id }}"+"/deleteEmployee/"+data['id']);
+                $('#deleteEmpForm').attr('action', action+"{{ $company->id }}"+"/deleteEmployee/"+tr.attr('id'));
+            });
+        }
+    });
+
+    $("#selectAll").on('click',function(){
+        if ($("#selectAll").is(':checked')) {
+            $('#boxes').addClass('d-none');
+        }
+        else{
+            $('#boxes').removeClass('d-none');
+        }        
+    });
+    $('#chooseBatchFile').on('change',function(){
+        var fileName = $(this).val();
+        $(this).next('.custom-file-label').html(fileName);
+    }); 
+    
+    $('#employee_list').on('change',function(){
+        $(this).next('.custom-file-label').html($(this).val());
+    }); 
+
+    $('#exampleFile').on('click', function(e) {
+        window.location.href = "/files/company-employee-lists/employee-table.xlsx"
+    });
+
+    $(document).ready(function(){
+        $("#searchBar").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#example tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
             });
         });
-
     });
-</script>
 
-<script>
     var pathArray = window.location.pathname.split('/');
     if (pathArray[pathArray.length-1] === "deleted"){
         $("#sc-tab").addClass("active");

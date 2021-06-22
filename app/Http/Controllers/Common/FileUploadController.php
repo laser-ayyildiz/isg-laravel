@@ -94,12 +94,32 @@ class FileUploadController extends Controller
     public function empBatchFileUpload(CoopCompany $company, Request $request)
     {
         $request->validate([
-            'file' => 'required|mimes:csv,txt,xlx,xls,xlsx,odt,odf,pdf,png,jpg,jpeg,doc,docx,ppt,pptx|max:51200'
+            'file' => 'required|mimes:csv,txt,xlx,xls,xlsx,odt,odf,pdf,png,jpg,jpeg,doc,docx,ppt,pptx|max:51200',
+            'name' => 'required|string|max:250',
+            'file_date' => 'nullable|before_or_equal:' . date('Y-m-d')
+        ],[],[
+            'name' => 'Dosya Adı',
+            'file' => 'Dosya',
+            'file_date' => 'Dosya Tarihi'
         ]);
-        $fileName = null;
-        $employeeIds = CoopEmployee::where('company_id', $company->id)->pluck('id')->toArray();
+
+        $fileName = $request->name;
+        $employeeIds = [];
+        $signed_at = $request->file_date ?? date('Y-m-d');
+        
+        if ($request->has('selectAll')) {
+            $employeeIds = CoopEmployee::where('company_id', $company->id)->pluck('id')->toArray();
+        }
+        else {
+            foreach ($request->toArray() as $key => $value) {
+                if (preg_match('/^box/',$key)) {
+                    $employeeIds[] = intval($value);
+                }
+            }
+        }
+
         if (count($employeeIds) === 0)
-            return back()->with(['tab' => 'isletme_calisanlar', 'fail' => 'İşletmeye ait aktif çalışan bulunamadı!']);
+            return back()->with(['tab' => 'isletme_calisanlar', 'fail' => 'İşletmeye ait aktif çalışan bulunamadı veya hiçbir çalışan seçilmedi!']);
 
         try {
             if ($request->file()) {
@@ -116,7 +136,8 @@ class FileUploadController extends Controller
                 foreach ($employeeIds as $id) {
                     $employeeToFiles[] = [
                         'employee_id' => $id,
-                        'file_id' => $fileModel->id
+                        'file_id' => $fileModel->id,
+                        'signed_at' => $signed_at
                     ];
                 }
                 if ($employeeToFiles !== null)

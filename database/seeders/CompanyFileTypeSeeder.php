@@ -33,6 +33,10 @@ class CompanyFileTypeSeeder extends Seeder
         CompanyFileType::create([
             'file_name' => 'Yıllık Çalışma Planı'
         ]);
+        
+        CompanyFileType::create([
+            'file_name' => 'Yıllık Eğitim Programı'
+        ]);
 
         CompanyFileType::create([
             'file_name' => 'Dsp Sözleşmesi'

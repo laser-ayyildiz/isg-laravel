@@ -49,7 +49,7 @@ class UsersImport implements
             'phone' => $row['telefon'],
             'email' => $row["email"],
             'position' => $row['pozisyon'],
-            'recruitment_date' => Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['ise_giris_tarihi'])),
+            'recruitment_date' => $row['ise_giris_tarihi'] === null ? date('Y-m-d') : Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['ise_giris_tarihi'])),
             'company_id' => $this->company_id
         ]);
     }
@@ -57,8 +57,8 @@ class UsersImport implements
     public function rules(): array
     {
         return [
-            '*.email' => ['email', 'unique:coop_employees,email','nullable'],
-            '*.tc' => ['required','unique:coop_employees,tc', 'digits:11']
+            '*.email' => ['email', 'unique:coop_employees,email', 'nullable'],
+            '*.tc' => ['required', 'unique:coop_employees,tc', 'digits:11']
         ];
     }
 

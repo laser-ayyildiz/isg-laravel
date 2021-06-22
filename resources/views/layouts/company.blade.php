@@ -7,11 +7,16 @@
     <link rel="shortcut icon" href="/images/osgb_amblem.ico">
     <script type="text/javascript" src="{{ mix('js/app.js') }}"></script>
     <title>@yield('title')Özgür OSGB</title>
-    <link href="/company/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+    <link rel="stylesheet" href="/fonts/fontawesome-all.min.css">
+    <link rel="stylesheet" href="/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="/fonts/ionicons.min.css">
+    <link rel="stylesheet" href="/fonts/fontawesome5-overrides.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
     <link href="/company/css/sb-admin-2.min.css" rel="stylesheet">
+    
     <style>
         .dropdown-menu {
             position: absolute;
@@ -108,12 +113,8 @@
                 </a>
                 <div id="collapseDocs" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">İsg:</h6>
-                        <a class="collapse-item" href="">Saha Gözlem</a>
-                        <a class="collapse-item" href="">Risk Analizi</a>
-                        <a class="collapse-item" href="">Acil Durum Planı</a>
-                        <a class="collapse-item" href="">Eğitim Sertifikası</a>
-                        <a class="collapse-item" href="">Döf</a>
+                        <h6 class="collapse-header">Dokümantasyon</h6>
+                        <a class="collapse-item" href="{{ route('admin.company.documents.mandatoryFiles',['id' => request()->segment(3)]) }}">Zorunlu Dokümanlar</a>
                     </div>
                 </div>
             </li>
@@ -178,9 +179,9 @@
             </footer>
         </div>
     </div>
-    <script src="/company/vendor/jquery/jquery.min.js"></script>
-    <script src="/company/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="/company/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/jquery.easing.min.js"></script>
     <script src="/company/js/sb-admin-2.min.js"></script>
     <script>
         var pathArray = window.location.pathname.split('/');

@@ -50,13 +50,14 @@ class CreateCompanyAdmin extends Notification
             ->line(
                 'Parolan otomatik olarak oluşturuldu. Bu parolayı senden başka hiç kimse'
                     . ' bilmiyor merak etme ama eğer istersen'
-                    . ' Profiline girip parolanı değiştirilebilirsin!'
+                    . ' Profiline girip parolanı değiştirebilirsin!'
             )
             ->line('Kullanıcı Adı: ' . $this->user->email)
             ->line('Parola: ' . $this->password)
             ->action('Giriş Yapmak İçin Tıkla!', url('/login'))
-            ->subject('Yeni Çalışan Kaydı')
-            ->priority(3);
+            ->subject('Yeni İşveren/Vekili Kaydı')
+            ->salutation('İyi Günler, Özgür OSGB')
+            ->priority(1);
     }
 
     /**

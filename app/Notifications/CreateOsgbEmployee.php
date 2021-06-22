@@ -49,14 +49,15 @@ class CreateOsgbEmployee extends Notification
             ->greeting('Aramıza Hoş Geldin ' . Str::title($this->user->name))
             ->line(
                 'Parolan otomatik olarak oluşturuldu. Bu parolayı senden başka hiç kimse'
-                    . ' bilmiyor merak etme ama hepimizin güvenliği için '
-                    . ' sen Profiline girip parolanı değiştirilebilirsin!'
+                    . ' bilmiyor merak etme ama eğer istersen'
+                    . ' Profiline girip parolanı değiştirebilirsin!'
             )
             ->line('Kullanıcı Adı: ' . $this->user->email)
             ->line('Parola: ' . $this->password)
             ->action('Giriş Yapmak İçin Tıkla!', url('/login'))
             ->subject('Yeni Çalışan Kaydı')
-            ->priority(3);
+            ->salutation('İyi Günler, Özgür OSGB')
+            ->priority(1);
     }
 
     /**

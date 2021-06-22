@@ -11,6 +11,11 @@ class UploadEmployeeTableController extends Controller
 {
     public function store(Request $request, CoopCompany $company)
     {
+        $this->validate($request,[
+            'employee-list' => 'required|mimes:xlx,xls,xlsx'
+        ],[],[
+            'employee-list' => 'Çalışan Listesi'
+        ]);
         try {
             $file = $request->file('employee-list');
             $file_name =  time() . "_" . $company->name . "." . $file->getClientOriginalExtension();
