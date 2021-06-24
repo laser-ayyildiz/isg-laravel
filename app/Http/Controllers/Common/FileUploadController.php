@@ -16,18 +16,26 @@ class FileUploadController extends Controller
     public function empFileUpload(CoopEmployee $employee, Request $request)
     {
         $request->validate([
-            'file' => 'required|mimes:csv,txt,xlx,xls,xlsx,odt,odf,mp3,mp4,pdf,png,jpg,jpeg,doc,docx,ppt,pptx|max:51200'
+            'file' => 'required|mimes:csv,txt,xlx,xls,xlsx,odt,odf,pdf,png,jpg,jpeg,doc,docx,ppt,pptx|max:51200',
+            'name' => 'required|string|max:250',
+            'file_date' => 'nullable|before_or_equal:' . date('Y-m-d')
+        ], [], [
+            'name' => 'Dosya Adı',
+            'file' => 'Dosya',
+            'file_date' => 'Dosya Tarihi'
         ]);
-        $fileName = null;
+        $fileName = $request->name;
+        $signed_at = $request->file_date ?? date('Y-m-d');
 
         try {
             if ($request->file()) {
                 $fileModel = new File;
-                $fileName = time() . '_' . $request->file->getClientOriginalName();
+                $fileName = $fileName . '_' . time() . '.' .  $request->file->getClientOriginalExtension();
                 $filePath = $request->file('file')->storeAs('uploads/employee-files', $fileName, 'public');
 
-                $fileModel->name = time() . '_' . $request->file->getClientOriginalName();
+                $fileModel->name = $fileName;
                 $fileModel->file_path = '/storage/' . $filePath;
+                $fileModel->signed_at = $signed_at;
                 $fileModel->save();
                 EmployeeToFile::create([
                     'employee_id' => $employee->id,
@@ -97,7 +105,7 @@ class FileUploadController extends Controller
             'file' => 'required|mimes:csv,txt,xlx,xls,xlsx,odt,odf,pdf,png,jpg,jpeg,doc,docx,ppt,pptx|max:51200',
             'name' => 'required|string|max:250',
             'file_date' => 'nullable|before_or_equal:' . date('Y-m-d')
-        ],[],[
+        ], [], [
             'name' => 'Dosya Adı',
             'file' => 'Dosya',
             'file_date' => 'Dosya Tarihi'
@@ -106,13 +114,12 @@ class FileUploadController extends Controller
         $fileName = $request->name;
         $employeeIds = [];
         $signed_at = $request->file_date ?? date('Y-m-d');
-        
+
         if ($request->has('selectAll')) {
             $employeeIds = CoopEmployee::where('company_id', $company->id)->pluck('id')->toArray();
-        }
-        else {
+        } else {
             foreach ($request->toArray() as $key => $value) {
-                if (preg_match('/^box/',$key)) {
+                if (preg_match('/^box/', $key)) {
                     $employeeIds[] = intval($value);
                 }
             }
@@ -124,11 +131,12 @@ class FileUploadController extends Controller
         try {
             if ($request->file()) {
                 $fileModel = new File;
-                $fileName = time() . '_' . $request->file->getClientOriginalName();
+                $fileName = $fileName . '_' . time() . '.' .  $request->file->getClientOriginalExtension();
                 $filePath = $request->file('file')->storeAs('uploads/employee-files', $fileName, 'public');
 
-                $fileModel->name = time() . '_' . $request->file->getClientOriginalName();
+                $fileModel->name = $fileName;
                 $fileModel->file_path = '/storage/' . $filePath;
+                $fileModel->signed_at = $signed_at;
                 $fileModel->save();
 
                 /////////////////////////////////////////////////////////////////
@@ -137,7 +145,6 @@ class FileUploadController extends Controller
                     $employeeToFiles[] = [
                         'employee_id' => $id,
                         'file_id' => $fileModel->id,
-                        'signed_at' => $signed_at
                     ];
                 }
                 if ($employeeToFiles !== null)

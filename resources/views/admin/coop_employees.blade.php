@@ -26,19 +26,20 @@
         <h1><b>{{ Str::title($employee->name) }}</b></h1>
         <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
             <li class="nav-item">
-                <a class="nav-link {{ session('tab') === null ? 'active' : ''}}" id="gb-tab" data-toggle="tab" href="#genel_bilgiler" role="tab"
-                    aria-controls="Genel Bilgiler" aria-selected="true">Bilgiler</a>
+                <a class="nav-link {{ session('tab') === null ? 'active' : ''}}" id="gb-tab" data-toggle="tab"
+                    href="#genel_bilgiler" role="tab" aria-controls="Genel Bilgiler" aria-selected="true">Bilgiler</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ session('tab') === 'files' ? 'active' : ''}}" id="files-tab" data-toggle="tab" href="#files" role="tab" aria-controls="Dosyalar"
-                    aria-selected="true">Dosyalar</a>
+                <a class="nav-link {{ session('tab') === 'files' ? 'active' : ''}}" id="files-tab" data-toggle="tab"
+                    href="#files" role="tab" aria-controls="Dosyalar" aria-selected="true">Dosyalar</a>
             </li>
         </ul>
     </div>
     <div class="card-body">
         <div class="tab-content" id="myTabContent">
             <!--Genel Bilgiler -->
-            <div class="tab-pane fade show {{ session('tab') === null ? 'active' : ''}}" id="genel_bilgiler" role="tabpanel" aria-labelledby="gb-tab">
+            <div class="tab-pane fade show {{ session('tab') === null ? 'active' : ''}}" id="genel_bilgiler"
+                role="tabpanel" aria-labelledby="gb-tab">
 
                 @if (!$deleted)
                 <form action="{{ route('admin.coop_employee.update',['employee' => $employee]) }}" method="POST">
@@ -113,7 +114,8 @@
                 @endif
             </div>
 
-            <div class="tab-pane fade show {{ session('tab') === 'files' ? 'active' : ''}}" id="files" role="tabpanel" aria-labelledby="files-tab">
+            <div class="tab-pane fade show {{ session('tab') === 'files' ? 'active' : ''}}" id="files" role="tabpanel"
+                aria-labelledby="files-tab">
                 <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#addFile"
                     data-whatever="@getbootstrap">Yeni Dosya Ekle</a></button>
                 <table class="table table-bordered table-striped table-responsive">
@@ -131,7 +133,8 @@
                             <td>{{ $file->file->created_at }}</td>
                             <td class="text-center">
                                 <button class="btn btn-warning btn-sm float-left mr-1"
-                                    onclick="window.open('{{ url('/files/employee-files/' . $file->file->name) }}','_blank')"><i class="fas fa-eye"></i></button>
+                                    onclick="window.open('{{ url('/files/employee-files/' . $file->file->name) }}','_blank')"><i
+                                        class="fas fa-eye"></i></button>
                                 <form
                                     action="{{ route('download-file',['folder' => 'employee-files', 'file_name' => $file->file->name]) }}"
                                     method="post">
@@ -140,8 +143,7 @@
                                         <i class="fas fa-download"></i>
                                     </button>
                                 </form>
-                                <form
-                                    action="{{ route('delete-employee-file',['file' => $file->file]) }}"
+                                <form action="{{ route('delete-employee-file',['file' => $file->file]) }}"
                                     method="post">
                                     @csrf
                                     <button type="submit" class="btn btn-danger btn-sm float-left ml-1">
@@ -181,9 +183,24 @@
                         enctype="multipart/form-data">
                         <h3 class="text-center mb-5">{{ Str::title($employee->name) }} çalışanı için dosya yükle</h3>
                         @csrf
-                        <div class="custom-file">
-                            <input type="file" name="file" class="custom-file-input" id="chooseFile">
-                            <label class="custom-file-label" for="chooseFile">Dosya Seç</label>
+                        <div class="row mt-3">
+                            <div class="col-6">
+                                <label for="name"><b>Dosya Adı</b></label>
+                                <input class="form-control" type="text" name="name" id="name" placeholder="Dosya Adı"
+                                    required>
+                            </div>
+                            <div class="col-6">
+                                <label for="file_date"><b>Dosya Tarihi</b></label>
+                                <input class="form-control" type="date" name="file_date" id="file_date">
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <div class="custom-file">
+                                    <input type="file" name="file" class="custom-file-input" id="chooseFile">
+                                    <label class="custom-file-label" for="chooseFile">Dosya Seç</label>
+                                </div>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="submit" name="submit" class="btn btn-primary btn-block mt-4">
