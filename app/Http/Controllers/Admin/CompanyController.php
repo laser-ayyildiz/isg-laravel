@@ -91,7 +91,7 @@ class CompanyController extends Controller
 
         $deletedEmployees = [];
 
-        $employees = CoopEmployee::where('company_id', $id)->withTrashed()->get();
+        $employees = CoopEmployee::where('company_id', $id)->orderBy('name')->withTrashed()->get();
 
         return view(
             'admin.company.employees.index',

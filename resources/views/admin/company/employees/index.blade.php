@@ -28,7 +28,6 @@
 <div class="container-fluid mt-2">
     <div class="card shadow-lg">
         <div class="card-header tab-card-header text-center bg-light text-dark border">
-            <h1><b>{{ Str::upper($company->name) }}</b></h1>
             @include('admin.company.employees.tabs.list')
         </div>
         <div class="card-body">
@@ -62,7 +61,7 @@
 
     $('#example tbody').on('click', 'tr', function(e) {
         var tr = $(this).closest('tr');
-        if (e.target.nodeName !== 'BUTTON') window.location.href = "/admin/employee/"+ tr.attr('id');
+        if (e.target.nodeName !== 'BUTTON' && e.target.nodeName !== 'I') window.location.href = "/admin/employee/"+ tr.attr('id');
         else{
             var name = tr.find('td').first().text();
             $('#deleteEmpName').html("<b>" + name + '</b> isimli çalışanı silmek istediğinize emin misiniz?');

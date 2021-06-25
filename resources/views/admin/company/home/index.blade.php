@@ -3,7 +3,11 @@
 @section('home'){{ route('admin.home') }} @endsection
 @section('company'){{ Str::of($company->name)->upper()->limit(20) }} @endsection
 @section('content')
-
+@php
+$month = date('m');
+$monthList = ['01' => 'Ocak','02' => 'Şubat','03' => 'Mart','04' => 'Nisan','05' => 'Mayıs','06' => 'Haziran','07'
+=> 'Temmuz','08' => 'Ağustos','09' => 'Eylül','10' => 'Ekim','11' => 'Kasım','12' => 'Aralık'];
+@endphp
 @if (session('fail'))
 <div class="alert alert-danger">
     {{ session('fail') }}
@@ -23,27 +27,19 @@
     </ul>
 </div>
 @endif
-<div class="text-center mb-1">
-    <h2><b>{{ Str::upper($company->name) }}</h2></b>
-</div>
 <div class="row">
     {{-- ///////////////////////////Left Side/////////////////////////////////////////// --}}
-    <div class="col-lg-7 pr-3">
-        <div class="row">
+    <div class="col-lg-8 pr-3">
+        <div class="row"  style="height: 780px">
             <div class="card w-100">
                 @include('admin.company.home.tabs.zorunlu-dokumanlar')
-            </div>
-        </div>
-        <div class="row mt-3 mb-5" style="height: 272px">
-            <div class="card w-100">
-                @include('admin.company.home.tabs.yillik-calisma-plani')
             </div>
         </div>
     </div>
 
     {{-- ///////////////////////////Right Side/////////////////////////////////////////// --}}
-    <div class="col-lg-5">
-        <div class="row" style="height: 560px">
+    <div class="col-lg-4">
+        <div class="row" style="height: 550px">
             <div class="card w-100">
                 @include('admin.company.home.tabs.bildirimler')
             </div>
@@ -56,4 +52,13 @@
     </div>
 </div>
 
+<div name="modals">
+    @include('admin.company.home.modals.zorunlu-dokuman-ekle')
+</div>
+
+<script>
+    function selectElement(valueToSelect) {
+        document.getElementById('file_type').value = valueToSelect;
+    }
+</script>
 @endsection

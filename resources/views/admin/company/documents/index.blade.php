@@ -27,7 +27,6 @@
 
 <div class="card shadow-lg">
     <div class="card-header tab-card-header text-center bg-light text-dark border">
-        <h1><b>{{ Str::upper($company->name) }}</b></h1>
         @include('admin.company.documents.tabs.list')
     </div>
     <div class="card-body">

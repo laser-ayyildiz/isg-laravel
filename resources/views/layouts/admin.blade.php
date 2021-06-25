@@ -42,28 +42,17 @@
             display: block;
         }
 
-        .nav-link .nav-text {
-            display: none;
-        }
-
-        .nav-link:hover .nav-text {
-            display: inline;
-        }
-
         a i {
             color: black;
         }
 
-        a {
-            font-weight: bold;
-        }
     </style>
     @stack('styles')
 
 </head>
 
 <body id="page-top">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-info" style="min-height: 50px;">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary" style="min-height: 50px;">
         <a class="navbar-brand" href="{{ route('admin.home') }}"><b>Özgür OSGB</b></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler"
             aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
@@ -73,10 +62,10 @@
         <div class="collapse navbar-collapse" id="navbarToggler">
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                 <li class="nav-item dropdown no-arrow active">
-                    <a class="nav-link dropdown-toggle id=" navbarDropdownMenuLink" role="button" data-toggle="dropdown"
+                    <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-building"></i>
-                        <div class="nav-text">İşletmeler</div>
+                        İşletmeler
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <a class="dropdown-item" href="{{ route('admin.companies.index') }}"><i
@@ -89,8 +78,7 @@
                 </li>
                 <li class="nav-item active">
                     <a class="nav-link" href="{{ route('admin.settings') }}"><i class="fas fa-wrench"></i>
-                        <div class="nav-text">Ayarlar</div>
-                        <span class="sr-only">(current)</span>
+                        Ayarlar
                     </a>
                 </li>
 
@@ -98,7 +86,7 @@
                     <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-users"></i>
-                        <div class="nav-text">Çalışanlar</div>
+                        Çalışanlar
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <a class="dropdown-item" href="{{ route('admin.osgb_employees') }}"><i
@@ -126,7 +114,7 @@
                     <div class="nav-item">
                         <a href="{{ route('profile.index') }}" class="nav-link" title="Profil">
                             <span style="color:black;"
-                                class="d-none d-lg-inline mr-2 text-600 text-white">{{ auth()->user()->name }}</span><img
+                                class="d-none d-lg-inline mr-2 text-600 text-white">{{ Str::of(auth()->user()->name)->title()->limit(30) }}</span><img
                                 class="rounded-circle img-profile" width="25px" height="25px"
                                 src="/uploads/profile_pictures/{{ auth()->user()->profile_photo_path }}"></a>
                 </li>
@@ -136,7 +124,7 @@
                     <li class="nav-item"><a style="color: rgb(92, 90, 90);" title="Çıkış" class="nav-link"
                             href="{{ route('logout') }}"
                             onclick="event.preventDefault(); this.closest('form').submit();"><i
-                                class="fas fa-sign-out-alt"></i><span>&nbsp;Çıkış</span></a></li>
+                                class="fas fa-sign-out-alt"></i><span class="text-white">&nbsp;Çıkış</span></a></li>
                 </form>
             </div>
         </div>

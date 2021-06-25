@@ -35,7 +35,7 @@
                         <label class="form-check-label" for="selectAll"><b>Bütün Çalışanlara Ata</b></label>
                     </div>
                     <div class="row px-3 my-3" id="boxes">
-                        @foreach ($employees as $key=>$employee)
+                        @foreach ($employees->whereNull('deleted_at') as $key=>$employee)
                         <div class="form-check form-check-inline m-2">
                             <input class="form-check-input" type="checkbox" name="box{{ $key }}"
                                 id="inlineCheckbox{{ $key }}" value="{{ $employee->id }}">
