@@ -19,6 +19,7 @@ class CreateFilesTable extends Migration
             $table->string('name')->nullable();
             $table->string('file_path')->nullable();
             $table->date('signed_at')->default(DB::raw('(CURRENT_DATE)'));
+            $table->date('valid_date')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

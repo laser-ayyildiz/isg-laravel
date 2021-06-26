@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCompanyFileTypesTable extends Migration
+class CreateEmployeeEducationTypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateCompanyFileTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('company_file_types', function (Blueprint $table) {
+        Schema::create('employee_education_types', function (Blueprint $table) {
             $table->id();
-            $table->text('file_name');
+            $table->string('name');
             $table->integer('validity_period_type_1')->nullable();
             $table->integer('validity_period_type_2')->nullable();
             $table->integer('validity_period_type_3')->nullable();
@@ -30,6 +30,6 @@ class CreateCompanyFileTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('company_file_types');
+        Schema::dropIfExists('employee_education_types');
     }
 }

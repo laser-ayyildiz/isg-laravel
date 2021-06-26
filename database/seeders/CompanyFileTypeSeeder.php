@@ -15,35 +15,60 @@ class CompanyFileTypeSeeder extends Seeder
     public function run()
     {
         CompanyFileType::create([
-            'file_name' => 'İş Yeri Uzman Sözleşmesi'
+            'file_name' => 'İş Yeri Uzman Sözleşmesi',
+            'validity_period_type_1' => null,
+            'validity_period_type_2' => null,
+            'validity_period_type_3' => null,
         ]);
 
         CompanyFileType::create([
-            'file_name' => 'İş Yeri Hekim Sözleşmesi'
+            'file_name' => 'İş Yeri Hekim Sözleşmesi',
+            'validity_period_type_1' => null,
+            'validity_period_type_2' => null,
+            'validity_period_type_3' => null,
         ]);
 
         CompanyFileType::create([
-            'file_name' => 'Acil Durum Eylem Planı'
+            'file_name' => 'Acil Durum Eylem Planı',
+            'validity_period_type_1' => 72,
+            'validity_period_type_2' => 48,
+            'validity_period_type_3' => 24,
         ]);
 
         CompanyFileType::create([
-            'file_name' => 'Risk Analizi Dosyası'
+            'file_name' => 'Risk Analizi Dosyası',
+            'validity_period_type_1' => 72,
+            'validity_period_type_2' => 48,
+            'validity_period_type_3' => 24,
         ]);
 
         CompanyFileType::create([
-            'file_name' => 'Yıllık Çalışma Planı'
-        ]);
-        
-        CompanyFileType::create([
-            'file_name' => 'Yıllık Eğitim Programı'
+            'file_name' => 'Yıllık Çalışma Planı',
+            'validity_period_type_1' => 12,
+            'validity_period_type_2' => 12,
+            'validity_period_type_3' => 12,
+
         ]);
 
         CompanyFileType::create([
-            'file_name' => 'Dsp Sözleşmesi'
+            'file_name' => 'Yıllık Eğitim Programı',
+            'validity_period_type_1' => 12,
+            'validity_period_type_2' => 12,
+            'validity_period_type_3' => 12,
         ]);
 
         CompanyFileType::create([
-            'file_name' => 'Yıl Sonu Değerlendirme Raporu'
+            'file_name' => 'Dsp Sözleşmesi',
+            'validity_period_type_1' => null,
+            'validity_period_type_2' => null,
+            'validity_period_type_3' => null,
+        ]);
+
+        CompanyFileType::create([
+            'file_name' => 'Yıl Sonu Değerlendirme Raporu',
+            'validity_period_type_1' => 12,
+            'validity_period_type_2' => 12,
+            'validity_period_type_3' => 12,
         ]);
     }
 }
