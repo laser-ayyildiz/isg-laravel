@@ -17,6 +17,9 @@ class CreateCoopEmployeesTable extends Migration
             $table->char('phone', 16)->nullable();
             $table->char('tc', 11)->unique();
             $table->char('position', 200)->nullable();
+            $table->boolean('first_edu')->nullable()->default(0);
+            $table->boolean('second_edu')->nullable()->default(0);
+            $table->boolean('examination')->nullable()->default(0);
             $table->date('recruitment_date')->nullable();
             $table->softDeletes();
             $table->timestamps();

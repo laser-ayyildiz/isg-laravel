@@ -34,6 +34,8 @@
             <div class="tab-content" id="myTabContent">
                 @include('admin.company.employees.tabs.isletme-calisanlari')
 
+                @include('admin.company.employees.tabs.evraklari-eksik-calisanlar')
+
                 @include('admin.company.employees.tabs.silinen-calisanlar')
             </div>
         </div>
@@ -51,6 +53,11 @@
 
     @include('admin.company.employees.modals.calisan-listesi-yukle')
 
+    @include('admin.company.employees.modals.calisan-dosyası-yukle')
+
+    @include('admin.company.employees.modals.calisan-ozluk-dosyası-yukle')
+
+    @include('admin.company.employees.modals.calisan-geri-al')
 
 </div>
 
@@ -65,13 +72,41 @@
         else{
             var name = tr.find('td').first().text();
             $('#deleteEmpName').html("<b>" + name + '</b> isimli çalışanı silmek istediğinize emin misiniz?');
+            $('#empName').html("<b>" + name + '</b> isimli çalışan için dosya yükle');
 
             $('#deleteEmpRequest').click(function(){
                 let action = $('#deleteEmpForm').attr('action');
                 $('#deleteEmpForm').attr('action', action+"{{ $company->id }}"+"/deleteEmployee/"+tr.attr('id'));
             });
+
+            $('#addEmpFileRequest').click(function(){
+                let action = $('#addEmpFileForm').attr('action');
+                $('#addEmpFileForm').attr('action', action + tr.attr('id'));
+            });
+
+            $('#addEmpIdentifyFileRequest').click(function(){
+                let action = $('#addEmpIdentifyFileForm').attr('action');
+                $('#addEmpIdentifyFileForm').attr('action', action + tr.attr('id'));
+            });
         }
     });
+
+
+    $('#deletedEmpTable tbody').on('click', 'tr', function(e) {
+        var tr = $(this).closest('tr');
+        if (e.target.nodeName !== 'BUTTON' && e.target.nodeName !== 'I') window.location.href = "/admin/employee/"+ tr.attr('id');
+
+        else{
+            var name = tr.find('td').first().text();
+            $('#restoreEmpName').html("<b>" + name + '</b> isimli çalışanı işe geri almak istediğinize emin misiniz?');
+
+            $('#restoreEmpRequest').click(function(){
+                let action = $('#restoreEmpForm').attr('action');
+                $('#restoreEmpForm').attr('action', action + tr.attr('id'));
+            });
+        }
+    });
+    
 
     $("#selectAll").on('click',function(){
         if ($("#selectAll").is(':checked')) {
@@ -90,6 +125,14 @@
         $(this).next('.custom-file-label').html($(this).val());
     }); 
 
+    $('#chooseEmpFile').on('change',function(){
+        $(this).next('.custom-file-label').html($(this).val());
+    });
+
+    $('#chooseEmpIdentifyFile').on('change',function(){
+        $(this).next('.custom-file-label').html($(this).val());
+    });
+    
     $('#exampleFile').on('click', function(e) {
         window.location.href = "/files/company-employee-lists/employee-table.xlsx"
     });
@@ -121,6 +164,7 @@
         event.preventDefault();
         $('#myTab a[href="#silinen_calisanlar"]').click();
     });
+
 </script>
 @endpush
 

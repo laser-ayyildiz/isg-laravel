@@ -1,25 +1,30 @@
 <div class="tab-pane fade show" id="silinen_calisanlar" role="tabpanel" aria-labelledby="tr-tab">
     <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
-        <table class="table table-striped table-bordered table-hover" id="dataTable">
-            <thead class="thead-dark">
+        <table class="table table-striped table-bordered table-hover" id="deletedEmpTable">
+            <thead class="thead-dark text-center">
                 <tr>
                     <th>Çalışan Adı Soyadı</th>
                     <th>Pozisyonu</th>
-                    <th>T.C Kimlik No</th>
-                    <th>Telefon No</th>
-                    <th>E-mail</th>
-                    <th>İşten Çıkış Tarihi</th>
+                    <th>T.C.</th>
+                    <th>Telefon</th>
+                    <th>Pozisyon</th>
+                    <th>Çıkış Tarihi</th>
+                    <th>Geri Al</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="text-center">
                 @forelse ($employees->whereNotNull('deleted_at')->paginate(15) as $employee)
-                <tr>
+                <tr id="{{ $employee->id }}" style="cursor: pointer">
                     <td>{{ $employee->name }}</td>
                     <td>{{ $employee->position }}</td>
                     <td>{{ $employee->tc }}</td>
                     <td>{{ $employee->phone }}</td>
                     <td>{{ $employee->email }}</td>
                     <td>{{ $employee->deleted_at }}</td>
+                    <td class="table-success">
+                        <button class="btn btn-sm bg-success" data-toggle="modal" data-target="#restoreEmpModal"
+                            data-whatever="@getbootstrap"><i class="fas fa-undo" style="color: white"></i></button>
+                    </td>
                 </tr>
                 @empty
                 <tr>

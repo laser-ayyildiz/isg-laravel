@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\CoopEmployee;
 use App\Models\EmployeeToFile;
+
 class CoopEmployeeController extends Controller
 {
     public function index($employee)
@@ -13,7 +14,7 @@ class CoopEmployeeController extends Controller
         $demand = CoopEmployee::with('company')->where('id', $employee)->first();
 
         if (empty($demand))
-            return redirect()->route('admin.deleted.coop_employee', ['employee' => $employee]);
+            return redirect()->route('admin.deleted.coop_employee', ['employeeId' => $employee]);
 
         $files = EmployeeToFile::where('employee_id', $employee)->with('file')->paginate(10);
 
@@ -27,10 +28,10 @@ class CoopEmployeeController extends Controller
         );
     }
 
-    public function deletedIndex($employee)
+    public function deletedIndex($employeeId)
     {
-        $employee = CoopEmployee::with('company')->where('id', $employee)->onlyTrashed()->first();
-        $files = EmployeeToFile::where('employee_id', $employee)->with('file')->get();
+        $employee = CoopEmployee::with('company')->withTrashed()->where('id', $employeeId)->first();
+        $files = EmployeeToFile::where('employee_id', $employeeId)->with('file')->get();
 
         return view(
             'admin.coop_employees',
@@ -72,5 +73,15 @@ class CoopEmployeeController extends Controller
             return redirect()->back()->with('fail', 'Bir Hata ile Karşılaşıldı!');
         }
         return redirect()->route('admin.company', ['id' => $company])->with('success', 'Çalışan silindi!');
+    }
+
+    public function restore($id)
+    {
+        try {
+            CoopEmployee::withTrashed()->find($id)->restore();
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('fail', 'Bir Hata ile Karşılaşıldı!');
+        }
+        return back()->with('success', 'Çalışan işe geri alındı!');
     }
 }

@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class EmployeeToFile extends Model
 {
     use HasFactory;
+    use SoftDeletes;
     protected $fillable = [
         'employee_id',
         'file_id'
@@ -15,7 +17,7 @@ class EmployeeToFile extends Model
 
     public function employee()
     {
-        return $this->belongsTo(CoopEmployee::class);
+        return $this->belongsTo(CoopEmployee::class)->withTrashed();
     }
 
     public function file()

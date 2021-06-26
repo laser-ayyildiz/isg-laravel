@@ -49,6 +49,7 @@ Route::get('files/{folder}/{file_name}', function ($folder = null, $file_name = 
 
 
 Route::post('delete-file/{type}/{file}', function ($type = null, $file = null) {
+    DB::beginTransaction();
     try {
         File::where('id', $file)->delete();
         if ($type === 'CompanyToFile') {
@@ -61,6 +62,7 @@ Route::post('delete-file/{type}/{file}', function ($type = null, $file = null) {
             'fail' => 'Bir hata ile karşılaşıldı!'
         ]);
     }
+    DB::commit();
 
     return redirect()->back()
         ->with(

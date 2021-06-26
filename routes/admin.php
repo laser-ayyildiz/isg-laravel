@@ -50,18 +50,17 @@ Route::prefix('authentication')->group(function () {
 ////////////////////////////////////////////////////////////////////////
 Route::redirect('/company/{id}', '/admin/company/{id}/informations');
 
-Route::prefix('/company')->group(function () {    
+Route::prefix('/company')->group(function () {
     Route::prefix('/{id}')->group(function () {
         Route::get('/', [CompanyController::class, 'index'])->name('company');
         Route::get('/informations', [CompanyController::class, 'showInfo'])->name('company.informations.index');
         Route::get('/informations/osgb', [CompanyController::class, 'showInfo'])->name('company.informations.osgb');
         Route::get('/informations/formal', [CompanyController::class, 'showInfo'])->name('company.informations.formal');
-        Route::get('/informations/acc', [CompanyController::class, 'showInfo'])->name('company.informations.acc');        
+        Route::get('/informations/acc', [CompanyController::class, 'showInfo'])->name('company.informations.acc');
         Route::get('/employees', [CompanyController::class, 'showEmployees'])->name('company.employees');
         Route::get('/employees/deleted', [CompanyController::class, 'showEmployees'])->name('company.employees.deleted');
         Route::get('/documents', [CompanyController::class, 'showDocuments'])->name('company.documents');
         Route::get('/documents/mandatory-files', [CompanyController::class, 'showDocuments'])->name('company.documents.mandatoryFiles');
-
     });
     Route::get('/deleted/{id}', [CompanyController::class, 'deletedIndex'])->name('deleted_company');
     Route::post('/delete/{company}', [CompanyController::class, 'delete'])->name('company.delete');
@@ -75,9 +74,10 @@ Route::prefix('/company')->group(function () {
 
 Route::prefix('employee')->group(function () {
     Route::get('/{employee}', [CoopEmployeeController::class, 'index'])->name('coop_employee');
-    Route::get('/deleted/{employee}', [CoopEmployeeController::class, 'deletedIndex'])->name('deleted.coop_employee');
+    Route::get('/deleted/{employeeId}', [CoopEmployeeController::class, 'deletedIndex'])->name('deleted.coop_employee');
     Route::post('/update/{employee}', [CoopEmployeeController::class, 'update'])->name('coop_employee.update');
     Route::post('/delete/{employee}', [CoopEmployeeController::class, 'delete'])->name('coop_employee.delete');
+    Route::post('/restore/{id}', [CoopEmployeeController::class, 'restore'])->name('coop_employee.restore');
 });
 
 ////////////////////////////////////////////////////////////////////////

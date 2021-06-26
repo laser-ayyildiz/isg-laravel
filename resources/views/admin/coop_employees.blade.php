@@ -23,7 +23,7 @@
 @endif
 <div class="card shadow-lg">
     <div class="card-header tab-card-header text-center bg-light text-dark border">
-        <h1><b>{{ Str::title($employee->name) }}</b></h1>
+        <h1><b>{{ $deleted ? 'Silinen Çalışan - ' : null }} {{ Str::title($employee->name) }}</b></h1>
         <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
             <li class="nav-item">
                 <a class="nav-link {{ session('tab') === null ? 'active' : ''}}" id="gb-tab" data-toggle="tab"
@@ -116,8 +116,10 @@
 
             <div class="tab-pane fade show {{ session('tab') === 'files' ? 'active' : ''}}" id="files" role="tabpanel"
                 aria-labelledby="files-tab">
+                @if(!$deleted)
                 <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#addFile"
                     data-whatever="@getbootstrap">Yeni Dosya Ekle</a></button>
+                @endif
                 <table class="table table-bordered table-striped table-responsive">
                     <thead class="bg-dark text-light">
                         <th>Dosya Adı</th>
@@ -160,15 +162,19 @@
                         @endforelse
                     </tbody>
                 </table>
+                @if(!$deleted)
                 <div class="float-right">
                     {{ $files->links() }}
                 </div>
+                @endif
+
             </div>
         </div>
     </div>
 </div>
 
 <div name="modals">
+    @if(!$deleted)
     <div class="modal fade" id="addFile" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -212,6 +218,7 @@
             </div>
         </div>
     </div>
+    @endif
 </div>
 <script>
     function goToCompany() {

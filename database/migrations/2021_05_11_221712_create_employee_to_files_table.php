@@ -17,6 +17,7 @@ class CreateEmployeeToFilesTable extends Migration
             $table->id();
             $table->foreignId('employee_id')->constrained('coop_employees');
             $table->foreignId('file_id')->constrained('files')->onUpdate('cascade')->onDelete('cascade');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
