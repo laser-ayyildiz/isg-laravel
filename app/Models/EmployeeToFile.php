@@ -12,7 +12,8 @@ class EmployeeToFile extends Model
     use SoftDeletes;
     protected $fillable = [
         'employee_id',
-        'file_id'
+        'file_id',
+        'valid_date'
     ];
 
     public function employee()

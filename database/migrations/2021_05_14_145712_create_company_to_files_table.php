@@ -19,6 +19,7 @@ class CreateCompanyToFilesTable extends Migration
             $table->foreignId('company_id')->constrained('coop_companies')->onUpdate('cascade');
             $table->foreignId('file_id')->constrained('files')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamp('assigned_at')->nullable();
+            $table->date('valid_date')->nullable();
             $table->timestamps();
         });
     }

@@ -8,7 +8,11 @@ use App\Models\CoopEmployee;
 use Illuminate\Http\Request;
 use App\Models\CompanyToFile;
 use App\Models\EmployeeToFile;
+use App\Models\CompanyFileType;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\EmployeeEducationType;
 use Illuminate\Support\Facades\Storage;
 
 class FileUploadController extends Controller
@@ -17,16 +21,32 @@ class FileUploadController extends Controller
     {
         $request->validate([
             'file' => 'required|mimes:csv,txt,xlx,xls,xlsx,odt,odf,pdf,png,jpg,jpeg,doc,docx,ppt,pptx|max:51200',
+            'file_type' => 'required|between:0,9',
             'name' => 'required|string|max:250',
             'file_date' => 'nullable|before_or_equal:' . date('Y-m-d')
         ], [], [
             'name' => 'Dosya Adı',
             'file' => 'Dosya',
-            'file_date' => 'Dosya Tarihi'
+            'file_type' => 'Dosya Tipi',
+            'file_date' => 'Dosya Tarihi',
         ]);
+        $period = null;
+
+        if ($employee->company->danger_type == 1) {
+            $period = EmployeeEducationType::where('id', $request->file_type)->first('validity_period_type_1')->validity_period_type_1;
+        } else if ($employee->company->danger_type == 2) {
+            $period = EmployeeEducationType::where('id', $request->file_type)->first('validity_period_type_2')->validity_period_type_2;
+        } else if ($employee->company->danger_type == 3) {
+            $period = EmployeeEducationType::where('id', $request->file_type)->first('validity_period_type_3')->validity_period_type_3;
+        }
+
+        if ($period !== null) {
+            $valid_date = date('Y-m-d', strtotime("+" . $period . " months", strtotime($request->file_date ?? date('Y-m-d'))));
+        }
+
         $fileName = $request->name;
         $signed_at = $request->file_date ?? date('Y-m-d');
-
+        DB::beginTransaction();
         try {
             if ($request->file()) {
                 $fileModel = new File;
@@ -37,12 +57,24 @@ class FileUploadController extends Controller
                 $fileModel->file_path = '/storage/' . $filePath;
                 $fileModel->signed_at = $signed_at;
                 $fileModel->save();
+                if ($request->file_type == '1') {
+                    $employee->first_edu = 1;
+                    $employee->save();
+                } else if($request->file_type == '2'){
+                    $employee->second_edu = 1;
+                    $employee->save();
+                } else if($request->file_type == '3'){
+                    $employee->examination = 1;
+                    $employee->save();
+                }
                 EmployeeToFile::create([
                     'employee_id' => $employee->id,
-                    'file_id' => $fileModel->id
+                    'file_id' => $fileModel->id,
+                    'valid_date' => $valid_date ?? null
                 ]);
             }
         } catch (\Throwable $th) {
+            DB::rollBack();
             return back()->with(
                 [
                     'fail' => 'İşleminizi gerçekleştirirken bir hata ile karşılaşıldı.',
@@ -50,6 +82,7 @@ class FileUploadController extends Controller
                 ]
             );
         }
+        DB::commit();
         return back()->with(
             [
                 'success' => 'Dosyanız ' . $fileName . ' ismiyle başarıyla kayıt edildi.',
@@ -64,8 +97,21 @@ class FileUploadController extends Controller
             'file' => 'required|mimes:csv,txt,xlx,xls,xlsx,odt,odf,mp3,mp4,pdf,png,jpg,jpeg,doc,docx,ppt,pptx|max:51200',
             'file_type' => 'required|between:0,7',
         ]);
+        $period = null;
         $fileName = null;
 
+        if ($company->danger_type == 1) {
+            $period = CompanyFileType::where('id', $request->file_type)->first('validity_period_type_1')->validity_period_type_1;
+        } else if ($company->danger_type == 2) {
+            $period = CompanyFileType::where('id', $request->file_type)->first('validity_period_type_2')->validity_period_type_2;
+        } else if ($company->danger_type == 3) {
+            $period = CompanyFileType::where('id', $request->file_type)->first('validity_period_type_3')->validity_period_type_3;
+        }
+
+        if ($period !== null) {
+            $valid_date = date('Y-m-d', strtotime("+" . $period . " months", strtotime($request->assigned_at ?? date('Y-m-d'))));
+        }
+        DB::beginTransaction();
         try {
             if ($request->file()) {
                 $fileModel = new File;
@@ -80,10 +126,11 @@ class FileUploadController extends Controller
                     'file_id' => $fileModel->id,
                     'file_type' => $request->file_type,
                     'assigned_at' => $request->assigned_at ?? date('Y-m-d H:i:s'),
+                    'valid_date' => $valid_date ?? null,
                 ]);
             }
         } catch (\Throwable $th) {
-            //throw $th;
+            DB::rollBack();
             return back()->with(
                 [
                     'fail' => 'İşleminizi gerçekleştirirken bir hata ile karşılaşıldı.',
@@ -91,6 +138,7 @@ class FileUploadController extends Controller
                 ]
             );
         }
+        DB::commit();
         return back()->with(
             [
                 'success' => 'Dosyanız ' . $fileName . ' ismiyle başarıyla kayıt edildi.',
@@ -104,12 +152,26 @@ class FileUploadController extends Controller
         $request->validate([
             'file' => 'required|mimes:csv,txt,xlx,xls,xlsx,odt,odf,pdf,png,jpg,jpeg,doc,docx,ppt,pptx|max:51200',
             'name' => 'required|string|max:250',
+            'batch_file_type' => ['required', Rule::in(['1', '2', '9', '10', '11'])],
             'file_date' => 'nullable|before_or_equal:' . date('Y-m-d')
         ], [], [
             'name' => 'Dosya Adı',
             'file' => 'Dosya',
+            'batch_file_type' => 'Dosya Tipi',
             'file_date' => 'Dosya Tarihi'
         ]);
+        $period = null;
+        if ($company->danger_type == 1) {
+            $period = EmployeeEducationType::where('id', $request->batch_file_type)->first('validity_period_type_1')->validity_period_type_1;
+        } else if ($company->danger_type == 2) {
+            $period = EmployeeEducationType::where('id', $request->batch_file_type)->first('validity_period_type_2')->validity_period_type_2;
+        } else if ($company->danger_type == 3) {
+            $period = EmployeeEducationType::where('id', $request->batch_file_type)->first('validity_period_type_3')->validity_period_type_3;
+        }
+
+        if ($period !== null) {
+            $valid_date = date('Y-m-d', strtotime("+" . $period . " months", strtotime($request->assigned_at ?? date('Y-m-d'))));
+        }
 
         $fileName = $request->name;
         $employeeIds = [];
@@ -127,7 +189,7 @@ class FileUploadController extends Controller
 
         if (count($employeeIds) === 0)
             return back()->with(['tab' => 'isletme_calisanlar', 'fail' => 'İşletmeye ait aktif çalışan bulunamadı veya hiçbir çalışan seçilmedi!']);
-
+        DB::beginTransaction();
         try {
             if ($request->file()) {
                 $fileModel = new File;
@@ -141,16 +203,31 @@ class FileUploadController extends Controller
 
                 /////////////////////////////////////////////////////////////////
                 $employeeToFiles = null;
+                if ($request->batch_file_type == '1') {
+                    foreach ($employeeIds as $id) {
+                        $employee = CoopEmployee::find($id);
+                        $employee->first_edu = 1;
+                        $employee->save();
+                    }
+                } else if($request->batch_file_type == '2'){
+                    foreach ($employeeIds as $id) {
+                        $employee = CoopEmployee::find($id);
+                        $employee->second_edu = 1;
+                        $employee->save();
+                    }
+                }
                 foreach ($employeeIds as $id) {
                     $employeeToFiles[] = [
                         'employee_id' => $id,
                         'file_id' => $fileModel->id,
+                        'valid_date' => $valid_date ?? null,
                     ];
                 }
                 if ($employeeToFiles !== null)
                     EmployeeToFile::insert($employeeToFiles);
             }
         } catch (\Throwable $th) {
+            DB::rollBack();
             return back()->with(
                 [
                     'fail' => 'İşleminizi gerçekleştirirken bir hata ile karşılaşıldı.',
@@ -158,6 +235,7 @@ class FileUploadController extends Controller
                 ]
             );
         }
+        DB::commit();
         return back()->with(
             [
                 'success' => 'Dosyanız ' . $fileName . ' ismiyle başarıyla kayıt edildi.',

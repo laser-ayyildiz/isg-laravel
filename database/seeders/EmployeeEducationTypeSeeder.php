@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\EmployeeEducationTypes;
+use App\Models\EmployeeEducationType;
 use Illuminate\Database\Seeder;
 
 class EmployeeEducationTypeSeeder extends Seeder
@@ -14,7 +14,7 @@ class EmployeeEducationTypeSeeder extends Seeder
      */
     public function run()
     {
-        EmployeeEducationTypes::insert(
+        EmployeeEducationType::insert(
             [
                 [
                     'name' => 'İSG Eğitimi 1',
@@ -59,7 +59,7 @@ class EmployeeEducationTypeSeeder extends Seeder
                     'validity_period_type_3' => null,
                 ],
                 [
-                    'name' => 'Acil Durum Ekip Eğitimi',
+                    'name' => 'Özlük Dosyası Evrakları',
                     'validity_period_type_1' => null,
                     'validity_period_type_2' => null,
                     'validity_period_type_3' => null,
@@ -71,11 +71,18 @@ class EmployeeEducationTypeSeeder extends Seeder
                     'validity_period_type_3' => null,
                 ],
                 [
-                    'name' => 'Özlük Dosyası Evrakları',
+                    'name' => 'Yangın Eğitimi',
                     'validity_period_type_1' => null,
                     'validity_period_type_2' => null,
                     'validity_period_type_3' => null,
                 ],
+                [
+                    'name' => 'Acil Durum Ekip Eğitimi',
+                    'validity_period_type_1' => null,
+                    'validity_period_type_2' => null,
+                    'validity_period_type_3' => null,
+                ],
+                
             ]
         );
     }

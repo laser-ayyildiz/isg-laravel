@@ -14,6 +14,7 @@ class CompanyToFile extends Model
         'file_id',
         'file_type',
         'assigned_at',
+        'valid_date'
     ];
 
     public function type()

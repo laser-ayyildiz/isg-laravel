@@ -12,7 +12,25 @@
                     <h5 class="mx-2" id="empName">
                     </h5>
                     @csrf
+
                     <div class="row mt-3">
+                        <div class="col-12">
+                            <label for="file_type"><b>Dosya Tipi</b></label>
+                            <select class="form-control" name="file_type" id="file_type" required>
+                                <option value="1">İSG Eğitimi 1</option>
+                                <option value="2">İSG Eğitimi 2</option>
+                                <option value="3">Sağlık Muayenesi</option>
+                                <option value="4">İlk Yardım Sertifikası</option>
+                                <option value="5">Yangın Eğitim Sertifikası</option>
+                                <option value="6">Mesleki Yeterlilik Sertifikası</option>
+                                <option value="7">Hijyen Eğitim Sertifikası</option>
+                                <option value="8">Özlük Dosyası Evrakları</option>
+                                <option value="9">Diğer</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+
                         <div class="col-6">
                             <label for="name"><b>Dosya Adı</b></label>
                             <input class="form-control" type="text" name="name" placeholder="Dosya Adı" required>

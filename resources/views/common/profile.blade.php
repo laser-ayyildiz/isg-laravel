@@ -26,14 +26,22 @@
                 <p class="text-primary m-0 font-weight-bold">Profil Resmi</p>
             </div>
             <div class="card-body text-center shadow">
-                <img class="img-thumbnail mb-3 mt-4"
-                    src="/uploads/profile_pictures/{{auth()->user()->profile_photo_path}}" width="218" height="300">
+                <img class="img-thumbnail image rounded-circle mb-3 mt-4"
+                    src="{{ Auth::user()->profile_photo_path }}">
                 <form action="{{ route('profile.updatePicture') }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                    <label>Profil Resmi Yükle</label>
-                    <input type="file" name="avatar">
-                    <input type="submit" name="update-picture" style="width:200px;" class="pull-right btn btn-success"
-                        value="Değiştir">
+                    <div class="row mt-3">
+                        <div class="col-10">
+                            <div class="custom-file">
+                                <input type="file" name="avatar" class="custom-file-input" id="avatar" required>
+                                <label class="custom-file-label" for="avatar"><b>Profil Resmi Yükle</b></label>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <input type="submit" name="update-picture" class="btn btn-success float-right"
+                                value="Değiştir">
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>
@@ -170,6 +178,9 @@
           $('#show_hide_password i').addClass("fa-eye");
         }
       });
+    });
+    $('#avatar').on('change',function(){
+        $(this).next('.custom-file-label').html($(this).val());
     });
 </script>
 @endpush

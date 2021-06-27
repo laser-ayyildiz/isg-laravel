@@ -13,6 +13,7 @@ class File extends Model
     protected $fillable = [
         'name',
         'file_path',
-        'signed_at'
+        'signed_at',
+        'valid_date'
     ];
 }

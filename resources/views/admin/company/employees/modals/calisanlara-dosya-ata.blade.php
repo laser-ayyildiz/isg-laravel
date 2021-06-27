@@ -16,6 +16,17 @@
                     </h3>
                     @csrf
                     <div class="row mt-3">
+                        <div class="col-12">
+                            <select name="batch_file_type" id="batch_file_type" class="form-control" required>
+                                <option value="1">İSG Eğitimi 1</option>
+                                <option value="2">İSG Eğitimi 2</option>
+                                <option value="9">Yüksekte Çalışma Eğitimi</option>
+                                <option value="10">Yangın Eğitimi</option>
+                                <option value="11">Acil Durum Ekip Eğitimi</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
                         <div class="col-6">
                             <label for="name"><b>Dosya Adı</b></label>
                             <input class="form-control" type="text" name="name" id="name" placeholder="Dosya Adı" required>

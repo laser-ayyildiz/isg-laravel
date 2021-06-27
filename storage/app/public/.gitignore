@@ -5,3 +5,6 @@ uploads/*
 !uploads/company-employee-lists
 uploads/company-employee-lists/*
 !uploads/company-employee-lists/employee-table.xlsx
+!uploads/profile-pictures
+uploads/profile-pictures/*
+!uploads/profile-pictures/default.png

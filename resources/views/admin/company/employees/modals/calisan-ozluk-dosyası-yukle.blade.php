@@ -27,6 +27,7 @@
                         <label class="custom-file-label" for="chooseFile"><b>Dosya Seç</b></label>
                     </div>
                     <div class="modal-footer">
+                        <input type="hidden" name="file_type" value="8">
                         <button type="submit" class="btn btn-primary btn-block mt-4" id="addEmpIdentifyFileRequest">
                             Yükle
                         </button>
