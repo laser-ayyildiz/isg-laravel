@@ -24,4 +24,9 @@ class CoopEmployee extends Model
     {
         return $this->belongsTo(CoopCompany::class)->withTrashed();
     }
+
+    public function files()
+    {
+        return $this->hasMany(EmployeeToFile::class, 'employee_id');
+    }
 }

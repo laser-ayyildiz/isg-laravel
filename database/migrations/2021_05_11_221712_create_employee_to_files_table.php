@@ -15,7 +15,8 @@ class CreateEmployeeToFilesTable extends Migration
     {
         Schema::create('employee_to_files', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('employee_id')->constrained('coop_employees');
+            $table->foreignId('file_type')->constrained('employee_education_types')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('employee_id')->constrained('coop_employees')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('file_id')->constrained('files')->onUpdate('cascade')->onDelete('cascade');
             $table->date('valid_date')->nullable();
             $table->softDeletes();

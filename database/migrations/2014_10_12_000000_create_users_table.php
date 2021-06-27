@@ -25,7 +25,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();
-            $table->string('profile_photo_path')->default('default.png');
+            $table->string('profile_photo_path')->default('/files/profile-pictures/default.png');
             $table->timestamps();
             $table->softDeletes();
             $table->longText('delete_not')->nullable();

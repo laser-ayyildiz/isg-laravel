@@ -68,6 +68,7 @@ class FileUploadController extends Controller
                     $employee->save();
                 }
                 EmployeeToFile::create([
+                    'file_type' => $request->file_type,
                     'employee_id' => $employee->id,
                     'file_id' => $fileModel->id,
                     'valid_date' => $valid_date ?? null
@@ -218,6 +219,7 @@ class FileUploadController extends Controller
                 }
                 foreach ($employeeIds as $id) {
                     $employeeToFiles[] = [
+                        'file_type' => $request->file_type,
                         'employee_id' => $id,
                         'file_id' => $fileModel->id,
                         'valid_date' => $valid_date ?? null,
@@ -242,5 +244,23 @@ class FileUploadController extends Controller
                 'tab' => 'isletme_calisanlar'
             ]
         );
+    }
+
+    public function deleteMandatoryFiles(CompanyToFile $file)
+    {
+        $type = $file->type->file_name;
+        DB::beginTransaction();
+        try {
+            File::find($file->file_id)->delete();
+            $file->delete();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+            return back()->with('fail', 'Bir Hata ile karşılaşıldı!');
+        }
+        DB::commit();
+
+        return back()->with('success', $type . ' türündeki belge başarıyla silindi!');
+        
     }
 }

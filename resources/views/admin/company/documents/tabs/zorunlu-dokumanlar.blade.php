@@ -7,18 +7,26 @@
                 <tr>
                     <th>Dosya Türü</th>
                     <th>Dosya Adı</th>
+                    <th>Son Geçerlilik Tarihi</th>
                     <th>Oluşturulma Tarihi</th>
-                    <th>Yüklenme Tarihi</th>
                     <th style="width:  12%">İndir</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse ($mandatory_files as $file )
-                <tr>
+                @php
+                    if ($file->valid_date !== null) {
+                        $date = new DateTime($file->valid_date);
+                        $valid_date = $date->modify('-1 month')->format('Y-m-d') > date("Y-m-d");
+                    }
+                @endphp
+                
+                <tr >
+                    {{ $file->valid_date }}
                     <td><b>{{ $file->type->file_name }}</b></td>
                     <td><b>{{ $file->file->name }}</b></td>
-                    <td><b>{{ $file->assigned_at }}</b></td>
-                    <td><b>{{ $file->updated_at }}</b></td>
+                    <td class="@isset($file->valid_date){{ $valid_date ? 'table-success' : 'table-danger'}}@endisset"><b>{{ $file->valid_date }}</b></td>
+                    <td><b>{{ $file->assign_at ?? $file->created_at }}</b></td>
                     <td class="text-center">
                         <button class="btn btn-warning btn-sm float-left mx-1"
                             onclick="window.open('{{ url('/files/company-mandatory-files/' . $file->file->name) }}','_blank')">
@@ -30,6 +38,14 @@
                             @csrf
                             <button class="btn btn-success btn-sm" type="submit">
                                 <i class="fas fa-download"></i></button>
+                        </form>
+
+                        <form class="float-left mx-1"
+                            action="{{ route('mandatory-file-delete',['file' => $file]) }}"
+                            method="post">
+                            @csrf
+                            <button class="btn btn-danger btn-sm" type="submit">
+                                <i class="fas fa-times text-white"></i></button>
                         </form>
                     </td>
                 </tr>

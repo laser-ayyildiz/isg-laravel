@@ -31,6 +31,9 @@ Route::prefix('upload-file')->group(function () {
     Route::post('/batch-file/{company}', [FileUploadController::class, 'empBatchFileUpload'])->name('batch-file-upload');
 });
 
+Route::post('/delete/mandatory-files/{file}', [FileUploadController::class, 'deleteMandatoryFiles'])->name('mandatory-file-delete');
+
+
 Route::post('files/{folder}/{file_name}', function ($folder = null, $file_name = null) {
     $path = storage_path() . '/app/public/uploads/' . $folder . '/' . $file_name;
     try {

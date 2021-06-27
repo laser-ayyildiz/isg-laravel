@@ -82,7 +82,7 @@ class CompanyController extends Controller
         ));
     }
 
-    public function showEmployees($id, Request $request)
+    public function showEmployees($id)
     {
         $company = CoopCompany::where('id', $id)->first();
 
@@ -91,8 +91,12 @@ class CompanyController extends Controller
 
         $deletedEmployees = [];
 
-        $employees = CoopEmployee::where('company_id', $id)->orderBy('name')->withTrashed()->get();
-
+        $employees = CoopEmployee::where('company_id', $id)
+            ->with('files')
+            ->orderBy('name')
+            ->withTrashed()
+            ->get();
+        
         return view(
             'admin.company.employees.index',
             [
@@ -103,7 +107,7 @@ class CompanyController extends Controller
         );
     }
 
-    public function showDocuments($id, Request $request)
+    public function showDocuments($id)
     {
         $company = CoopCompany::where('id', $id)->first();
         if (empty($company))

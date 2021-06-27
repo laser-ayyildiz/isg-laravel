@@ -168,7 +168,7 @@
                                     <span style="color:black;"
                                         class="d-none d-lg-inline mr-2 text-600">{{ auth()->user()->name }}</span><img
                                         class="rounded-circle img-profile" width="25px" height="25px"
-                                        src="/uploads/profile_pictures/{{ auth()->user()->profile_photo_path }}"></a>
+                                        src="{{ Auth::user()->profile_photo_path }}"></a>
                         </li>
                         <div class="d-none d-sm-block topbar-divider"></div>
                         <form method="POST" action="{{ route('logout') }}">

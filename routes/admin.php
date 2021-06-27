@@ -48,7 +48,6 @@ Route::prefix('authentication')->group(function () {
 });
 
 ////////////////////////////////////////////////////////////////////////
-Route::redirect('/company/{id}', '/admin/company/{id}/informations');
 
 Route::prefix('/company')->group(function () {
     Route::prefix('/{id}')->group(function () {
