@@ -32,6 +32,8 @@
     <div class="card-body">
         <div class="tab-content" id="myTabContent">
             @include('admin.company.documents.tabs.zorunlu-dokumanlar')
+            @include('admin.company.documents.tabs.defter-nushalari')
+
         </div>
     </div>
 </div>

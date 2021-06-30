@@ -26,7 +26,7 @@
                     <td><b>{{ $file->type->file_name }}</b></td>
                     <td><b>{{ $file->file->name }}</b></td>
                     <td class="@isset($file->valid_date){{ $valid_date ? 'table-success' : 'table-danger'}}@endisset"><b>{{ $file->valid_date }}</b></td>
-                    <td><b>{{ $file->assign_at ?? $file->created_at }}</b></td>
+                    <td><b>{{ $file->assigned_at ?? $file->created_at }}</b></td>
                     <td class="text-center">
                         <button class="btn btn-warning btn-sm float-left mx-1"
                             onclick="window.open('{{ url('/files/company-mandatory-files/' . $file->file->name) }}','_blank')">

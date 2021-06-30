@@ -15,11 +15,6 @@
                 data-whatever="@getbootstrap">İşveren/vekili için hesap oluştur</button>
         </div>
     </div>
-    {{-- 
-        <div class="float-right mb-2">
-        <input class="form-control" type="text" id="searchBar" placeholder="Ara..." style="width: 255px">
-    </div>
-         --}}
 
     <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
         <table class="table table-striped table-bordered table-hover" id="example">

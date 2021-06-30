@@ -1,11 +1,3 @@
-<div class="card-header">
-    <h4><b> Yıllık Çalışma Planı <h4 class="float-right text-info">
-                <b>{{ $monthList[$month] }}</b></h4></b></h4>
-</div>
-<div class="card-body">
-    <table class="table">
-        <tbody>
-
-        </tbody>
-    </table>
+<div class="tab-pane fade show" id="yillik_calisma_plani" role="tabpanel" aria-labelledby="ycp-tab">
+    <h1>Yıllık Çalışma Planı Oluşturulmadı</h1>
 </div>

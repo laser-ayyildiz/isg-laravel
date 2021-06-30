@@ -30,9 +30,9 @@ $monthList = ['01' => 'Ocak','02' => 'Şubat','03' => 'Mart','04' => 'Nisan','05
 <div class="row">
     {{-- ///////////////////////////Left Side/////////////////////////////////////////// --}}
     <div class="col-lg-8 pr-3">
-        <div class="row"  style="height: 780px">
+        <div class="row" style="height: 780px">
             <div class="card w-100">
-                @include('admin.company.home.tabs.zorunlu-dokumanlar')
+                @include('admin.company.home.tabs.dokumanlar')
             </div>
         </div>
     </div>
@@ -54,11 +54,14 @@ $monthList = ['01' => 'Ocak','02' => 'Şubat','03' => 'Mart','04' => 'Nisan','05
 
 <div name="modals">
     @include('admin.company.home.modals.zorunlu-dokuman-ekle')
+    @include('admin.company.home.modals.aylik-dokuman-ekle')
+
 </div>
 
 <script>
-    function selectElement(valueToSelect) {
-        document.getElementById('file_type').value = valueToSelect;
-    }
+    const selectElement = (valueToSelect) => document.getElementById('file_type').value = valueToSelect;
+
+    const selectMonthly = (valueToSelect) => document.getElementById('monthly_file_type').value = valueToSelect;
+    
 </script>
 @endsection

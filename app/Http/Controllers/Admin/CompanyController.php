@@ -43,6 +43,8 @@ class CompanyController extends Controller
             $file_types[] = $value['type']['id'];
         }
 
+        $defter_nushasi = $mandatory_files->where('file_type', 9)->sortByDesc('assigned_at')->first();
+        $gozlem_raporu = $mandatory_files->where('file_type', 10)->sortByDesc('assigned_at')->first();
         return view(
             'admin.company.home.index',
             [
@@ -51,6 +53,8 @@ class CompanyController extends Controller
                 'file_types' => $file_types,
                 'notifications' => $notifications,
                 'mandatory_files' => $mandatory_files,
+                'defter_nushasi' => $defter_nushasi,
+                'gozlem_raporu' => $gozlem_raporu,
                 'count' => 0
 
             ],
@@ -123,6 +127,7 @@ class CompanyController extends Controller
             ],
         );
     }
+    
     public function deletedIndex($id, Request $request)
     {
         $company = CoopCompany::where('id', $id)->onlyTrashed()->first();

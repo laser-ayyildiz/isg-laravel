@@ -106,30 +106,29 @@
             });
         }
     });
-    
 
     $("#selectAll").on('click',function(){
-        if ($("#selectAll").is(':checked')) {
+        if ($("#selectAll").is(':checked'))
             $('#boxes').addClass('d-none');
-        }
-        else{
+        else
             $('#boxes').removeClass('d-none');
-        }        
-    });
-    $('#chooseBatchFile').on('change',function(){
-        var fileName = $(this).val();
-        $(this).next('.custom-file-label').html(fileName);
-    }); 
-    
-    $('#employee_list').on('change',function(){
-        $(this).next('.custom-file-label').html($(this).val());
-    }); 
-
-    $('#chooseEmpFile').on('change',function(){
-        $(this).next('.custom-file-label').html($(this).val());
     });
 
-    $('#chooseEmpIdentifyFile').on('change',function(){
+    $('#file_type').on('change', function(){
+        if ($('#file_type').val() == 12)
+            $('#empFileDiv').removeClass('d-none');
+        else
+            $('#empFileDiv').addClass('d-none');
+    });
+
+    $('#batch_file_type').on('change', function(){
+        if ($('#batch_file_type').val() == 12)
+            $('#empBatchFileDiv').removeClass('d-none');
+        else
+            $('#empBatchFileDiv').addClass('d-none');
+    });
+
+    $('.custom-file-input').on('change',function(){
         $(this).next('.custom-file-label').html($(this).val());
     });
     

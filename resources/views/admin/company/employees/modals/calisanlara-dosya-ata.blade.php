@@ -16,20 +16,23 @@
                     </h3>
                     @csrf
                     <div class="row mt-3">
-                        <div class="col-12">
-                            <select name="batch_file_type" id="batch_file_type" class="form-control" required>
+                        <div class="col-6">
+                            <label for="batch_file_type"><b>Dosya Tipi</b></label>
+                            <select name="batch_file_type" id="batch_file_type" class="form-control select-options" required>
+                                <option selected disabled>Dosya Tipini Seçiniz...</option>
                                 <option value="1">İSG Eğitimi 1</option>
                                 <option value="2">İSG Eğitimi 2</option>
                                 <option value="9">Yüksekte Çalışma Eğitimi</option>
                                 <option value="10">Yangın Eğitimi</option>
                                 <option value="11">Acil Durum Ekip Eğitimi</option>
+                                <option value="12">Diğer</option>
                             </select>
                         </div>
                     </div>
                     <div class="row mt-3">
-                        <div class="col-6">
+                        <div class="col-6 d-none" id="empBatchFileDiv">
                             <label for="name"><b>Dosya Adı</b></label>
-                            <input class="form-control" type="text" name="name" id="name" placeholder="Dosya Adı" required>
+                            <input class="form-control" type="text" name="name" id="name" placeholder="Dosya Adı">
                         </div>
                         <div class="col-6">
                             <label for="file_date"><b>Dosya Tarihi</b></label>

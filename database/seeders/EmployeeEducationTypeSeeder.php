@@ -82,7 +82,12 @@ class EmployeeEducationTypeSeeder extends Seeder
                     'validity_period_type_2' => null,
                     'validity_period_type_3' => null,
                 ],
-                
+                [
+                    'name' => 'Diğer',
+                    'validity_period_type_1' => null,
+                    'validity_period_type_2' => null,
+                    'validity_period_type_3' => null,
+                ],
             ]
         );
     }

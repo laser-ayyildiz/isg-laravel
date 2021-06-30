@@ -14,9 +14,10 @@
                     @csrf
 
                     <div class="row mt-3">
-                        <div class="col-12">
+                        <div class="col-6">
                             <label for="file_type"><b>Dosya Tipi</b></label>
                             <select class="form-control" name="file_type" id="file_type" required>
+                                <option selected disabled>Dosya Tipini Seçiniz...</option>
                                 <option value="1">İSG Eğitimi 1</option>
                                 <option value="2">İSG Eğitimi 2</option>
                                 <option value="3">Sağlık Muayenesi</option>
@@ -25,15 +26,14 @@
                                 <option value="6">Mesleki Yeterlilik Sertifikası</option>
                                 <option value="7">Hijyen Eğitim Sertifikası</option>
                                 <option value="8">Özlük Dosyası Evrakları</option>
-                                <option value="9">Diğer</option>
+                                <option value="12">Diğer</option>
                             </select>
                         </div>
                     </div>
                     <div class="row mt-3">
-
-                        <div class="col-6">
+                        <div class="col-6 d-none" id="empFileDiv">
                             <label for="name"><b>Dosya Adı</b></label>
-                            <input class="form-control" type="text" name="name" placeholder="Dosya Adı" required>
+                            <input class="form-control" type="text" name="name" placeholder="Dosya Adı">
                         </div>
                         <div class="col-6">
                             <label for="file_date"><b>Dosya Tarihi</b></label>

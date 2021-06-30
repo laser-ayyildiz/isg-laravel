@@ -70,5 +70,19 @@ class CompanyFileTypeSeeder extends Seeder
             'validity_period_type_2' => 12,
             'validity_period_type_3' => 12,
         ]);
+
+        CompanyFileType::create([
+            'file_name' => 'Defter Nüshası',
+            'validity_period_type_1' => 1,
+            'validity_period_type_2' => 1,
+            'validity_period_type_3' => 1,
+        ]);
+
+        CompanyFileType::create([
+            'file_name' => 'Saha Gözlem Raporu',
+            'validity_period_type_1' => 1,
+            'validity_period_type_2' => 1,
+            'validity_period_type_3' => 1,
+        ]);
     }
 }
