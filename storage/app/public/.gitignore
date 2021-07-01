@@ -8,3 +8,7 @@ uploads/company-employee-lists/*
 !uploads/profile-pictures
 uploads/profile-pictures/*
 !uploads/profile-pictures/default.png
+!uploads/company-mandatory-files
+!uploads/employee-files
+!uploads/files
+!uploads/monthly-files

@@ -46,7 +46,7 @@
                     <thead class="bg-dark text-light">
                         <th>Dosya Adı</th>
                         <th>Dosya Oluşturulma Tarihi</th>
-                        <th>Yüklenme Tarihi</th>
+                        <th>Son Geçerlilik Tarihi</th>
                         <th style="width: 5%">İndir/Görüntüle</th>
                     </thead>
                     <tbody>
@@ -54,8 +54,8 @@
                         @isset($file->file)
                         <tr>
                             <td>{{ $file->file->name }}</td>
-                            <td>{{ $file->file->signed_at }}</td>
-                            <td>{{ $file->file->created_at }}</td>
+                            <td>{{ $file->file->signed_at ?? $file->file->created_at }}</td>
+                            <td>{{ $file->valid_date }}</td>
                             <td class="text-center">
                                 <button class="btn btn-warning btn-sm float-left mr-1"
                                     onclick="window.open('{{ url('/files/employee-files/' . $file->file->name) }}','_blank')"><i

@@ -7,4 +7,8 @@
         <a class="nav-link" id="dn-tab" data-toggle="tab" href="#defter_nushalari"
             role="tab" aria-controls="Defter Nüshaları" aria-selected="true"><b>Defter Nüshaları</b></a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link" id="gr-tab" data-toggle="tab" href="#gozlem_raporlari"
+            role="tab" aria-controls="Saha Gözlem Raporları" aria-selected="true"><b>Saha Gözlem Raporları</b></a>
+    </li>
 </ul>

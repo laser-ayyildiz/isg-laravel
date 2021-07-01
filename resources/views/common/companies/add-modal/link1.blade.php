@@ -17,6 +17,14 @@
                         <option value="Sağlık">Sağlık</option>
                         <option value="Sanayi">Sanayi</option>
                         <option value="Tarım">Tarım</option>
+                        <option value="Tekstil">Tekstil</option>
+                        <option value="Altyapı">Altyapı</option>
+                        <option value="Üstyapı">Üstyapı</option>
+                        <option value="Mobilya İmalat">Mobilya İmalat</option>
+                        <option value="Danışmanlık">Danışmanlık</option>
+                        <option value="Eğitim">Eğitim</option>
+                        <option value="Taşımacılık">Taşımacılık</option>
+                        <option value="İnşaat">İnşaat</option>
                         <option value="Diğer">Diğer</option>
                     </select>
                 </div>

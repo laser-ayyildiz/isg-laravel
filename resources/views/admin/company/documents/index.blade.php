@@ -33,16 +33,19 @@
         <div class="tab-content" id="myTabContent">
             @include('admin.company.documents.tabs.zorunlu-dokumanlar')
             @include('admin.company.documents.tabs.defter-nushalari')
-
+            @include('admin.company.documents.tabs.gozlem-raporlari')
         </div>
     </div>
 </div>
 <div name="modals">
     @include('admin.company.documents.modals.zorunlu-dokuman-ekle')
+    @include('admin.company.documents.modals.aylik-dokuman-ekle')
 </div>
 <script>
     $('#chooseFile').on('change',function(){
         $(this).next('.custom-file-label').html($(this).val());
     });
+
+    const selectMonthly = (valueToSelect) => document.getElementById('monthly_file_type').value = valueToSelect;
 </script>
 @endsection

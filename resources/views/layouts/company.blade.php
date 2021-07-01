@@ -131,6 +131,10 @@
                         <a class="collapse-item"
                             href="{{ route('admin.company.documents.mandatoryFiles',['id' => request()->segment(3)]) }}">Zorunlu
                             Dokümanlar</a>
+                            <a class="collapse-item"
+                            href="{{ route('admin.company.documents.mandatoryFiles',['id' => request()->segment(3)]) }}">Defter Nüshaları</a>
+                            <a class="collapse-item"
+                            href="{{ route('admin.company.documents.mandatoryFiles',['id' => request()->segment(3)]) }}">Saha Gözlem Raporları</a>
                     </div>
                 </div>
             </li>

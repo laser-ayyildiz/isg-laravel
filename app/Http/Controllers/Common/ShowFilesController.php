@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Common;
 
-use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Response;
 
 class ShowFilesController extends Controller
 {

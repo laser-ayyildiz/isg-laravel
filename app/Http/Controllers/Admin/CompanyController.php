@@ -36,15 +36,21 @@ class CompanyController extends Controller
         $notifications = [];
 
         $employees['coopEmployees'] = CoopEmployee::where('company_id', $id)->count();
-
+        
         $mandatory_files = CompanyToFile::with('file', 'type')->where('company_id', $id)->orderBy('file_type')->get();
         $file_types = [];
         foreach ($mandatory_files as $value) {
             $file_types[] = $value['type']['id'];
         }
 
-        $defter_nushasi = $mandatory_files->where('file_type', 9)->sortByDesc('assigned_at')->first();
-        $gozlem_raporu = $mandatory_files->where('file_type', 10)->sortByDesc('assigned_at')->first();
+        $defter_nushalari = $mandatory_files->where('file_type', 9)->sortByDesc('assigned_at')->groupBy(function($date) {
+            return Carbon::parse($date->assigned_at)->format('m');
+        });
+
+        $gozlem_raporlari = $mandatory_files->where('file_type', 10)->sortByDesc('assigned_at')->groupBy(function($date) {
+            return Carbon::parse($date->assigned_at)->format('m');
+        });
+
         return view(
             'admin.company.home.index',
             [
@@ -52,9 +58,9 @@ class CompanyController extends Controller
                 'employees' => $employees,
                 'file_types' => $file_types,
                 'notifications' => $notifications,
-                'mandatory_files' => $mandatory_files,
-                'defter_nushasi' => $defter_nushasi,
-                'gozlem_raporu' => $gozlem_raporu,
+                'mandatory_files' => $mandatory_files->whereBetween('file_type', [1,8]),
+                'defter_nushalari' => $defter_nushalari[date('m')] ?? null,
+                'gozlem_raporlari' => $gozlem_raporlari[date('m')] ?? null,
                 'count' => 0
 
             ],
@@ -117,13 +123,18 @@ class CompanyController extends Controller
         if (empty($company))
             return redirect()->route('admin.deleted_company', ['id' => $id]);
 
-        $mandatory_files = CompanyToFile::with('file', 'type')->where('company_id', $id)->orderBy('file_type')->get();
+        $files = CompanyToFile::with('file', 'type')->where('company_id', $id)->orderBy('assigned_at')->get();
+        $mandatory_files = $files->whereBetween('file_type', [1,8]);
+        $defter_nushalari = $files->where('file_type', 9);
+        $gozlem_raporlari = $files->where('file_type', 10);
 
         return view(
             'admin.company.documents.index',
             [
                 'company' => $company,
                 'mandatory_files' => $mandatory_files,
+                'defter_nushalari' => $defter_nushalari,
+                'gozlem_raporlari' => $gozlem_raporlari,
             ],
         );
     }
