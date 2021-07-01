@@ -6,10 +6,10 @@
     
     <table class="table table-bordered table-striped mb-5">
         <thead class="table-dark text-center">
-            <th>Son Yüklenen Defter Nüshası</th>
+            <th>{{ $monthList[$month] }} Ayı Defter Nüshaları</th>
             <th>Oluşturulma Tarihi</th>
             <th>Geçerlilik</th>
-            <th>Dosya</th>
+            <th style="width: 19%">Dosya</th>
         </thead>
         <tbody class="text-center">
             @if ($defter_nushalari !== null)
@@ -17,14 +17,11 @@
             <tr>
                 <td>{{ $defter_nushasi->file->name }}</td>
                 <td>{{ Str::remove(' 00:00:00', $defter_nushasi->assigned_at) }}</td>
-                <td>
-                    @if ($defter_nushasi->valid_date <= date('Y-m-d')) <i class="fas fa-times text-danger"></i>
-                        @else
-                        <i class="fas fa-check text-success"></i>
-                        @endif
+                <td class="{{ $defter_nushasi->valid_date <= date('Y-m-d') ? 'table-danger' : 'table-success' }}">
+                    {{ $defter_nushasi->valid_date }}
                 </td>
                 <td>
-                    <button class="btn btn-warning btn-sm float-left ml-5 mx-1"
+                    <button class="btn btn-warning btn-sm float-left mx-1"
                         onclick="window.open('{{ url('/files/monthly-files/' . $defter_nushasi->file->name) }}','_blank')">
                         <i class="fas fa-eye"></i></button>
 
@@ -53,10 +50,10 @@
 
     <table class="table table-bordered table-striped mt-5">
         <thead class="table-dark text-center">
-            <th>Son Yüklenen Saha Gözlem Raporu</th>
+            <th>{{ $monthList[$month] }} Ayı Saha Gözlem Raporları</th>
             <th>Oluşturulma Tarihi</th>
             <th>Geçerlilik</th>
-            <th>Dosya</th>
+            <th style="width: 19%">Dosya</th>
         </thead>
         <tbody class="text-center">
             @if ($gozlem_raporlari !== null)
@@ -64,14 +61,11 @@
             <tr>
                 <td>{{ $gozlem_raporu->file->name }}</td>
                 <td>{{ Str::remove(' 00:00:00', $gozlem_raporu->assigned_at) }}</td>
-                <td>
-                    @if ($gozlem_raporu->valid_date <= date('Y-m-d')) <i class="fas fa-times text-danger"></i>
-                        @else
-                        <i class="fas fa-check text-success"></i>
-                        @endif
+                <td class="{{ $gozlem_raporu->valid_date <= date('Y-m-d') ? 'table-danger' : 'table-success' }}">
+                    {{ $gozlem_raporu->valid_date }}
                 </td>
                 <td>
-                    <button class="btn btn-warning btn-sm float-left ml-5 mx-1"
+                    <button class="btn btn-warning btn-sm float-left mx-1"
                         onclick="window.open('{{ url('/files/monthly-files/' . $gozlem_raporu->file->name) }}','_blank')">
                         <i class="fas fa-eye"></i></button>
 

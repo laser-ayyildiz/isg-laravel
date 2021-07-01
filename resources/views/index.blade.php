@@ -11,7 +11,6 @@
           content="Ortak Sağlık Güvenlik Birimi (OSGB), İş Sağlığı ve Güvenliği Hizmetleri yönetmeliği ile tanımlanmış; en son yasal düzenlemelere göre 1 işçinin dahi çalıştığı sanayiden sayılan ve sayılmayan her türlü iş yerine; iş yeri hekimi ve iş güvenliği uzmanı sağlayan kuruluşlardır.">
      <meta name="keywords" content="İş güvenliği,OSGB">
      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-     <link rel="shortcut icon" href="/images/osgb_amblem.ico">
      <link rel="stylesheet" href="/dashboard/css/bootstrap.min.css">
      <link rel="stylesheet" href="/dashboard/css/font-awesome.min.css">
      <link rel="stylesheet" href="/dashboard/css/magnific-popup.css">

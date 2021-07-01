@@ -5,7 +5,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-    <link rel="shortcut icon" href="/images/osgb_amblem.ico">
     <script type="text/javascript" src="{{ mix('js/app.js') }}"></script>
     <title>@yield('title')Özgür OSGB</title>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -108,6 +107,10 @@
                         <a class="collapse-item" id="emp_item"
                             href="{{ route('admin.company.employees',['id' => request()->segment(3)]) }}">Çalışan
                             Listesi</a>
+                        <a class="collapse-item" id="emp_miss_docs_item"
+                            href="{{ route('admin.company.employees.withMissingDocuments',['id' => request()->segment(3)]) }}">Evrakları
+                            Eksik
+                            Çalışanlar</a>
                         <a class="collapse-item" id="emp_del_item"
                             href="{{ route('admin.company.employees.deleted',['id' => request()->segment(3)]) }}">Silinen
                             Çalışanlar</a>
@@ -128,13 +131,15 @@
                 <div id="collapseDocs" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Dokümantasyon</h6>
-                        <a class="collapse-item"
+                        <a class="collapse-item" id="mandatory_files_item"
                             href="{{ route('admin.company.documents.mandatoryFiles',['id' => request()->segment(3)]) }}">Zorunlu
                             Dokümanlar</a>
-                            <a class="collapse-item"
-                            href="{{ route('admin.company.documents.mandatoryFiles',['id' => request()->segment(3)]) }}">Defter Nüshaları</a>
-                            <a class="collapse-item"
-                            href="{{ route('admin.company.documents.mandatoryFiles',['id' => request()->segment(3)]) }}">Saha Gözlem Raporları</a>
+                        <a class="collapse-item" id="notebook_copies_item"
+                            href="{{ route('admin.company.documents.notebookCopies',['id' => request()->segment(3)]) }}">Defter
+                            Nüshaları</a>
+                        <a class="collapse-item" id="observation_reports_item"
+                            href="{{ route('admin.company.documents.observationReports',['id' => request()->segment(3)]) }}">Saha
+                            Gözlem Raporları</a>
                     </div>
                 </div>
             </li>

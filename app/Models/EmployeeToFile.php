@@ -14,6 +14,7 @@ class EmployeeToFile extends Model
         'file_type',
         'employee_id',
         'file_id',
+        'assigned_at',
         'valid_date',
     ];
 

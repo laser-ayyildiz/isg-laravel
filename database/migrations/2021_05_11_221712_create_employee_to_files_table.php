@@ -18,6 +18,7 @@ class CreateEmployeeToFilesTable extends Migration
             $table->foreignId('file_type')->constrained('employee_education_types')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('employee_id')->constrained('coop_employees')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('file_id')->constrained('files')->onUpdate('cascade')->onDelete('cascade');
+            $table->date('assigned_at')->nullable();
             $table->date('valid_date')->nullable();
             $table->softDeletes();
             $table->timestamps();

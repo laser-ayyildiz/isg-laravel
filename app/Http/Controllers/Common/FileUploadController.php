@@ -46,7 +46,7 @@ class FileUploadController extends Controller
     public function empFileUpload(CoopEmployee $employee, Request $request)
     {
         $request->validate([
-            'file' => 'required|mimes:csv,txt,xlx,xls,xlsx,odt,odf,pdf,png,jpg,jpeg,doc,docx,ppt,pptx|max:51200',
+            'file' => 'required|file|mimes:csv,txt,xlx,xls,xlsx,odt,odf,pdf,png,jpg,jpeg,doc,docx,ppt,pptx|max:51200',
             'file_type' => ['required', Rule::in(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'])],
             'name' => 'nullable|string|max:250',
             'file_date' => 'nullable|before_or_equal:' . date('Y-m-d')
@@ -80,7 +80,7 @@ class FileUploadController extends Controller
         /////////////////////////////////////////////////////////////////////////////////
 
         $fileName = $request->name ?? self::EMP_FILE_NAMES[$request->file_type];
-        $signed_at = $request->file_date ?? date('Y-m-d');
+        $assigned_at = $request->file_date ?? date('Y-m-d');
         DB::beginTransaction();
         try {
             $fileModel = new File;
@@ -89,7 +89,6 @@ class FileUploadController extends Controller
 
             $fileModel->name = $fileName;
             $fileModel->file_path = '/storage/' . $filePath;
-            $fileModel->signed_at = $signed_at;
             $fileModel->save();
 
             /////////////////////////////////////////////////////////////////////////////////
@@ -111,6 +110,7 @@ class FileUploadController extends Controller
                 'file_type' => $request->file_type,
                 'employee_id' => $employee->id,
                 'file_id' => $fileModel->id,
+                'assigned_at' => $assigned_at,
                 'valid_date' => $valid_date ?? null
             ]);
         } catch (\Throwable $th) {
@@ -135,7 +135,7 @@ class FileUploadController extends Controller
     {
         $request->validate(
             [
-                'file' => 'required|mimes:csv,txt,xlx,xls,xlsx,odt,odf,mp3,mp4,pdf,png,jpg,jpeg,doc,docx,ppt,pptx|max:51200',
+                'file' => 'required|file|mimes:csv,txt,xlx,xls,xlsx,odt,odf,mp3,mp4,pdf,png,jpg,jpeg,doc,docx,ppt,pptx|max:51200',
                 'file_type' => ['required', Rule::in(['1', '2', '3', '4', '5', '6', '7', '8'])],
             ],
             [],
@@ -195,7 +195,7 @@ class FileUploadController extends Controller
     public function empBatchFileUpload(CoopCompany $company, Request $request)
     {
         $request->validate([
-            'file' => 'required|mimes:csv,txt,xlx,xls,xlsx,odt,odf,pdf,png,jpg,jpeg,doc,docx,ppt,pptx|max:51200',
+            'file' => 'required|file|mimes:csv,txt,xlx,xls,xlsx,odt,odf,pdf,png,jpg,jpeg,doc,docx,ppt,pptx|max:51200',
             'name' => 'nullable|string|max:250',
             'batch_file_type' => ['required', Rule::in(['1', '2', '9', '10', '11', '12'])],
             'file_date' => 'nullable|before_or_equal:' . date('Y-m-d')
@@ -229,7 +229,7 @@ class FileUploadController extends Controller
 
         $fileName = $request->name ?? self::EMP_FILE_NAMES[$request->batch_file_type];
         $employeeIds = [];
-        $signed_at = $request->file_date ?? date('Y-m-d');
+        $assigned_at = $request->file_date ?? date('Y-m-d');
 
         if ($request->has('selectAll')) {
             $employeeIds = CoopEmployee::where('company_id', $company->id)->pluck('id')->toArray();
@@ -253,7 +253,6 @@ class FileUploadController extends Controller
             $filePath = $request->file('file')->storeAs('uploads/employee-files', $fileName, 'public');
             $fileModel->name = $fileName;
             $fileModel->file_path = '/storage/' . $filePath;
-            $fileModel->signed_at = $signed_at;
             $fileModel->save();
 
             /////////////////////////////////////////////////////////////////
@@ -276,6 +275,7 @@ class FileUploadController extends Controller
                     'file_type' => $request->batch_file_type,
                     'employee_id' => $id,
                     'file_id' => $fileModel->id,
+                    'assigned_at' => $assigned_at,
                     'valid_date' => $valid_date ?? null,
                 ];
             }
@@ -303,7 +303,7 @@ class FileUploadController extends Controller
     public function monthlyFilesUpload(CoopCompany $company, Request $request)
     {
         $request->validate([
-            'file' => 'required|mimes:csv,txt,xlx,xls,xlsx,odt,odf,pdf,png,jpg,jpeg,doc,docx,ppt,pptx|max:51200',
+            'file' => 'required|file|mimes:csv,txt,xlx,xls,xlsx,odt,odf,pdf,png,jpg,jpeg,doc,docx,ppt,pptx|max:51200',
             'file_type' => ['required', Rule::in(['9', '10'])],
             'assigned_at' => 'nullable|before_or_equal:' . date('Y-m-d'),
         ], [], [
@@ -321,7 +321,6 @@ class FileUploadController extends Controller
             $fileModel = new File;
             $fileModel->name = $fileName;
             $fileModel->file_path = '/storage/' . $filePath;
-            $fileModel->signed_at = $assigned_at;
             $fileModel->save();
 
             /////////////////////////////////////////////////////////////////////////////////

@@ -14,11 +14,8 @@
                 <tr>
                     <td>{{ $gozlem_raporu->file->name }}</td>
                     <td>{{ Str::remove(' 00:00:00', $gozlem_raporu->assigned_at) }}</td>
-                    <td class="text-center">
-                        @if ($gozlem_raporu->valid_date <= date('Y-m-d')) <i class="fas fa-times text-danger"></i>
-                            @else
-                            <i class="fas fa-check text-success"></i>
-                            @endif
+                    <td class="{{ $gozlem_raporu->valid_date <= date('Y-m-d') ? 'table-danger' : 'table-success' }}">
+                        {{ $gozlem_raporu->valid_date }}
                     </td>
                     <td>
                         <button class="btn btn-warning btn-sm float-left mx-1"

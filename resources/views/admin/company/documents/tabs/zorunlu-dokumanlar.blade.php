@@ -1,4 +1,4 @@
-<div class="tab-pane fade show active" id="zorunlu_dokumanlar" aria-labelledby="<d-tab">
+<div class="tab-pane fade show" id="zorunlu_dokumanlar" aria-labelledby="zd-tab">
     <button class="btn btn-primary float-left" data-toggle="modal" data-target="#addMandatoryFile"
         data-whatever="@getbootstrap">Zorunlu Doküman Ekle</button>
     <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">

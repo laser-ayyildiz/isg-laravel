@@ -8,7 +8,7 @@ Route::redirect('/', '/admin/home');
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-////////////////////////////////////////////////////////////////////////
+////////////////////////////COMPANY_LISTS////////////////////////////////////////////
 
 Route::prefix('companies')->group(function () {
     Route::get('/', [CoopCompanyController::class, 'index'])->name('companies.index');
@@ -21,7 +21,7 @@ Route::prefix('deleted_companies')->group(function () {
     Route::post('/delete/{company}', [DeletedCompanyController::class, 'delete'])->name('deleted_companies.delete');
 });
 
-////////////////////////////////////////////////////////////////////////
+///////////////////////////////OSGB_EMPLOYEES/////////////////////////////////////////
 
 Route::prefix('change_validate')->group(function () {
     Route::get('/', [ChangeValidateController::class, 'index'])->name('change_validate');
@@ -40,26 +40,39 @@ Route::prefix('deleted_employees')->group(function () {
     Route::post('/', [DeletedEmployeeController::class, 'handle'])->name('deleted_employees.handle');
 });
 
-////////////////////////////////////////////////////////////////////////
+/////////////////////////////////AUTHENTICATION///////////////////////////////////////
 
 Route::prefix('authentication')->group(function () {
     Route::get('/', [EmployeeAuthenticateController::class, 'index'])->name('authentication');
     Route::post('/update/{user}', [EmployeeAuthenticateController::class, 'employeeAuthenticate'])->name('authentication.employeeAuthenticate');
 });
 
-////////////////////////////////////////////////////////////////////////
+////////////////////////////////COOP_COMPANY////////////////////////////////////////
 
 Route::prefix('/company')->group(function () {
     Route::prefix('/{id}')->group(function () {
+
         Route::get('/', [CompanyController::class, 'index'])->name('company');
+
+        ///////////////////////////////INFORMATIONS////////////////////////////////////////////
+ 
         Route::get('/informations', [CompanyController::class, 'showInfo'])->name('company.informations.index');
         Route::get('/informations/osgb', [CompanyController::class, 'showInfo'])->name('company.informations.osgb');
         Route::get('/informations/formal', [CompanyController::class, 'showInfo'])->name('company.informations.formal');
         Route::get('/informations/acc', [CompanyController::class, 'showInfo'])->name('company.informations.acc');
+
+        ///////////////////////////////EMPLOYEES////////////////////////////////////////////
+
         Route::get('/employees', [CompanyController::class, 'showEmployees'])->name('company.employees');
         Route::get('/employees/deleted', [CompanyController::class, 'showEmployees'])->name('company.employees.deleted');
+        Route::get('/employees/with-missing-documents', [CompanyController::class, 'showEmployees'])->name('company.employees.withMissingDocuments');
+
+        /////////////////////////////DOCUMENTS//////////////////////////////////////////////
+
         Route::get('/documents', [CompanyController::class, 'showDocuments'])->name('company.documents');
         Route::get('/documents/mandatory-files', [CompanyController::class, 'showDocuments'])->name('company.documents.mandatoryFiles');
+        Route::get('/documents/notebook-copies', [CompanyController::class, 'showDocuments'])->name('company.documents.notebookCopies');
+        Route::get('/documents/observation-reports', [CompanyController::class, 'showDocuments'])->name('company.documents.observationReports');
     });
     Route::get('/deleted/{id}', [CompanyController::class, 'deletedIndex'])->name('deleted_company');
     Route::post('/delete/{company}', [CompanyController::class, 'delete'])->name('company.delete');

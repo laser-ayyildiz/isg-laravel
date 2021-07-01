@@ -31,7 +31,9 @@ class CoopEmployeeController extends Controller
     public function deletedIndex($employeeId)
     {
         $employee = CoopEmployee::with('company')->withTrashed()->where('id', $employeeId)->first();
-        $files = EmployeeToFile::where('employee_id', $employeeId)->with('file')->get();
+        if (empty($employee))
+            abort(404);
+        $files = EmployeeToFile::where('employee_id', $employeeId)->with('file')->orderByDesc('assigned_at')->get();
 
         return view(
             'admin.coop_employees',

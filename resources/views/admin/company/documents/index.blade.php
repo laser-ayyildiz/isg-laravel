@@ -41,11 +41,8 @@
     @include('admin.company.documents.modals.zorunlu-dokuman-ekle')
     @include('admin.company.documents.modals.aylik-dokuman-ekle')
 </div>
+<script src="/company/js/documents.js"></script>
 <script>
-    $('#chooseFile').on('change',function(){
-        $(this).next('.custom-file-label').html($(this).val());
-    });
-
     const selectMonthly = (valueToSelect) => document.getElementById('monthly_file_type').value = valueToSelect;
 </script>
 @endsection

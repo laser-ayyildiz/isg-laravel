@@ -67,7 +67,7 @@
                 <td colspan="10">
                     <h4 class="text-center">
                         <b>
-                            {{ $employees->count() > 0 ? 'Bütün çalışanların evrakları tam!' : 'Bu işletmeye henüz hiçbir çalışan eklenmedi!' }}
+                            {{ $employees->whereNull('deleted_at')->count() > 0 ? 'Bütün çalışanların evrakları tam!' : 'Bu işletmeye henüz hiçbir çalışan eklenmedi!' }}
                             
                         </b>
                     </h4>

@@ -123,7 +123,7 @@ class CompanyController extends Controller
         if (empty($company))
             return redirect()->route('admin.deleted_company', ['id' => $id]);
 
-        $files = CompanyToFile::with('file', 'type')->where('company_id', $id)->orderBy('assigned_at')->get();
+        $files = CompanyToFile::with('file', 'type')->where('company_id', $id)->orderByDesc('assigned_at')->get();
         $mandatory_files = $files->whereBetween('file_type', [1,8]);
         $defter_nushalari = $files->where('file_type', 9);
         $gozlem_raporlari = $files->where('file_type', 10);

@@ -14,11 +14,8 @@
                 <tr>
                     <td>{{ $defter_nushasi->file->name }}</td>
                     <td>{{ Str::remove(' 00:00:00', $defter_nushasi->assigned_at) }}</td>
-                    <td class="text-center">
-                        @if ($defter_nushasi->valid_date <= date('Y-m-d')) <i class="fas fa-times text-danger"></i>
-                            @else
-                            <i class="fas fa-check text-success"></i>
-                            @endif
+                    <td class="{{ $defter_nushasi->valid_date <= date('Y-m-d') ? 'table-danger' : 'table-success' }}">
+                        {{ $defter_nushasi->valid_date }}
                     </td>
                     <td>
                         <button class="btn btn-warning btn-sm float-left mx-1"

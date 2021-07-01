@@ -54,8 +54,17 @@
                         @isset($file->file)
                         <tr>
                             <td>{{ $file->file->name }}</td>
-                            <td>{{ $file->file->signed_at ?? $file->file->created_at }}</td>
-                            <td>{{ $file->valid_date }}</td>
+                            <td>{{ $file->assigned_at }}</td>
+                            @if ($file->valid_date !== null)
+                            <td class="{{ $file->valid_date >= date('Y-m-d') ? 'table-success' : 'table-danger'}}">
+                                {{ $file->valid_date }}
+                            </td>
+                            @else
+                            <td class="table-success">
+                                {{ $file->valid_date }}
+                            </td>
+                            @endif
+
                             <td class="text-center">
                                 <button class="btn btn-warning btn-sm float-left mr-1"
                                     onclick="window.open('{{ url('/files/employee-files/' . $file->file->name) }}','_blank')"><i
@@ -109,8 +118,9 @@
                             </label>
                         </div>
                         <div class="ml-auto">
-                            <button name="goToComp" type="button" class="btn btn-primary" onclick="goToCompany()"><i
-                                    class="fas fa-building"></i> Çalıştığı İşletmeye Git </button>
+                            <button name="goToComp" type="button" class="btn btn-primary"
+                                onclick="goToCompany({{ $employee->company->id }})"><i class="fas fa-building"></i>
+                                Çalıştığı İşletmeye Git </button>
                         </div>
                     </div>
                     <div class="row my-4">
@@ -191,16 +201,35 @@
                         @csrf
                         <div class="row mt-3">
                             <div class="col-6">
-                                <label for="name"><b>Dosya Adı</b></label>
-                                <input class="form-control" type="text" name="name" id="name" placeholder="Dosya Adı"
-                                    required>
+                                <label for="file_type"><b>Dosya Tipi</b></label>
+                                <select class="form-control" name="file_type" id="file_type" required>
+                                    <option selected disabled>Dosya Tipini Seçiniz...</option>
+                                    <option value="1">İSG Eğitimi 1</option>
+                                    <option value="2">İSG Eğitimi 2</option>
+                                    <option value="3">Sağlık Muayenesi</option>
+                                    <option value="4">İlk Yardım Sertifikası</option>
+                                    <option value="5">Yangın Eğitim Sertifikası</option>
+                                    <option value="6">Mesleki Yeterlilik Sertifikası</option>
+                                    <option value="7">Hijyen Eğitim Sertifikası</option>
+                                    <option value="8">Özlük Dosyası Evrakları</option>
+                                    <option value="9">Yüksekte Çalışma Eğitimi</option>
+                                    <option value="10">Yangın Eğitimi</option>
+                                    <option value="11">Acil Durum Ekip Eğitimi</option>
+                                    <option value="12">Diğer</option>
+                                </select>
                             </div>
                             <div class="col-6">
                                 <label for="file_date"><b>Dosya Tarihi</b></label>
                                 <input class="form-control" type="date" name="file_date" id="file_date">
                             </div>
                         </div>
-                        <div class="row mt-3">
+                        <div class="row">
+                            <div class="col-12 d-none mt-3" id="empFileDiv">
+                                <label for="name"><b>Dosya Adı</b></label>
+                                <input class="form-control" type="text" name="name" placeholder="Dosya Adı">
+                            </div>
+                        </div>
+                        <div class="row my-3">
                             <div class="col-12">
                                 <div class="custom-file">
                                     <input type="file" name="file" class="custom-file-input" id="chooseFile">
@@ -220,12 +249,21 @@
     </div>
     @endif
 </div>
+@push('scripts')
 <script>
-    function goToCompany() {
-        window.location = "/admin/company/{{ $employee->company->id }}";
-    }
-    $('#chooseFile').on('change',function(){
+    file_date.max = new Date().toISOString().split("T")[0];
+    const goToCompany = (id) => window.location = "/admin/company/" + id;
+
+    $('#file_type').on('change', function () {
+        if ($('#file_type').val() == 12)
+            $('#empFileDiv').removeClass('d-none');
+        else
+            $('#empFileDiv').addClass('d-none');
+    });
+
+    $('.custom-file-input').on('change', function () {
         $(this).next('.custom-file-label').html($(this).val());
     });
 </script>
+@endpush
 @endsection
