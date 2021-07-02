@@ -8,7 +8,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="/admin/company/" method="POST" id="deleteEmpForm">
+                <form action="" method="POST" id="deleteEmpForm">
                     @csrf
                     <div class="row my-2">
                         <h5 id="deleteEmpName" class="mx-2"></h5>

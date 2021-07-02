@@ -8,7 +8,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="/upload-file/" method="POST" enctype="multipart/form-data" id="addEmpFileForm">
+                <form action="" method="POST" enctype="multipart/form-data" id="addEmpFileForm">
                     <h5 class="mx-2" id="empName">
                     </h5>
                     @csrf

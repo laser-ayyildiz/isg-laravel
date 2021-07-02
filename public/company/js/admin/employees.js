@@ -34,31 +34,30 @@ $(document).ready(function () {
 
     $('#example tbody').on('click', 'tr', function (e) {
         var tr = $(this).closest('tr');
+        let action = null;
         if (e.target.nodeName !== 'BUTTON' && e.target.nodeName !== 'I') window.location.href = "/admin/employee/" + tr.attr('id');
         else {
             var name = tr.find('td').first().text();
             $('#deleteEmpName').html("<b>" + name + '</b> isimli çalışanı silmek istediğinize emin misiniz?');
             $('#empName').html("<b>" + name + '</b> isimli çalışan için dosya yükle');
 
-            $('#deleteEmpRequest').click(function () {
-                let action = $('#deleteEmpForm').attr('action');
-                $('#deleteEmpForm').attr('action', action + pathArray[3] + "/deleteEmployee/" + tr.attr('id'));
+            $('#deleteEmpRequest').on('click', function () {
+                $('#deleteEmpForm').attr('action', "/admin/company/" + pathArray[3] + "/deleteEmployee/" + tr.attr('id'));
             });
 
-            $('#addEmpFileRequest').click(function () {
-                let action = $('#addEmpFileForm').attr('action');
-                $('#addEmpFileForm').attr('action', action + tr.attr('id'));
+            $('#addEmpFileRequest').on('click', function () {
+                $('#addEmpFileForm').attr('action', "/upload-file/" + tr.attr('id'));
             });
 
-            $('#addEmpIdentifyFileRequest').click(function () {
-                let action = $('#addEmpIdentifyFileForm').attr('action');
-                $('#addEmpIdentifyFileForm').attr('action', action + tr.attr('id'));
+            $('#addEmpIdentifyFileRequest').on('click', function () {
+                $('#addEmpIdentifyFileForm').attr('action', "/upload-file/" + tr.attr('id'));
             });
         }
     });
 
     $('#deletedEmpTable tbody').on('click', 'tr', function (e) {
         var tr = $(this).closest('tr');
+        let action = "";
         if (e.target.nodeName !== 'BUTTON' && e.target.nodeName !== 'I') window.location.href = "/admin/employee/" + tr.attr('id');
 
         else {
@@ -66,7 +65,8 @@ $(document).ready(function () {
             $('#restoreEmpName').html("<b>" + name + '</b> isimli çalışanı işe geri almak istediğinize emin misiniz?');
 
             $('#restoreEmpRequest').on('click', function () {
-                let action = $('#restoreEmpForm').attr('action');
+                action = "";
+                action = $('#restoreEmpForm').attr('action');
                 $('#restoreEmpForm').attr('action', action + tr.attr('id'));
             });
         }

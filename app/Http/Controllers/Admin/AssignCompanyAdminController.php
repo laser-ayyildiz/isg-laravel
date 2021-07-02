@@ -1,36 +1,43 @@
 <?php
 
-namespace App\Http\Controllers\Common;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
 use App\Models\CoopCompany;
-use App\Http\Controllers\Controller;
-use App\Models\UserToCompany;
-use App\Notifications\CreateCompanyAdmin;
 use Illuminate\Http\Request;
+use App\Models\UserToCompany;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Notifications\CreateCompanyAdmin;
 
 class AssignCompanyAdminController extends Controller
 {
     public function assign(CoopCompany $company, Request $request)
     {
-        $this->validate($request, [
-            'email' => 'required|email|unique:users,email',
-            'name' => 'required|string',
-            'phone' => 'nullable|numeric|digits:11',
-            'tc' => 'nullable|numeric|digits:11'
-        ],[],
-        [
-            'email' => 'Email',
-            'name' => 'Ad Soyad',
-            'phone' => 'Telefon No',
-            'tc' => 'T.C. Kimlik No'
-        ]);
-
+        $this->validate(
+            $request,
+            [
+                'email' => 'required|email|unique:users,email',
+                'name' => 'required|string|max:255',
+                'phone' => 'nullable|numeric|digits:11',
+                'tc' => 'nullable|numeric|digits:11'
+            ],
+            [],
+            [
+                'email' => 'Email',
+                'name' => 'Ad Soyad',
+                'phone' => 'Telefon No',
+                'tc' => 'T.C. Kimlik No'
+            ]
+        );
+        DB::beginTransaction();
         try {
             $this->createUser($company, $request);
         } catch (\Throwable $th) {
+            DB::rollBack();
             return back()->with('fail', 'İşveren/vekili kayıt edilirken bir hata ile karşılaşıldı!');
         }
+        DB::commit();
         return back()->with('success', 'İşveren/vekili hesabı oluşturuldu. Giriş bilgileri mail olarak gönderildi!');
     }
 

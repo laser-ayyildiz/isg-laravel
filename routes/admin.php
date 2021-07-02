@@ -97,3 +97,5 @@ Route::prefix('employee')->group(function () {
 Route::get('/settings', function () {
     return view('admin/settings');
 })->name('settings');
+
+Route::post('assign-company-admin/{company}', [AssignCompanyAdminController::class, 'assign'])->name('assign-company-admin');

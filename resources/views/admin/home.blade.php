@@ -1,7 +1,25 @@
 @extends('layouts.admin')
-
 @section('content')
 
+@if (session('fail'))
+<div class="alert alert-danger">
+    {{ session('fail') }}
+</div>
+@elseif (session('success'))
+<div class="alert alert-success">
+    {!! session('success') !!}
+</div>
+@endif
+
+@if ($errors->any())
+<div class="alert alert-danger">
+    <ul>
+        @foreach ($errors->all() as $error)
+        <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif
 <div class="d-sm-flex justify-content-between align-items-center mb-4">
     <h3 class="text-dark mb-0">Ana Sayfa</h3>
 </div>
@@ -64,12 +82,10 @@
             <div class="card-body">
                 <div class="row align-items-center no-gutters">
                     <div class="col mr-2">
-                        <div class="text-uppercase text-warning font-weight-bold text-xs mb-1"><span>Toplam Etkinlik
-                                Sayısı</span></div>
-                        50
-                        <div class="text-dark font-weight-bold h5 mb-0"><span></span></div>
+                        <button class="btn btn-warning mb-1" data-toggle="modal" data-target="#authenticate"
+                            data-whatever="@getbootstrap">İşveren/vekili Yetkilendir</a></button>
                     </div>
-                    <div class="col-auto"><i class="fas fa-pencil-alt fa-2x text-gray-300"></i></div>
+                    <div class="col-auto"><i class="fas fa-user-plus fa-2x text-gray-300"></i></div>
                 </div>
             </div>
         </div>
@@ -105,30 +121,95 @@
             </div>
             <div class="card-body">
 
-                <h4 class="small font-weight-bold">Çok Tehlikeli<span class="float-right">%{{ number_format($dangers['very']/$comp_count*100, 1) }}</span></h4>
+                <h4 class="small font-weight-bold">Çok Tehlikeli<span
+                        class="float-right">%{{ number_format($dangers['very']/$comp_count*100, 1) }}</span></h4>
                 <div class="progress mb-4">
                     <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" aria-valuenow=""
-                        aria-valuemin="0" aria-valuemax="100" style="width: {{ $dangers['very']/$comp_count*100 }}%;"><span class="sr-only"></span></div>
+                        aria-valuemin="0" aria-valuemax="100" style="width: {{ $dangers['very']/$comp_count*100 }}%;">
+                        <span class="sr-only"></span></div>
                 </div>
-                <h4 class="small font-weight-bold">Orta Tehlikeli<span class="float-right">%{{ number_format($dangers['medium']/$comp_count*100, 1) }}</span></h4>
+                <h4 class="small font-weight-bold">Orta Tehlikeli<span
+                        class="float-right">%{{ number_format($dangers['medium']/$comp_count*100, 1) }}</span></h4>
                 <div class="progress mb-4">
                     <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" aria-valuenow=""
-                        aria-valuemin="0" aria-valuemax="100" style="width:{{ $dangers['medium']/$comp_count*100 }}%;"><span class="sr-only"></span></div>
+                        aria-valuemin="0" aria-valuemax="100" style="width:{{ $dangers['medium']/$comp_count*100 }}%;">
+                        <span class="sr-only"></span></div>
                 </div>
                 <h4 class="small font-weight-bold">Az Tehlikeli<span class="float-right"></span><span
                         class="float-right">%{{ number_format($dangers['less']/$comp_count*100, 1) }}</span></h4>
                 <div class="progress mb-4">
                     <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" aria-valuenow=""
-                        aria-valuemin="0" aria-valuemax="100" style="width:{{ $dangers['less']/$comp_count*100 }}%;"><span class="sr-only"></span>
+                        aria-valuemin="0" aria-valuemax="100" style="width:{{ $dangers['less']/$comp_count*100 }}%;">
+                        <span class="sr-only"></span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<div class="modal fade" id="authenticate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title" id="exampleModalLabel"><b>İşveren/vekili için hesap oluştur</b></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="POST" id="authenticateForm">
+                    @csrf
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <label for="company_id"><b>İşletme</b></label>
+                            <select name="company" id="company" class="form-control">
+                                <option selected disabled>Lütfen İşletme Seçiniz</option>
+                                @forelse ($companies as $company )
+                                <option value="{{ $company->id }}">{{ $company->name }}</option>
+                                @empty
+                                @endforelse
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-sm-6">
+                            <label for="name"><b>İşveren/vekili Adı Soyadı<a style="color:red">*</a></b></label>
+                            <input class="form-control" type="text" name="name" required>
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="email"><b>Email<a style="color:red">*</a></b></label>
+                            <input class="form-control" type="email" name="email" required>
+                        </div>
+                    </div>
+                    <div class="row my-3">
+                        <div class="col-sm-6">
+                            <label for="tc"><b>T.C. Kimlik Numarası</b></label>
+                            <input class="form-control" type="phone" minlength="11" maxlength="11" name="tc">
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="phone"><b>Telefon Numarası</b></label>
+                            <input class="form-control" type="phone" minlength="11" maxlength="11" name="phone">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="float-right">
+                            <button type="submit" class="btn btn-primary" id="submit">Hesap Oluştur</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-
+<script>
+    $('#submit').on('click', function(e) {
+        let action = "";
+        action = 'assign-company-admin/' + $('#company').val();
+        $('#authenticateForm').attr('action', action);
+    })
+</script>
 <script>
     var options = {
         chart: {

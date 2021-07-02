@@ -62,7 +62,7 @@
 </div>
 
 @push('scripts')
-<script src="/company/js/employees.js"></script>
+<script src="/company/js/admin/employees.js"></script>
 @endpush
 
 @endsection

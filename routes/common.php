@@ -17,8 +17,6 @@ Route::prefix('/profile')->group(function () {
     Route::post('/updateIdCard', [ProfileController::class, 'updateIdCard'])->name('profile.updateIdCard');
 });
 
-Route::post('assign-company-admin/{company}', [AssignCompanyAdminController::class, 'assign'])->name('assign-company-admin');
-
 //////////////////////UPLOAD FILES/////////////////////////////////
 Route::prefix('upload-file')->group(function () {
     Route::post('/{employee}', [FileUploadController::class, 'empFileUpload'])->name('employee-file-upload');

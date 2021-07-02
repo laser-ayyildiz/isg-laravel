@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\User;
 use App\Models\CoopCompany;
 use App\Models\CoopEmployee;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
 class HomeController extends Controller
@@ -16,7 +19,7 @@ class HomeController extends Controller
     public function index()
     {
         $emp_count = CoopEmployee::count();
-        $companies = CoopCompany::select('contract_at', 'type', 'danger_type')->get();
+        $companies = CoopCompany::select('id', 'name', 'contract_at', 'type', 'danger_type')->orderBy('name')->get();
         $types = [];
         $month_counts = array_fill(0, 12, 0);
         $dangers = ['less' => 0, 'medium' => 0, 'very' => 0];
@@ -46,6 +49,7 @@ class HomeController extends Controller
         return view(
             'admin.home',
             [
+                'companies' => $companies,
                 'comp_count' => $companies->count(),
                 'emp_count' => $emp_count,
                 'month_counts' => $month_counts,

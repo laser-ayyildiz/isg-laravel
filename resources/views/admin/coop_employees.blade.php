@@ -118,9 +118,9 @@
                             </label>
                         </div>
                         <div class="ml-auto">
-                            <button name="goToComp" type="button" class="btn btn-primary"
-                                onclick="goToCompany({{ $employee->company->id }})"><i class="fas fa-building"></i>
-                                Çalıştığı İşletmeye Git </button>
+                            <a name="goToComp" type="button" class="btn btn-primary"
+                                href="/admin/company/{{ $employee->company->id }}"><i
+                                    class="fas fa-building text-white"></i>Çalıştığı İşletmeye Git</a>
                         </div>
                     </div>
                     <div class="row my-4">
@@ -250,8 +250,15 @@
     @endif
 </div>
 @push('scripts')
+
 <script>
+
+</script>
+<script>
+    @if(!$deleted)
     file_date.max = new Date().toISOString().split("T")[0];
+    @endif
+    
     const goToCompany = (id) => window.location = "/admin/company/" + id;
 
     $('#file_type').on('change', function () {

@@ -8,7 +8,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('assign-company-admin',['company' => $company]) }}" method="POST">
+                <form action="{{ route('admin.assign-company-admin',['company' => $company]) }}" method="POST">
                     @csrf
                     <div class="row mt-2">
                         <div class="col-sm-6">

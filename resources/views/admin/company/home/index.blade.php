@@ -57,7 +57,7 @@ $monthList = ['01' => 'Ocak','02' => 'Şubat','03' => 'Mart','04' => 'Nisan','05
     @include('admin.company.home.modals.aylik-dokuman-ekle')
 </div>
 @push('scripts')
-<script src="/company/js/home.js"></script>
+<script src="/company/js/admin/home.js"></script>
 <script>
     const selectElement = (valueToSelect) => document.getElementById('file_type').value = valueToSelect;
 
