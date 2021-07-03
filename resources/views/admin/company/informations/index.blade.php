@@ -53,7 +53,7 @@
 
 </div>
 @push('scripts')
-<script src="/company/js/admin/informations.js"></script>
+<script src="/company/js/informations.js"></script>
 @endpush
 
 @endsection

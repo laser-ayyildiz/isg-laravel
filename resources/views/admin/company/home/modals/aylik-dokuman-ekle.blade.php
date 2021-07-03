@@ -36,7 +36,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary btn-block mt-4">
+                        <button type="submit" class="btn btn-primary btn-block mt-4 submitFile">
                             Yükle
                         </button>
                     </div>

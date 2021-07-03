@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <script type="text/javascript" src="{{ mix('js/app.js') }}"></script>
-    <title>@yield('title')Özgür OSGB</title>
+    <title>@yield('company')Özgür OSGB</title>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
@@ -48,16 +48,28 @@
 </head>
 
 <body id="page-top">
+    @php
+    $role = null;
+    if (auth()->user()->hasRole('Admin'))
+    $role = 'admin';
+
+    elseif (auth()->user()->hasRole('User'))
+    $role = 'user';
+
+    elseif (auth()->user()->hasRole('CompanyAdmin'))
+    $role = 'company-admin';
+    @endphp
+
     <div id="wrapper">
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="@yield('home')">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/redirect">
                 <div class="sidebar-brand-text mx-3">Özgür OSGB</div>
             </a>
 
             <hr class="sidebar-divider my-0">
 
             <li class="nav-item active">
-                <a class="nav-link" href="{{ route('admin.company',['id' => request()->segment(3)]) }}">
+                <a class="nav-link" href="{{ route($role . '.company',['id' => request()->segment(3)]) }}">
                     <i class="fas fa-fw fa-building"></i>
                     <span>@yield('company')</span></a>
             </li>
@@ -78,16 +90,16 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Bilgiler:</h6>
                         <a class="collapse-item" id="info_item"
-                            href="{{ route('admin.company.informations.index',['id' => request()->segment(3)]) }}">Temel
+                            href="{{ route($role . '.company.informations.index',['id' => request()->segment(3)]) }}">Temel
                             Bilgiler</a>
                         <a class="collapse-item" id="osgb_item"
-                            href="{{ route('admin.company.informations.osgb',['id'=>request()->segment(3)])}} ">OSGB
+                            href="{{ route($role . '.company.informations.osgb',['id'=>request()->segment(3)])}} ">OSGB
                             Çalışanları</a>
                         <a class="collapse-item" id="formal_item"
-                            href="{{ route('admin.company.informations.formal',['id' => request()->segment(3)]) }}">Devlet
+                            href="{{ route($role . '.company.informations.formal',['id' => request()->segment(3)]) }}">Devlet
                             Bilgileri</a>
                         <a class="collapse-item" id="acc_item"
-                            href="{{ route('admin.company.informations.acc',['id' => request()->segment(3)]) }}">Muhasebe
+                            href="{{ route($role . '.company.informations.acc',['id' => request()->segment(3)]) }}">Muhasebe
                             Bilgileri</a>
 
                     </div>
@@ -105,14 +117,14 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Çalışanlar</h6>
                         <a class="collapse-item" id="emp_item"
-                            href="{{ route('admin.company.employees',['id' => request()->segment(3)]) }}">Çalışan
+                            href="{{ route($role . '.company.employees',['id' => request()->segment(3)]) }}">Çalışan
                             Listesi</a>
                         <a class="collapse-item" id="emp_miss_docs_item"
-                            href="{{ route('admin.company.employees.withMissingDocuments',['id' => request()->segment(3)]) }}">Evrakları
+                            href="{{ route($role . '.company.employees.withMissingDocuments',['id' => request()->segment(3)]) }}">Evrakları
                             Eksik
                             Çalışanlar</a>
                         <a class="collapse-item" id="emp_del_item"
-                            href="{{ route('admin.company.employees.deleted',['id' => request()->segment(3)]) }}">Silinen
+                            href="{{ route($role . '.company.employees.deleted',['id' => request()->segment(3)]) }}">Silinen
                             Çalışanlar</a>
                     </div>
                 </div>
@@ -132,13 +144,13 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Dokümantasyon</h6>
                         <a class="collapse-item" id="mandatory_files_item"
-                            href="{{ route('admin.company.documents.mandatoryFiles',['id' => request()->segment(3)]) }}">Zorunlu
+                            href="{{ route($role . '.company.documents.mandatoryFiles',['id' => request()->segment(3)]) }}">Zorunlu
                             Dokümanlar</a>
                         <a class="collapse-item" id="notebook_copies_item"
-                            href="{{ route('admin.company.documents.notebookCopies',['id' => request()->segment(3)]) }}">Defter
+                            href="{{ route($role . '.company.documents.notebookCopies',['id' => request()->segment(3)]) }}">Defter
                             Nüshaları</a>
                         <a class="collapse-item" id="observation_reports_item"
-                            href="{{ route('admin.company.documents.observationReports',['id' => request()->segment(3)]) }}">Saha
+                            href="{{ route($role . '.company.documents.observationReports',['id' => request()->segment(3)]) }}">Saha
                             Gözlem Raporları</a>
                     </div>
                 </div>

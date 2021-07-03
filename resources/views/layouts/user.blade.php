@@ -19,7 +19,7 @@
 </head>
 
 <body id="page-top">
-    <nav class="navbar navbar-expand-lg navbar-light bg-warning" style="min-height: 60px;">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary" style="min-height: 60px;">
         <a class="navbar-brand" href="{{ route('user.home') }}"><b>Özgür OSGB</b></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler"
             aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">

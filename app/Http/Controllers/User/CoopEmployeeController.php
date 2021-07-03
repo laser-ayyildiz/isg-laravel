@@ -12,11 +12,10 @@ use Illuminate\Support\Facades\Auth;
 
 class CoopEmployeeController extends Controller
 {
-    public function index($employee, CoopCompany $company)
+    public function index($employee)
     {
         $user = UserToCompany::with(['company', 'user'])
             ->where('user_id', Auth::id())
-            ->where('company_id', $company->id)
             ->first();
 
         if ($user === null)
@@ -94,5 +93,15 @@ class CoopEmployeeController extends Controller
             return redirect()->back()->with('fail', 'Bir Hata ile Karşılaşıldı!');
         }
         return redirect()->route('user.company', ['id' => $company])->with('success', 'Çalışan silindi!');
+    }
+    
+    public function restore($id)
+    {
+        try {
+            CoopEmployee::withTrashed()->find($id)->restore();
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('fail', 'Bir Hata ile Karşılaşıldı!');
+        }
+        return back()->with('success', 'Çalışan işe geri alındı!');
     }
 }

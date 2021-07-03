@@ -12,7 +12,7 @@ class UploadEmployeeTableController extends Controller
     public function store(Request $request, CoopCompany $company)
     {
         $this->validate($request,[
-            'employee-list' => 'required|mimes:xlx,xls,xlsx'
+            'employee-list' => 'required|file|mimes:xlx,xls,xlsx|max:46080'
         ],[],[
             'employee-list' => 'Çalışan Listesi'
         ]);

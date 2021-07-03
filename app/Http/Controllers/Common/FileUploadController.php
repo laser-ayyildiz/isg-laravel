@@ -46,7 +46,7 @@ class FileUploadController extends Controller
     public function empFileUpload(CoopEmployee $employee, Request $request)
     {
         $request->validate([
-            'file' => 'required|file|mimes:csv,txt,xlx,xls,xlsx,odt,odf,pdf,png,jpg,jpeg,doc,docx,ppt,pptx|max:51200',
+            'file' => 'required|file|mimes:csv,txt,xlx,xls,xlsx,odt,odf,pdf,png,jpg,jpeg,doc,docx,ppt,pptx|max:46080',
             'file_type' => ['required', Rule::in(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'])],
             'name' => 'nullable|string|max:250',
             'file_date' => 'nullable|before_or_equal:' . date('Y-m-d')
@@ -135,7 +135,7 @@ class FileUploadController extends Controller
     {
         $request->validate(
             [
-                'file' => 'required|file|mimes:csv,txt,xlx,xls,xlsx,odt,odf,mp3,mp4,pdf,png,jpg,jpeg,doc,docx,ppt,pptx|max:51200',
+                'file' => 'required|file|mimes:csv,txt,xlx,xls,xlsx,odt,odf,mp3,mp4,pdf,png,jpg,jpeg,doc,docx,ppt,pptx|max:46080',
                 'file_type' => ['required', Rule::in(['1', '2', '3', '4', '5', '6', '7', '8'])],
             ],
             [],
@@ -195,7 +195,7 @@ class FileUploadController extends Controller
     public function empBatchFileUpload(CoopCompany $company, Request $request)
     {
         $request->validate([
-            'file' => 'required|file|mimes:csv,txt,xlx,xls,xlsx,odt,odf,pdf,png,jpg,jpeg,doc,docx,ppt,pptx|max:51200',
+            'file' => 'required|file|mimes:csv,txt,xlx,xls,xlsx,odt,odf,pdf,png,jpg,jpeg,doc,docx,ppt,pptx|max:46080',
             'name' => 'nullable|string|max:250',
             'batch_file_type' => ['required', Rule::in(['1', '2', '9', '10', '11', '12'])],
             'file_date' => 'nullable|before_or_equal:' . date('Y-m-d')
@@ -303,7 +303,7 @@ class FileUploadController extends Controller
     public function monthlyFilesUpload(CoopCompany $company, Request $request)
     {
         $request->validate([
-            'file' => 'required|file|mimes:csv,txt,xlx,xls,xlsx,odt,odf,pdf,png,jpg,jpeg,doc,docx,ppt,pptx|max:51200',
+            'file' => 'required|file|mimes:csv,txt,xlx,xls,xlsx,odt,odf,pdf,png,jpg,jpeg,doc,docx,ppt,pptx|max:46080',
             'file_type' => ['required', Rule::in(['9', '10'])],
             'assigned_at' => 'nullable|before_or_equal:' . date('Y-m-d'),
         ], [], [

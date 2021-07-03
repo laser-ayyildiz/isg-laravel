@@ -22,9 +22,31 @@ Route::prefix('/deleted_companies')->group(function () {
 });
 
 ////////////////////////////////////////////////////////////////////////
-
 Route::prefix('/company')->group(function () {
-    Route::get('/{id}', [CompanyController::class, 'index'])->name('company');
+    Route::prefix('/{id}')->group(function () {
+
+        Route::get('/', [CompanyController::class, 'index'])->name('company');
+
+        ///////////////////////////////INFORMATIONS////////////////////////////////////////////
+ 
+        Route::get('/informations', [CompanyController::class, 'showInfo'])->name('company.informations.index');
+        Route::get('/informations/osgb', [CompanyController::class, 'showInfo'])->name('company.informations.osgb');
+        Route::get('/informations/formal', [CompanyController::class, 'showInfo'])->name('company.informations.formal');
+        Route::get('/informations/acc', [CompanyController::class, 'showInfo'])->name('company.informations.acc');
+
+        ///////////////////////////////EMPLOYEES////////////////////////////////////////////
+
+        Route::get('/employees', [CompanyController::class, 'showEmployees'])->name('company.employees');
+        Route::get('/employees/deleted', [CompanyController::class, 'showEmployees'])->name('company.employees.deleted');
+        Route::get('/employees/with-missing-documents', [CompanyController::class, 'showEmployees'])->name('company.employees.withMissingDocuments');
+
+        /////////////////////////////DOCUMENTS//////////////////////////////////////////////
+
+        Route::get('/documents', [CompanyController::class, 'showDocuments'])->name('company.documents');
+        Route::get('/documents/mandatory-files', [CompanyController::class, 'showDocuments'])->name('company.documents.mandatoryFiles');
+        Route::get('/documents/notebook-copies', [CompanyController::class, 'showDocuments'])->name('company.documents.notebookCopies');
+        Route::get('/documents/observation-reports', [CompanyController::class, 'showDocuments'])->name('company.documents.observationReports');
+    });
     Route::get('/deleted/{id}', [CompanyController::class, 'deletedIndex'])->name('deleted_company');
     Route::post('/deleteRequest/{company}/{user}', [CompanyController::class, 'deleteRequest'])->name('company.deleteRequest');
     Route::post('/updateRequest/{company}/{user}', [CompanyController::class, 'updateRequest'])->name('company.updateRequest');
@@ -34,11 +56,10 @@ Route::prefix('/company')->group(function () {
     Route::post('/{company}/add-accountant', [CompanyController::class, 'addAcc'])->name('company.add-accountant');
     Route::post('/{company}/upload-accountant', [CompanyController::class, 'uploadAcc'])->name('company.upload-accountant');
 });
-
 Route::prefix('employee')->group(function () {
-    Route::get('/{employee}/company/{company}', [CoopEmployeeController::class, 'index'])->name('coop_employee');
+    Route::get('/{employee}', [CoopEmployeeController::class, 'index'])->name('coop_employee');
     Route::get('/deleted/{employee}', [CoopEmployeeController::class, 'deletedIndex'])->name('deleted.coop_employee');
     Route::post('/update/{employee}', [CoopEmployeeController::class, 'update'])->name('coop_employee.update');
     Route::post('/delete/{employee}', [CoopEmployeeController::class, 'delete'])->name('coop_employee.delete');
-    
+    Route::post('/restore/{id}', [CoopEmployeeController::class, 'restore'])->name('coop_employee.restore');
 });

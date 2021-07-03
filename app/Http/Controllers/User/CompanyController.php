@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\CoopCompany;
 use App\Models\CoopEmployee;
@@ -20,16 +21,73 @@ use App\Http\Requests\StoreCoopEmployeeRequest;
 
 class CompanyController extends Controller
 {
-    public function index($id, Request $request)
+    public function index($id)
     {
         $relation = UserToCompany::where('company_id', $id)->where('user_id', Auth::id())->count();
         if ($relation < 1)
             abort(403);
 
+        ////////////////////////////////////////////////////////////////////////////
         $company = CoopCompany::where('id', $id)->first();
 
+        if (empty($company))
+            return redirect()->route('user.deleted_company', ['id' => $id]);
+
+        $employees['expert'] = UserToCompany::whereHas('user', function ($query) {
+            $query->where('job_id', 1);
+        })->where('company_id', $id)->first() ?? '';
+
+        $employees['doctor'] = UserToCompany::whereHas('user', function ($query) {
+            $query->where('job_id', 4);
+        })->where('company_id', $id)->first() ?? '';
+
+        $notifications = [];
+
+        $employees['coopEmployees'] = CoopEmployee::where('company_id', $id)->count();
+
+        $mandatory_files = CompanyToFile::with('file', 'type')->where('company_id', $id)->orderBy('file_type')->get();
+        $file_types = [];
+        foreach ($mandatory_files as $value) {
+            $file_types[] = $value['type']['id'];
+        }
+
+        $defter_nushalari = $mandatory_files->where('file_type', 9)->sortByDesc('assigned_at')->groupBy(function ($date) {
+            return Carbon::parse($date->assigned_at)->format('m');
+        });
+
+        $gozlem_raporlari = $mandatory_files->where('file_type', 10)->sortByDesc('assigned_at')->groupBy(function ($date) {
+            return Carbon::parse($date->assigned_at)->format('m');
+        });
+
+        return view(
+            'user.company.home.index',
+            [
+                'company' => $company,
+                'employees' => $employees,
+                'file_types' => $file_types,
+                'notifications' => $notifications,
+                'mandatory_files' => $mandatory_files->whereBetween('file_type', [1, 8]),
+                'defter_nushalari' => $defter_nushalari[date('m')] ?? null,
+                'gozlem_raporlari' => $gozlem_raporlari[date('m')] ?? null,
+                'count' => 0
+
+            ],
+        );
+    }
+
+    public function showInfo($id)
+    {
+        $relation = UserToCompany::where('company_id', $id)->where('user_id', Auth::id())->count();
+        if ($relation < 1)
+            abort(403);
+
+        ////////////////////////////////////////////////////////////////////////////
+
+        $company = CoopCompany::where('id', $id)->first();
+        if (empty($company))
+            return redirect()->route('user.deleted_company', ['id' => $id]);
+
         $allEmployees = User::whereBetween('job_id', [1, 7])->getQuery();
-        $deletedEmployees = [];
         $accountants['front'] = FrontAccountant::where('company_id', $id)->first();
         $accountants['out'] = OutAccountant::where('company_id', $id)->first();
 
@@ -37,41 +95,100 @@ class CompanyController extends Controller
             $query->whereBetween('job_id', [1, 7]);
         })->where('company_id', $id)->get();
 
-        if ($request->ajax()) {
-            $coopEmployees = CoopEmployee::where('company_id', $id)->get();
-            return DataTables::of($coopEmployees)->make(true);
-        }
-
-        $mandatory_files = CompanyToFile::with('file', 'type')->where('company_id', $id)->get();
-
         return (view(
-            'user.company.index',
+            'user.company.informations.index',
             [
                 'company' => $company,
                 'employees' => $employees,
-                'allEmployees' => $allEmployees,
-                'deletedEmployees' => $deletedEmployees,
                 'accountants' => $accountants,
-                'deleted' => false,
-                'mandatory_files' => $mandatory_files,
+                'allEmployees' => $allEmployees,
             ],
         ));
     }
 
-    public function deletedIndex($id)
+    public function showEmployees($id)
     {
-        $company = CoopCompany::onlyTrashed()->where('id', $id)->first();
-        $employees = null;
-        $mandatory_files = CompanyToFile::with('file', 'type')->where('company_id', $id)->get();
+        $relation = UserToCompany::where('company_id', $id)->where('user_id', Auth::id())->count();
+        if ($relation < 1)
+            abort(403);
 
-        return (view(
-            'user.company.index',
+        ////////////////////////////////////////////////////////////////////////////
+
+        $company = CoopCompany::where('id', $id)->first();
+
+        if (empty($company))
+            return redirect()->route('user.deleted_company', ['id' => $id]);
+
+        $deletedEmployees = [];
+
+        $employees = CoopEmployee::where('company_id', $id)
+            ->with('files')
+            ->orderBy('name')
+            ->withTrashed()
+            ->get();
+
+        return view(
+            'user.company.employees.index',
             [
                 'company' => $company,
-                'osgbEmployees' => $employees,
-                'deleted' => true,
-                'mandatory_files' => $mandatory_files
+                'employees' => $employees,
+                'deletedEmployees' => $deletedEmployees,
+            ],
+        );
+    }
 
+    public function showDocuments($id)
+    {
+        $relation = UserToCompany::where('company_id', $id)->where('user_id', Auth::id())->count();
+        if ($relation < 1)
+            abort(403);
+
+        ////////////////////////////////////////////////////////////////////////////
+
+        $company = CoopCompany::where('id', $id)->first();
+        if (empty($company))
+            return redirect()->route('user.deleted_company', ['id' => $id]);
+
+        $files = CompanyToFile::with('file', 'type')->where('company_id', $id)->orderByDesc('assigned_at')->get();
+        $mandatory_files = $files->whereBetween('file_type', [1, 8]);
+        $defter_nushalari = $files->where('file_type', 9);
+        $gozlem_raporlari = $files->where('file_type', 10);
+
+        return view(
+            'user.company.documents.index',
+            [
+                'company' => $company,
+                'mandatory_files' => $mandatory_files,
+                'defter_nushalari' => $defter_nushalari,
+                'gozlem_raporlari' => $gozlem_raporlari,
+            ],
+        );
+    }
+
+    public function deletedIndex($id, Request $request)
+    {
+        $relation = UserToCompany::where('company_id', $id)->where('user_id', Auth::id())->count();
+        if ($relation < 1)
+            abort(403);
+
+        $company = CoopCompany::where('id', $id)->onlyTrashed()->first();
+        if ($request->ajax()) {
+            $coopEmployees = CoopEmployee::where('company_id', $id)->get();
+            return DataTables::of($coopEmployees)
+                ->make(true);
+        }
+        $mandatory_files = CompanyToFile::with('file', 'type')->where('company_id', $id)->get();
+        $accountants['front'] = FrontAccountant::where('company_id', $id)->first();
+        $accountants['out'] = OutAccountant::where('company_id', $id)->first();
+
+
+        return (view(
+            'user.deleted_company.index',
+            [
+                'company' => $company,
+                'osgbEmployees' => null,
+                'accountants' => $accountants,
+                'mandatory_files' => $mandatory_files
             ],
         ));
     }

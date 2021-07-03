@@ -6,7 +6,7 @@
     <h3 class="text-dark mb-0">Ana Sayfa</h3>
 </div>
 <div class="row">
-    <div class="col-md-6 col-xl-3 mb-4">
+    <div class="col-md-6 col-xl-4 mb-4">
         <div class="card shadow-lg border-left-primary py-2">
             <div class="card-body">
                 <div class="row align-items-center no-gutters">
@@ -21,7 +21,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-6 col-xl-3 mb-4">
+    <div class="col-md-6 col-xl-4 mb-4">
         <div class="card shadow-lg border-left-success py-2">
             <div class="card-body">
                 <div class="row align-items-center no-gutters">
@@ -37,7 +37,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-6 col-xl-3 mb-4">
+    <div class="col-md-6 col-xl-4 mb-4">
         <div class="card shadow-lg border-left-info py-2">
             <div class="card-body">
                 <div class="row align-items-center no-gutters">
@@ -55,21 +55,6 @@
                         </div>
                     </div>
                     <div class="col-auto"><i class="fas fa-truck-loading fa-2x text-gray-300"></i></div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-6 col-xl-3 mb-4">
-        <div class="card shadow-lg border-left-warning py-2">
-            <div class="card-body">
-                <div class="row align-items-center no-gutters">
-                    <div class="col mr-2">
-                        <div class="text-uppercase text-warning font-weight-bold text-xs mb-1"><span>Toplam Etkinlik
-                                Sayısı</span></div>
-                        50
-                        <div class="text-dark font-weight-bold h5 mb-0"><span></span></div>
-                    </div>
-                    <div class="col-auto"><i class="fas fa-pencil-alt fa-2x text-gray-300"></i></div>
                 </div>
             </div>
         </div>
@@ -98,7 +83,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-lg-6 mb-4">
+    <div class="col-lg-8 mb-4">
         <div class="card shadow-lg mb-4">
             <div class="card-header py-3">
                 <h6 class="text-primary font-weight-bold m-0">Tehlikesine Göre İşletmeler</h6>
@@ -110,7 +95,7 @@
                     <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" aria-valuenow=""
                         aria-valuemin="0" aria-valuemax="100" style="width: {{ $dangers['very']/$comp_count*100 }}%;"><span class="sr-only"></span></div>
                 </div>
-                <h4 class="small font-weight-bold">Orta Tehlikeli<span class="float-right">%{{ number_format($dangers['medium']/$comp_count*100, 1) }}</span></h4>
+                <h4 class="small font-weight-bold">Tehlikeli<span class="float-right">%{{ number_format($dangers['medium']/$comp_count*100, 1) }}</span></h4>
                 <div class="progress mb-4">
                     <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" aria-valuenow=""
                         aria-valuemin="0" aria-valuemax="100" style="width:{{ $dangers['medium']/$comp_count*100 }}%;"><span class="sr-only"></span></div>
