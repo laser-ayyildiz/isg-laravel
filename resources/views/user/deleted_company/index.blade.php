@@ -49,7 +49,6 @@
 
 @push('scripts')
 
-<script src="/js/core/city-town.js"></script>
 <script src="/js/jquery.dataTables.min.js"></script>
 <script src="/js/dataTables.bootstrap5.min.js"></script>
 <script src="/js/jquery.validate.js"></script>
@@ -75,7 +74,7 @@
           });
           $('#example tbody').on('click', 'tr', function (e) {
                 var data = table.row( this ).data();
-                window.location.href = "/user/employee/"+data['id'];       
+                window.location.href = "/user/employee/" + data['id']+ "/company/" + {{ $company->id }};
         });
     });
 </script>

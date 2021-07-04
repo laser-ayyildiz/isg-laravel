@@ -56,6 +56,7 @@ Route::prefix('/company')->group(function () {
     Route::post('/{company}/add-accountant', [CompanyController::class, 'addAcc'])->name('company.add-accountant');
     Route::post('/{company}/upload-accountant', [CompanyController::class, 'uploadAcc'])->name('company.upload-accountant');
 });
+
 Route::prefix('employee')->group(function () {
     Route::get('/{employee}/company/{company}', [CoopEmployeeController::class, 'index'])->name('coop_employee');
     Route::get('/deleted/{employee}/company/{company}', [CoopEmployeeController::class, 'deletedIndex'])->name('deleted.coop_employee');

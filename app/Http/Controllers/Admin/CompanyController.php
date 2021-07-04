@@ -12,6 +12,7 @@ use App\Models\OutAccountant;
 use App\Models\UserToCompany;
 use App\Models\FrontAccountant;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreAccountantRequest;
 use App\Http\Requests\StoreCoopEmployeeRequest;
@@ -36,18 +37,18 @@ class CompanyController extends Controller
         $notifications = [];
 
         $employees['coopEmployees'] = CoopEmployee::where('company_id', $id)->count();
-        
+
         $mandatory_files = CompanyToFile::with('file', 'type')->where('company_id', $id)->orderBy('file_type')->get();
         $file_types = [];
         foreach ($mandatory_files as $value) {
             $file_types[] = $value['type']['id'];
         }
 
-        $defter_nushalari = $mandatory_files->where('file_type', 9)->sortByDesc('assigned_at')->groupBy(function($date) {
+        $defter_nushalari = $mandatory_files->where('file_type', 9)->sortByDesc('assigned_at')->groupBy(function ($date) {
             return Carbon::parse($date->assigned_at)->format('m');
         });
 
-        $gozlem_raporlari = $mandatory_files->where('file_type', 10)->sortByDesc('assigned_at')->groupBy(function($date) {
+        $gozlem_raporlari = $mandatory_files->where('file_type', 10)->sortByDesc('assigned_at')->groupBy(function ($date) {
             return Carbon::parse($date->assigned_at)->format('m');
         });
 
@@ -58,7 +59,7 @@ class CompanyController extends Controller
                 'employees' => $employees,
                 'file_types' => $file_types,
                 'notifications' => $notifications,
-                'mandatory_files' => $mandatory_files->whereBetween('file_type', [1,8]),
+                'mandatory_files' => $mandatory_files->whereBetween('file_type', [1, 8]),
                 'defter_nushalari' => $defter_nushalari[date('m')] ?? null,
                 'gozlem_raporlari' => $gozlem_raporlari[date('m')] ?? null,
                 'count' => 0
@@ -106,7 +107,7 @@ class CompanyController extends Controller
             ->orderBy('name')
             ->withTrashed()
             ->get();
-        
+
         return view(
             'admin.company.employees.index',
             [
@@ -124,7 +125,7 @@ class CompanyController extends Controller
             return redirect()->route('admin.deleted_company', ['id' => $id]);
 
         $files = CompanyToFile::with('file', 'type')->where('company_id', $id)->orderByDesc('assigned_at')->get();
-        $mandatory_files = $files->whereBetween('file_type', [1,8]);
+        $mandatory_files = $files->whereBetween('file_type', [1, 8]);
         $defter_nushalari = $files->where('file_type', 9);
         $gozlem_raporlari = $files->where('file_type', 10);
 
@@ -138,12 +139,12 @@ class CompanyController extends Controller
             ],
         );
     }
-    
+
     public function deletedIndex($id, Request $request)
     {
         $company = CoopCompany::where('id', $id)->onlyTrashed()->first();
         if ($request->ajax()) {
-            $coopEmployees = CoopEmployee::where('company_id', $id)->get();
+            $coopEmployees = CoopEmployee::where('company_id', $id)->withTrashed()->get();
             return DataTables::of($coopEmployees)
                 ->make(true);
         }
@@ -181,13 +182,17 @@ class CompanyController extends Controller
 
     public function delete(CoopCompany $company)
     {
+        DB::beginTransaction();
         try {
             CoopCompany::where('id', $company->id)->delete();
+            CoopEmployee::where('company_id', $company->id)->delete();
         } catch (\Throwable $th) {
+            DB::rollBack();
             return redirect()
                 ->route('admin.company.informations.index', ['id' => $company->id])
                 ->with('fail', 'Silme esnasında bir hatayla karşılaşıldı!');
         }
+        DB::commit();
         return redirect()
             ->route('admin.companies.index')
             ->with('success', 'Şirket başarıyla silinmiştir. Silinen işletmelere ARŞİV bölümünden ulaşabilirsiniz!');
@@ -250,6 +255,7 @@ class CompanyController extends Controller
                 ->with('fail', 'Eksik bilgi girdiniz!');
         }
 
+        DB::beginTransaction();
         if ($request->front_acc_name !== null) {
             try {
                 FrontAccountant::create([
@@ -259,7 +265,7 @@ class CompanyController extends Controller
                     'phone' => $request->front_acc_phone,
                 ]);
             } catch (\Throwable $th) {
-                throw $th;
+                DB::rollBack();
                 return redirect()
                     ->route('admin.company.informations.acc', ['id' => $company->id])
                     ->with('fail', 'Ön muhasebe eklenirken bir hata ile karşılaşıldı!');
@@ -275,12 +281,13 @@ class CompanyController extends Controller
                     'phone' => $request->out_acc_phone,
                 ]);
             } catch (\Throwable $th) {
+                DB::rollBack();
                 return redirect()
                     ->route('admin.company.informations.acc', ['id' => $company->id])
                     ->with('fail', 'Dış muhasebe eklenirken bir hata ile karşılaşıldı!');
             }
         }
-
+        DB::commit();
         return redirect()
             ->route('admin.company.informations.acc', ['id' => $company->id])
             ->with('success', 'Muhasebeciler başarıyla eklendi!');
@@ -289,6 +296,7 @@ class CompanyController extends Controller
     public function uploadAcc(CoopCompany $company, StoreAccountantRequest $request)
     {
         $request->validated();
+        DB::beginTransaction();
         try {
             $out_acc = OutAccountant::where('company_id', $company->id)->first();
             $out_acc_demand = [
@@ -307,7 +315,7 @@ class CompanyController extends Controller
                 OutAccountant::create($out_acc_demand);
             }
         } catch (\Throwable $th) {
-            throw $th;
+            DB::rollBack();
             return redirect()
                 ->route('admin.company.informations.acc', ['id' => $company->id])
                 ->with('fail', 'Bir Hata ile Karşılaşıldı!');
@@ -331,12 +339,13 @@ class CompanyController extends Controller
                 FrontAccountant::create($front_acc_demand);
             }
         } catch (\Throwable $th) {
-            throw $th;
+            DB::rollBack();
             return redirect()
                 ->route('admin.company.informations.acc', ['id' => $company->id])
                 ->with('fail', 'Bir Hata ile Karşılaşıldı!');
         }
-
+        
+        DB::commit();
         return redirect()
             ->route('admin.company.informations.acc', ['id' => $company->id])
             ->with('success', 'Değişiklikleriniz başarıyla uygulanmıştır!');

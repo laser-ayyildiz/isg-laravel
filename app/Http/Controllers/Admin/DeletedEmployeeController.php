@@ -27,13 +27,21 @@ class DeletedEmployeeController extends Controller
     public function handle(Request $request)
     {
         if ($request->has('activateRequest')) {
-            $this->activateRequest($request);
-            return redirect()->route('admin.osgb_employees')->with('status', 'Kullanıcı tekrar aktif hale gelmiştir');
+            try {
+                $this->activateRequest($request);
+            } catch (\Throwable $th) {
+                return back()->with('fail', 'Bir hata ile karşılaşıldı');
+            }
+            return redirect()->route('admin.osgb_employees')->with('success', 'Kullanıcı tekrar aktif hale gelmiştir');
         }
 
         if ($request->has('deleteRequest')) {
-            $this->deleteRequest($request);
-            return redirect()->route('admin.deleted_employees')->with('status', 'Kullanıcı tamamen silinmiştir!');
+            try {
+                $this->deleteRequest($request);
+            } catch (\Throwable $th) {
+                return back()->with('fail', 'Bir hata ile karşılaşıldı');
+            }
+            return redirect()->route('admin.deleted_employees')->with('success', 'Kullanıcı tamamen silinmiştir!');
         }
     }
 

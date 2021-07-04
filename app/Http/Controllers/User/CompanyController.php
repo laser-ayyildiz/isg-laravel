@@ -173,7 +173,7 @@ class CompanyController extends Controller
 
         $company = CoopCompany::where('id', $id)->onlyTrashed()->first();
         if ($request->ajax()) {
-            $coopEmployees = CoopEmployee::where('company_id', $id)->get();
+            $coopEmployees = CoopEmployee::where('company_id', $id)->withTrashed()->get();
             return DataTables::of($coopEmployees)
                 ->make(true);
         }

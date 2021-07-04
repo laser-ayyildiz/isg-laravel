@@ -7,22 +7,21 @@ use Illuminate\Http\Request;
 use App\Models\UserToCompany;
 use App\Models\EmployeeToFile;
 use App\Http\Controllers\Controller;
-use App\Models\CoopCompany;
 use Illuminate\Support\Facades\Auth;
 
 class CoopEmployeeController extends Controller
 {
-    public function index($employee, CoopCompany $company)
+    public function index($employee, $company)
     {
         $user = UserToCompany::with(['company', 'user'])
             ->where('user_id', Auth::id())
-            ->where('company_id', $company->id)
+            ->where('company_id', $company)
             ->first();
 
         if (empty($user))
             abort(403);
 
-        $demand = CoopEmployee::with('company')->where('id', $employee)->where('company_id', $company->id)->first();
+        $demand = CoopEmployee::with('company')->where('id', $employee)->where('company_id', $company)->first();
 
         if (empty($demand))
             return redirect()->route('user.deleted.coop_employee', ['employee' => $employee, 'company' => $company]);
@@ -40,17 +39,17 @@ class CoopEmployeeController extends Controller
         );
     }
 
-    public function deletedIndex($employee, CoopCompany $company)
+    public function deletedIndex($employee, $company)
     {
         $user = UserToCompany::with(['company', 'user'])
             ->where('user_id', Auth::id())
-            ->where('company_id', $company->id)
+            ->where('company_id', $company)
             ->first();
 
         if ($user === null)
             abort(403);
 
-        $employee = CoopEmployee::with('company')->where('id', $employee)->where('company_id', $company->id)->onlyTrashed()->first();
+        $employee = CoopEmployee::with('company')->where('id', $employee)->where('company_id', $company)->onlyTrashed()->first();
 
         if ($employee === null)
             abort(404);

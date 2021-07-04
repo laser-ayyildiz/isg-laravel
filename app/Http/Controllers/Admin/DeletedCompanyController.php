@@ -3,11 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\CoopCompany;
-use App\Models\Exception;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 
 class DeletedCompanyController extends Controller
 {
@@ -27,16 +25,10 @@ class DeletedCompanyController extends Controller
 
     public function delete($id)
     {
-        $company = CoopCompany::withTrashed()->find($id);
-        
         try {
+            $company = CoopCompany::withTrashed()->find($id);
             $company->forceDelete();
-        } catch (\Exception $error) {
-            Exception::create([
-                'user_id' => Auth::id(),
-                'exception' => $error,
-                'function_name' => 'DeleteCompanyController->delete'
-            ]);
+        } catch (\Throwable $th) {
             return redirect()->route('admin.deleted_companies')->with('fail', 'Bir Hatayla Karşılaşıldı!');
         }
         return redirect()->route('admin.deleted_companies')->with('success', 'İşletme Tamamen Kaldırıldı!');
@@ -44,19 +36,12 @@ class DeletedCompanyController extends Controller
 
     public function update($id)
     {
-        $company = CoopCompany::withTrashed()->find($id);
-
         try {
+            $company = CoopCompany::withTrashed()->find($id);
             $company->restore();
-        } catch (\Exception $error) {
-            Exception::create([
-                'user_id' => Auth::id(),
-                'exception' => $error,
-                'function_name' => 'DeleteCompanyController->update'
-            ]);
+        } catch (\Throwable $th) {
             return redirect()->route('admin.deleted_companies')->with('fail', 'Bir Hatayla Karşılaşıldı!');
         }
         return redirect()->route('admin.deleted_companies')->with('success', 'İşletme Tekrar Aktifleştirildi!');
-
     }
 }

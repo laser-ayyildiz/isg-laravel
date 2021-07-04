@@ -8,6 +8,7 @@ use App\Models\DeleteRequest;
 use App\Models\UpdateRequest;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\CoopEmployee;
 
 class ChangeValidateController extends Controller
 {
@@ -45,18 +46,15 @@ class ChangeValidateController extends Controller
 
             unset($updatedData["company"], $updatedData["id"], $updatedData["user_id"], $updatedData["company_id"], $updatedData["created_at"], $updatedData["updated_at"]);
 
+            DB::beginTransaction();
             try {
                 UpdateRequest::where('id', $demand->id)->delete();
-            } catch (\Throwable $th) {
-                return redirect()->back()->with('fail', 'İsteğiniz işlenirken bir hatayla karşıldı!');
-            }
-
-            try {
                 CoopCompany::where('id', $company["id"])->update($updatedData);
             } catch (\Throwable $th) {
                 DB::rollBack();
-                return redirect()->back()->with('fail', 'Değişiklikler uygulanırken bir hatayla karşılaşıldı!');
+                return redirect()->back()->with('fail', 'İsteğiniz işlenirken bir hatayla karşıldı!');
             }
+            DB::commit();
             return redirect()->back()->with('success', 'Değişiklikler başarıyla uygulandı!');
         }
 
@@ -73,18 +71,20 @@ class ChangeValidateController extends Controller
             }
             return redirect()->back()->with('success', 'Silme talebi başarıyla kaldırıldı!');
         }
+
         if ($request->has("acceptDelete")) {
+            DB::beginTransaction();
             try {
                 DB::table('delete_requests')->where('company_id', $demand->company->id)->delete();
                 DB::table('update_requests')->where('company_id', $demand->company->id)->delete();
-            } catch (\Throwable $th) {
-                return redirect()->back()->with('fail', 'İşletme silinirken bir hatayla karşılaşıldı!');
-            }
-            try {
                 CoopCompany::where('id', $demand->company->id)->delete();
+                CoopEmployee::where('company_id', $demand->company->id)->delete();
             } catch (\Throwable $th) {
+                throw $th;
+                DB::rollBack();
                 return redirect()->back()->with('fail', 'İşletme silinirken bir hatayla karşılaşıldı!');
             }
+            DB::commit();
             return redirect()->back()->with('success', 'İşletme başarıyla silindi. Silinen işletmelere ARŞİV bölümünden ulaşabilirsiniz!');
         }
 

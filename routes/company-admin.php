@@ -42,5 +42,4 @@ Route::prefix('/company')->group(function () {
         Route::get('/documents/notebook-copies', [CompanyController::class, 'showDocuments'])->name('company.documents.notebookCopies');
         Route::get('/documents/observation-reports', [CompanyController::class, 'showDocuments'])->name('company.documents.observationReports');
     });
-    Route::get('/deleted/{id}', [CompanyController::class, 'deletedIndex'])->name('deleted_company');
 });
