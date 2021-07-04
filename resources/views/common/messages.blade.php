@@ -27,7 +27,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="messages.php" method="POST">
+                        <form action="" method="POST">
                             <label><strong>Kime:</strong>
                                 <select class="form-control" id="kime" name="kime" size="1" required>
 
@@ -91,8 +91,8 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <form id="" action="messages.php" method="POST">
-                                        <label for"kimden"><strong>Kimden:</strong>
+                                    <form id="" action="" method="POST">
+                                        <label for="kimden"><strong>Kimden:</strong>
                                             <input readonly name="kimden" class="form-control" id="kimden"
                                                 value=""></label>
                                         <br>
@@ -110,8 +110,6 @@
                             </div>
                         </div>
                     </div>
-
-
                 </tbody>
                 <tfoot>
                 </tfoot>

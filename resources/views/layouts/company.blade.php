@@ -119,10 +119,12 @@
                         <a class="collapse-item" id="emp_item"
                             href="{{ route($role . '.company.employees',['id' => request()->segment(3)]) }}">Çalışan
                             Listesi</a>
+                        @if ($role !== 'company-admin')
                         <a class="collapse-item" id="emp_miss_docs_item"
                             href="{{ route($role . '.company.employees.withMissingDocuments',['id' => request()->segment(3)]) }}">Evrakları
                             Eksik
                             Çalışanlar</a>
+                        @endif
                         <a class="collapse-item" id="emp_del_item"
                             href="{{ route($role . '.company.employees.deleted',['id' => request()->segment(3)]) }}">Silinen
                             Çalışanlar</a>
@@ -220,7 +222,7 @@
     <script src="/js/jquery.easing.min.js"></script>
     <script src="/company/js/sb-admin-2.min.js"></script>
     <script>
-        var pathArray = window.location.pathname.split('/');
+        const pathArray = window.location.pathname.split('/');
         if (pathArray.includes("informations"))
             $("#collapseInformations").addClass("show");
         else if (pathArray.includes("employees"))

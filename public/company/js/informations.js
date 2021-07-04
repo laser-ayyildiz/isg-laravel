@@ -1,5 +1,10 @@
 $(document).ready(function () {
-    document.querySelector('input[type="date"]').max = new Date().toISOString().split("T")[0];
+    const dates = document.querySelectorAll('input[type="date"]');
+    if (dates.length > 0) {
+        dates.forEach(function (date) {
+            date.max = new Date().toISOString().split("T")[0];
+        });
+    }
 
     const pathArray = window.location.pathname.split('/');
     if (pathArray.includes("osgb")) {

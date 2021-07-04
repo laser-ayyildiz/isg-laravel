@@ -12,19 +12,20 @@ use Illuminate\Support\Facades\Auth;
 
 class CoopEmployeeController extends Controller
 {
-    public function index($employee)
+    public function index($employee, CoopCompany $company)
     {
         $user = UserToCompany::with(['company', 'user'])
             ->where('user_id', Auth::id())
+            ->where('company_id', $company->id)
             ->first();
 
-        if ($user === null)
+        if (empty($user))
             abort(403);
 
-        $demand = CoopEmployee::with('company')->where('id', $employee)->first();
+        $demand = CoopEmployee::with('company')->where('id', $employee)->where('company_id', $company->id)->first();
 
         if (empty($demand))
-            return redirect()->route('user.deleted.coop_employee', ['employee' => $employee]);
+            return redirect()->route('user.deleted.coop_employee', ['employee' => $employee, 'company' => $company]);
 
         $files = EmployeeToFile::where('employee_id', $employee)->with('file')->paginate(10);
 
@@ -49,7 +50,11 @@ class CoopEmployeeController extends Controller
         if ($user === null)
             abort(403);
 
-        $employee = CoopEmployee::with('company')->where('id', $employee)->onlyTrashed()->first();
+        $employee = CoopEmployee::with('company')->where('id', $employee)->where('company_id', $company->id)->onlyTrashed()->first();
+
+        if ($employee === null)
+            abort(404);
+
         $files = EmployeeToFile::where('employee_id', $employee)->with('file')->get();
 
         return view(
@@ -94,7 +99,7 @@ class CoopEmployeeController extends Controller
         }
         return redirect()->route('user.company', ['id' => $company])->with('success', 'Çalışan silindi!');
     }
-    
+
     public function restore($id)
     {
         try {

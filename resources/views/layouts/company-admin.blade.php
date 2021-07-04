@@ -4,7 +4,6 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <script type="text/javascript" src="{{ mix('js/app.js') }}"></script>
     <title>@yield('title')Özgür OSGB</title>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet"
@@ -19,7 +18,7 @@
 </head>
 
 <body id="page-top">
-    <nav class="navbar navbar-expand-lg navbar-light bg-warning" style="min-height: 60px;">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary" style="min-height: 60px;">
         <a class="navbar-brand" href="{{ route('company-admin.home') }}"><b>Özgür OSGB</b></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler"
             aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,8 +46,8 @@
                 <li class="nav-item">
                     <div class="nav-item">
                         <a href="{{ route('profile.index') }}" class="nav-link" title="Profil">
-                            <span style="color:black;"
-                                class="d-none d-lg-inline mr-2 text-600">{{ auth()->user()->name }}</span><img
+                            <span
+                                class="d-none d-lg-inline mr-2 text-600 text-white">{{ auth()->user()->name }}</span><img
                                 class="rounded-circle img-profile" width="25px" height="25px"
                                 src="{{ Auth::user()->profile_photo_path }}"></a>
                 </li>

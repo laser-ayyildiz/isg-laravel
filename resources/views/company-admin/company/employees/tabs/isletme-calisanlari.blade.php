@@ -1,0 +1,68 @@
+<div class="tab-pane fade show" id="isletme_calisanlar" role="tabpanel" aria-labelledby="ic-tab">
+    <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
+        <table class="table table-striped table-bordered table-hover" id="example">
+            <thead class="thead-dark text-center">
+                <tr>
+                    <th>Adı Soyadı</th>
+                    <th>T.C.</th>
+                    <th>Telefon</th>
+                    <th>Giriş Tarihi</th>
+                    <th scope="col" colspan="1">İSG Eğitimi 1</th>
+                    <th scope="col" colspan="1">İSG Eğitimi 2</th>
+                    <th>Sağlık Muayenesi</th>
+                    <th>Özlük Dosyası</th>
+                </tr>
+            </thead>
+            <tbody class="text-center">
+                @forelse ($employees->whereNull('deleted_at')->paginate(15) as $employee)
+                <tr id="{{ $employee->id }}" style="cursor: pointer">
+                    <td class="name">{{ $employee->name }}</td>
+                    <td>{{ $employee->tc }}</td>
+                    <td>{{ $employee->phone }}</td>
+                    <td>{{ $employee->recruitment_date }}</td>
+                    @php
+                    if ($employee->files->where('file_type', 1)->last() !== null) {
+                    $date = new DateTime($employee->files->where('file_type', 1)->last()->valid_date);
+                    $valid_date_1 = $date->modify('-1 month')->format('Y-m-d') > date("Y-m-d");
+                    }
+                    if ($employee->files->where('file_type', 2)->last() !== null) {
+                    $date = new DateTime($employee->files->where('file_type', 2)->last()->valid_date);
+                    $valid_date_2 = $date->modify('-1 month')->format('Y-m-d') > date("Y-m-d");
+                    }
+                    if ($employee->files->where('file_type', 3)->last() !== null) {
+                    $date = new DateTime($employee->files->where('file_type', 3)->last()->valid_date);
+                    $valid_date_2 = $date->modify('-1 month')->format('Y-m-d') > date("Y-m-d");
+                    }
+                    @endphp
+                    <td colspan="1">
+                        <span>
+                            <i class="{{ $employee->first_edu && ($valid_date_1 ?? true) ? 'fas fa-check mx-3' : 'fas fa-times mx-3' }}"
+                                style="{{ $employee->first_edu && ($valid_date_1 ?? true) ? 'color: green' : 'color: red' }}"></i>
+                        </span></td>
+                    <td colspan="1"><span>
+                            <i class="{{ $employee->second_edu && ($valid_date_2 ?? true) ? 'fas fa-check mx-3' : 'fas fa-times mx-3' }}"
+                                style="{{ $employee->second_edu && ($valid_date_2 ?? true) ? 'color: green' : 'color: red' }}"></i>
+                        </span></td>
+                    <td colspan="1"><span>
+                            <i class="{{ $employee->examination && ($valid_date_3 ?? true) ? 'fas fa-check mx-3' : 'fas fa-times mx-3' }}"
+                                style="{{ $employee->examination && ($valid_date_3 ?? true) ? 'color: green' : 'color: red' }}"></i>
+                        </span></td>
+                    <td class="table-warning"><button class="btn btn-sm btn-warning" data-toggle="modal"
+                            data-target="#addEmpIdentifyFile" data-whatever="@getbootstrap"><i
+                                class="fas fa-folder-plus"></i></button>
+                    </td>
+                </tr>
+                @empty
+                <td colspan="8">
+                    <h4 class="text-center">
+                        <b>
+                            Bu işletmeye henüz hiçbir çalışan eklenmedi!
+                        </b>
+                    </h4>
+                </td>
+                @endforelse
+            </tbody>
+        </table>
+        <div class="float-right">{{ $employees->whereNull('deleted_at')->paginate(15)->links() }}</div>
+    </div>
+</div>

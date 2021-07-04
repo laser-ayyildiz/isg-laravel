@@ -114,7 +114,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-lg-6 mb-4">
+    <div class="col-lg-8 mb-4">
         <div class="card shadow-lg mb-4">
             <div class="card-header py-3">
                 <h6 class="text-primary font-weight-bold m-0">Tehlikesine Göre İşletmeler</h6>
@@ -128,7 +128,7 @@
                         aria-valuemin="0" aria-valuemax="100" style="width: {{ $dangers['very']/$comp_count*100 }}%;">
                         <span class="sr-only"></span></div>
                 </div>
-                <h4 class="small font-weight-bold">Orta Tehlikeli<span
+                <h4 class="small font-weight-bold">Tehlikeli<span
                         class="float-right">%{{ number_format($dangers['medium']/$comp_count*100, 1) }}</span></h4>
                 <div class="progress mb-4">
                     <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" aria-valuenow=""

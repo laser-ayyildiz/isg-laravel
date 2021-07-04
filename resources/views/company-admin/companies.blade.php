@@ -19,7 +19,7 @@
                         <th>İlçe</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody style="cursor: pointer">
                 </tbody>
             </table>
         </div>

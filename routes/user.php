@@ -57,8 +57,8 @@ Route::prefix('/company')->group(function () {
     Route::post('/{company}/upload-accountant', [CompanyController::class, 'uploadAcc'])->name('company.upload-accountant');
 });
 Route::prefix('employee')->group(function () {
-    Route::get('/{employee}', [CoopEmployeeController::class, 'index'])->name('coop_employee');
-    Route::get('/deleted/{employee}', [CoopEmployeeController::class, 'deletedIndex'])->name('deleted.coop_employee');
+    Route::get('/{employee}/company/{company}', [CoopEmployeeController::class, 'index'])->name('coop_employee');
+    Route::get('/deleted/{employee}/company/{company}', [CoopEmployeeController::class, 'deletedIndex'])->name('deleted.coop_employee');
     Route::post('/update/{employee}', [CoopEmployeeController::class, 'update'])->name('coop_employee.update');
     Route::post('/delete/{employee}', [CoopEmployeeController::class, 'delete'])->name('coop_employee.delete');
     Route::post('/restore/{id}', [CoopEmployeeController::class, 'restore'])->name('coop_employee.restore');

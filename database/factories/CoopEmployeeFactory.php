@@ -24,9 +24,8 @@ class CoopEmployeeFactory extends Factory
      */
     public function definition()
     {
-        //$count = CoopCompany::count();
         return [
-            'company_id' => random_int(1, 30),
+            'company_id' => random_int(1, 5),
             'name' => $this->faker->name,
             'email' => $this->faker->unique()->safeEmail,
             'phone' => $this->faker->tollFreePhoneNumber,

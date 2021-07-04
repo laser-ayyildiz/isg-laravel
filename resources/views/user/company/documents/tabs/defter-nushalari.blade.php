@@ -6,7 +6,7 @@
             <thead class="thead-dark">
                 <th>Dosya Adı</th>
                 <th>Oluşturulma Tarihi</th>
-                <th>Geçerlilik</th>
+                <th>Son Geçerlilik Tarihi</th>
                 <th style="width: 15%">Dosya</th>
             </thead>
             <tbody>

@@ -9,7 +9,7 @@
                     <th>Dosya Adı</th>
                     <th>Oluşturulma Tarihi</th>
                     <th>Son Geçerlilik Tarihi</th>
-                    <th style="width: 15%">İndir</th>
+                    <th style="width: 15%">Dosya</th>
                 </tr>
             </thead>
             <tbody>

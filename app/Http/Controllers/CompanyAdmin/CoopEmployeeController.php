@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\CompanyAdmin;
 
 use App\Models\CoopEmployee;
-use Illuminate\Http\Request;
 use App\Models\UserToCompany;
 use App\Models\EmployeeToFile;
 use App\Http\Controllers\Controller;
@@ -22,10 +21,10 @@ class CoopEmployeeController extends Controller
         if (empty($user))
             abort(403);
 
-        $demand = CoopEmployee::with('company')->where('id', $employee)->first();
+        $demand = CoopEmployee::with('company')->where('id', $employee)->where('company_id', $company->id)->first();
 
         if (empty($demand))
-            return redirect()->route('company-admin.deleted_employee', ['employee' => $employee]);
+            return redirect()->route('company-admin.deleted-employee', ['employee' => $employee, 'company' => $company]);
 
         $files = EmployeeToFile::where('employee_id', $employee)->with('file')->paginate(10);
 
@@ -49,7 +48,11 @@ class CoopEmployeeController extends Controller
         if ($user === null)
             abort(403);
 
-        $employee = CoopEmployee::with('company')->where('id', $employee)->onlyTrashed()->first();
+        $employee = CoopEmployee::with('company')->where('id', $employee)->where('company_id', $company->id)->onlyTrashed()->first();
+
+        if ($employee === null)
+            abort(404);
+
         $files = EmployeeToFile::where('employee_id', $employee)->with('file')->get();
 
         return view(

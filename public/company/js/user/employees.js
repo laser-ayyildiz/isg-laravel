@@ -27,15 +27,19 @@ $(document).ready(function () {
     });
 
     /////////////////////////////////////////////////////////////
-
-    document.querySelector('input[type="date"]').max = new Date().toISOString().split("T")[0];
+    const dates = document.querySelectorAll('input[type="date"]');
+    if (dates.length > 0) {
+        dates.forEach(function (date) {
+            date.max = new Date().toISOString().split("T")[0];
+        });
+    }
 
     /////////////////////////////////////////////////////////////
 
     $('#example tbody').on('click', 'tr', function (e) {
         var tr = $(this).closest('tr');
         let action = null;
-        if (e.target.nodeName !== 'BUTTON' && e.target.nodeName !== 'I') window.location.href = "/user/employee/" + tr.attr('id');
+        if (e.target.nodeName !== 'BUTTON' && e.target.nodeName !== 'I') window.location.href = "/user/employee/" + tr.attr('id') + "/company/" + pathArray[3];
         else {
             var name = tr.find('td').first().text();
             $('#deleteEmpName').html("<b>" + name + '</b> isimli çalışanı silmek istediğinize emin misiniz?');
@@ -58,7 +62,7 @@ $(document).ready(function () {
     $('#deletedEmpTable tbody').on('click', 'tr', function (e) {
         var tr = $(this).closest('tr');
         let action = "";
-        if (e.target.nodeName !== 'BUTTON' && e.target.nodeName !== 'I') window.location.href = "/user/employee/" + tr.attr('id');
+        if (e.target.nodeName !== 'BUTTON' && e.target.nodeName !== 'I') window.location.href = "/user/employee/" + tr.attr('id') + "/company/" + pathArray[3];
 
         else {
             var name = tr.find('td').first().text();
