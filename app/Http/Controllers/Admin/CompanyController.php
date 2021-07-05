@@ -24,11 +24,11 @@ class CompanyController extends Controller
         if (empty($company))
             return redirect()->route('admin.deleted_company', ['id' => $id]);
 
-        $employees['expert'] = UserToCompany::whereHas('user', function ($query) {
+        $employees['expert'] = UserToCompany::with('user')->whereHas('user', function ($query) {
             $query->where('job_id', 1);
         })->where('company_id', $id)->first() ?? '';
 
-        $employees['doctor'] = UserToCompany::whereHas('user', function ($query) {
+        $employees['doctor'] = UserToCompany::with('user')->whereHas('user', function ($query) {
             $query->where('job_id', 4);
         })->where('company_id', $id)->first() ?? '';
 
@@ -36,32 +36,37 @@ class CompanyController extends Controller
 
         $employees['coopEmployees'] = CoopEmployee::where('company_id', $id)->count();
 
-        $mandatory_files = CompanyToFile::with('file', 'type')->where('company_id', $id)->orderBy('file_type')->get();
-        $file_types = [];
-        foreach ($mandatory_files as $value) {
-            $file_types[] = $value['type']['id'];
-        }
+        $mandatory_files = CompanyToFile::with('file')->where('company_id', $id)->orderByDesc('assigned_at')->get();
 
-        $defter_nushalari = $mandatory_files->where('file_type', 9)->sortByDesc('assigned_at')->groupBy(function ($date) {
+        $defter_nushalari = $mandatory_files->where('file_type', 9)->groupBy(function ($date) {
             return Carbon::parse($date->assigned_at)->format('m');
         });
 
-        $gozlem_raporlari = $mandatory_files->where('file_type', 10)->sortByDesc('assigned_at')->groupBy(function ($date) {
+        $gozlem_raporlari = $mandatory_files->where('file_type', 10)->groupBy(function ($date) {
             return Carbon::parse($date->assigned_at)->format('m');
         });
+        $mandatory_files = $mandatory_files->whereBetween('file_type', [1, 8])->unique('file_type');
 
+        $file_names = [
+            1 => 'İş Yeri Uzman Sözleşmesi',
+            2 => 'İş Yeri Hekim Sözleşmesi',
+            3 => 'Acil Durum Eylem Planı',
+            4 => 'Risk Analizi Dosyası',
+            5 => 'Yıllık Çalışma Planı',
+            6 => 'Yıllık Eğitim Programı',
+            7 => 'DSP Sözleşmesi',
+            8 => 'Yıl Sonu Değerlendirme Raporu'
+        ];
         return view(
             'admin.company.home.index',
             [
                 'company' => $company,
                 'employees' => $employees,
-                'file_types' => $file_types,
                 'notifications' => $notifications,
-                'mandatory_files' => $mandatory_files->whereBetween('file_type', [1, 8]),
+                'mandatory_files' => $mandatory_files,
+                'file_names' => $file_names,
                 'defter_nushalari' => $defter_nushalari[date('m')] ?? null,
                 'gozlem_raporlari' => $gozlem_raporlari[date('m')] ?? null,
-                'count' => 0
-
             ],
         );
     }
@@ -74,7 +79,7 @@ class CompanyController extends Controller
 
         $accountants['front'] = FrontAccountant::where('company_id', $id)->first();
         $accountants['out'] = OutAccountant::where('company_id', $id)->first();
-        
+
         $employees['osgbEmployees'] = UserToCompany::select('user_id')->with('user')->whereHas('user', function ($query) {
             $query->whereBetween('job_id', [1, 7]);
         })->where('company_id', $id)->groupBy('user_id')->get();

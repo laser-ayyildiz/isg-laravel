@@ -21,7 +21,7 @@
 
         @include('admin.company.home.tabs.aylik-calismalar')
 
-        @include('admin.company.home.tabs.yillik-calisma-plani')        
+        @include('admin.company.home.tabs.yillik-calisma-plani')
         
     </div>
 </div>

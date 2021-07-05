@@ -20,6 +20,7 @@ class CreateCompanyToFilesTable extends Migration
             $table->foreignId('file_id')->constrained('files')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamp('assigned_at')->nullable();
             $table->date('valid_date')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
