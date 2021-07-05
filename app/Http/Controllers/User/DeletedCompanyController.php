@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Models\Exception;
 use App\Models\CoopCompany;
 use Illuminate\Http\Request;
 use App\Models\UserToCompany;
@@ -29,39 +28,5 @@ class DeletedCompanyController extends Controller
         return view(
             'user.deleted_companies'
         );
-    }
-
-    public function delete($id)
-    {
-        $company = CoopCompany::withTrashed()->find($id);
-
-        try {
-            $company->forceDelete();
-            return redirect()->route('user.deleted_companies')->with('success', 'İşletme Tamamen Kaldırıldı!');
-        } catch (\Exception $error) {
-            Exception::create([
-                'user_id' => Auth::id(),
-                'exception' => $error,
-                'function_name' => 'DeleteCompanyController->delete'
-            ]);
-            return redirect()->route('user.deleted_companies')->with('fail', 'Bir Hatayla Karşılaşıldı!');
-        }
-    }
-
-    public function update($id)
-    {
-        $company = CoopCompany::withTrashed()->find($id);
-
-        try {
-            $company->restore();
-            return redirect()->route('user.deleted_companies')->with('success', 'İşletme Tekrar Aktifleştirildi!');
-        } catch (\Exception $error) {
-            Exception::create([
-                'user_id' => Auth::id(),
-                'exception' => $error,
-                'function_name' => 'DeleteCompanyController->update'
-            ]);
-            return redirect()->route('user.deleted_companies')->with('fail', 'Bir Hatayla Karşılaşıldı!');
-        }
     }
 }

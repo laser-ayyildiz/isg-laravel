@@ -4,9 +4,7 @@ namespace App\Http\Controllers\CompanyAdmin;
 
 use Illuminate\Support\Facades\Route;
 
-Route::redirect('/', '/company-admin/home');
-
-Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::redirect('/', '/company-admin/companies');
 
 Route::get('/companies', [CoopCompanyController::class, 'index'])->name('companies');
 

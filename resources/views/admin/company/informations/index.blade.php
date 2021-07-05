@@ -47,8 +47,6 @@
 
     @include('admin.company.informations.modals.isletme-degistir')
 
-    @include('admin.company.informations.modals.yeni-calisan-ata')
-
     @include('admin.company.informations.modals.muhasebeci-ekle')
 
 </div>

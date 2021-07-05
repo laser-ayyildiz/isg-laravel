@@ -5,9 +5,6 @@
     <button class="btn btn-warning mx-1 float-right" data-toggle="modal" data-target="#changeCompany"
         id="changeCompanyBtn" data-whatever="@getbootstrap">İşletme
         Bilgilerini Değiştir</button>
-    <button class="btn btn-success mx-1 float-right" data-toggle="modal" data-target="#assignEmployee"
-        id="assignEmployeeBtn" name="assignEmployeeBtn" data-whatever="@getbootstrap">Çalışan
-        Ata</button>
     <div class="form-row">
         <div class="form-group col-lg-3">
             <label for="comp_type_show">

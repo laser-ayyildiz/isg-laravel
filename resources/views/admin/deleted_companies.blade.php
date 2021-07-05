@@ -28,7 +28,7 @@
                         <th>Sil/Aktifleştir</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody style="cursor: pointer">
                 </tbody>
             </table>
         </div>
@@ -108,23 +108,27 @@
           $('#example tbody').on('click', 'tr', function (e) {
             if (e.target.nodeName !== 'BUTTON') {
                 var data = table.row( this ).data();
-                window.location.href="/admin/company/deleted/"+data['id'];
+                if (data['id'] !== null && typeof data['id'] !== "undefined") {
+                    window.location.href="/admin/company/deleted/" + data['id'];
+                }
             }     
           });
 
           $('#example tbody').on( 'click', '#requestButton', function () {
             var data = table.row( $(this).parents('tr') ).data();
-            document.getElementById("company_name").innerHTML = "<b>" + data['name'] + "</b> işletmesinin durumunu değiştir";
+            if (data['id'] !== null && typeof data['id'] !== "undefined") {
+                document.getElementById("company_name").innerHTML = "<b>" + data['name'] + "</b> işletmesinin durumunu değiştir";
 
-            $('#activateRequest').click(function(){
-                let action = $('#activateForm').attr('action');
-                $('#activateForm').attr('action', action+data['id']);
-            });
+                $('#activateRequest').click(function(){
+                    let action = $('#activateForm').attr('action');
+                    $('#activateForm').attr('action', action+data['id']);
+                });
 
-            $('#deleteRequest').click(function(){
-                let action = $('#deleteForm').attr('action');
-                $('#deleteForm').attr('action', action+data['id']);
-            });
+                $('#deleteRequest').click(function(){
+                    let action = $('#deleteForm').attr('action');
+                    $('#deleteForm').attr('action', action+data['id']);
+                });
+            }
         });
     });
 </script>

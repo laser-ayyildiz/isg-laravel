@@ -40,40 +40,50 @@ $(document).ready(function () {
     $('#example tbody').on('click', 'tr', function (e) {
         var tr = $(this).closest('tr');
         let action = null;
-        if (e.target.nodeName !== 'BUTTON' && e.target.nodeName !== 'I') window.location.href = "/admin/employee/" + tr.attr('id');
+        if (e.target.nodeName !== 'BUTTON' && e.target.nodeName !== 'I') {
+            if (tr.attr('id') !== null && typeof tr.attr('id') !== "undefined") {
+                window.location.href = "/admin/employee/" + tr.attr('id');
+            }
+        }
         else {
             var name = tr.find('td').first().text();
             $('#deleteEmpName').html("<b>" + name + '</b> isimli çalışanı silmek istediğinize emin misiniz?');
             $('#empName').html("<b>" + name + '</b> isimli çalışan için dosya yükle');
+            if (tr.attr('id') !== null && typeof tr.attr('id') !== "undefined") {
+                $('#deleteEmpRequest').on('click', function () {
+                    $('#deleteEmpForm').attr('action', "/admin/company/" + pathArray[3] + "/deleteEmployee/" + tr.attr('id'));
+                });
 
-            $('#deleteEmpRequest').on('click', function () {
-                $('#deleteEmpForm').attr('action', "/admin/company/" + pathArray[3] + "/deleteEmployee/" + tr.attr('id'));
-            });
+                $('#addEmpFileRequest').on('click', function () {
+                    $('#addEmpFileForm').attr('action', "/upload-file/" + tr.attr('id'));
+                });
 
-            $('#addEmpFileRequest').on('click', function () {
-                $('#addEmpFileForm').attr('action', "/upload-file/" + tr.attr('id'));
-            });
-
-            $('#addEmpIdentifyFileRequest').on('click', function () {
-                $('#addEmpIdentifyFileForm').attr('action', "/upload-file/" + tr.attr('id'));
-            });
+                $('#addEmpIdentifyFileRequest').on('click', function () {
+                    $('#addEmpIdentifyFileForm').attr('action', "/upload-file/" + tr.attr('id'));
+                });
+            }
         }
     });
 
     $('#deletedEmpTable tbody').on('click', 'tr', function (e) {
         var tr = $(this).closest('tr');
         let action = "";
-        if (e.target.nodeName !== 'BUTTON' && e.target.nodeName !== 'I') window.location.href = "/admin/employee/" + tr.attr('id');
+        if (e.target.nodeName !== 'BUTTON' && e.target.nodeName !== 'I') {
+            if (tr.attr('id') !== null && typeof tr.attr('id') !== "undefined") {
+                window.location.href = "/admin/employee/" + tr.attr('id');
+            }
+        }
 
         else {
             var name = tr.find('td').first().text();
             $('#restoreEmpName').html("<b>" + name + '</b> isimli çalışanı işe geri almak istediğinize emin misiniz?');
-
-            $('#restoreEmpRequest').on('click', function () {
-                action = "";
-                action = $('#restoreEmpForm').attr('action');
-                $('#restoreEmpForm').attr('action', action + tr.attr('id'));
-            });
+            if (tr.attr('id') !== null && typeof tr.attr('id') !== "undefined") {
+                $('#restoreEmpRequest').on('click', function () {
+                    action = "";
+                    action = $('#restoreEmpForm').attr('action');
+                    $('#restoreEmpForm').attr('action', action + tr.attr('id'));
+                });
+            }
         }
     });
 

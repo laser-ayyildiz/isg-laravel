@@ -58,9 +58,11 @@
                     "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Turkish.json"
                 }
           });
-          $('#companies-table tbody').on('click', 'tr', function () {
-            var data = table.row( this ).data();
-            window.location.href="company/"+data['id'];
+            $('#companies-table tbody').on('click', 'tr', function () {
+                var data = table.row( this ).data();
+                if (data['id'] !== null && typeof data['id'] !== "undefined") {
+                    window.location.href="company/" + data['id'];
+                }
             });
     });
 </script>

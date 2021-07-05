@@ -16,6 +16,6 @@ class RedirectController extends Controller
             return redirect('/user/home');
 
         if (Auth::user()->hasRole('CompanyAdmin'))
-            return redirect('/company-admin/home');
+            return redirect('/company-admin/companies');
     }
 }

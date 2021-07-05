@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\CompanyAdmin;
 
-use App\Models\User;
 use App\Models\CoopCompany;
 use App\Models\CoopEmployee;
 use App\Models\CompanyToFile;
@@ -81,13 +80,12 @@ class CompanyController extends Controller
         if (empty($company))
             abort(404);
 
-        $allEmployees = User::whereBetween('job_id', [1, 7])->getQuery();
         $accountants['front'] = FrontAccountant::where('company_id', $id)->first();
         $accountants['out'] = OutAccountant::where('company_id', $id)->first();
 
-        $employees['osgbEmployees'] = UserToCompany::whereHas('user', function ($query) {
+        $employees['osgbEmployees'] = UserToCompany::select('user_id')->with('user')->whereHas('user', function ($query) {
             $query->whereBetween('job_id', [1, 7]);
-        })->where('company_id', $id)->get();
+        })->where('company_id', $id)->groupBy('user_id')->get();
 
         return (view(
             'company-admin.company.informations.index',
@@ -95,7 +93,6 @@ class CompanyController extends Controller
                 'company' => $company,
                 'employees' => $employees,
                 'accountants' => $accountants,
-                'allEmployees' => $allEmployees,
             ],
         ));
     }

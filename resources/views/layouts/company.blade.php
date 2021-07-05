@@ -16,33 +16,7 @@
     <link rel="stylesheet" href="/fonts/fontawesome5-overrides.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
     <link href="/company/css/sb-admin-2.min.css" rel="stylesheet">
-
-    <style>
-        .dropdown-menu {
-            position: absolute;
-            background-color: #f9f9f9;
-            min-width: 180px;
-            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-            z-index: 1;
-        }
-
-        .dropdown-menu a {
-            float: none;
-            color: black;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            text-align: left;
-        }
-
-        .dropdown-menu a:hover {
-            background-color: #ddd;
-        }
-
-        .dropdown:hover>.dropdown-menu {
-            display: block;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/company-navbar.css">
     @stack('styles')
 
 </head>
@@ -173,18 +147,18 @@
                         <i class="fa fa-bars"></i>
                     </button>
                     <div class="form-inline my-2 my-lg-0 ml-auto" style="list-style: none;">
+                        @if ($role === 'admin')
                         <li class="nav-item active">
                             <a class="nav-link" href="{{ route('notifications') }}"
                                 data-bs-hover-animate="rubberBand"><i class="fas fa-bell fa-fw"
                                     style="color: black"></i></a>
                         </li>
-
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('messages') }}" data-bs-hover-animate="rubberBand">
                                 <i class="fas fa-envelope" style="color: black"></i><span
                                     class="sr-only">(current)</span></a>
                         </li>
-
+                        @endif
                         <li class="nav-item">
                             <div class="nav-item">
                                 <a href="{{ route('profile.index') }}" class="nav-link" title="Profil">

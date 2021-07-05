@@ -18,7 +18,7 @@
                         <th>İşten Çıkış Tarihi</th>
                     </tr>
                 </thead>
-                <tbody class="body">
+                <tbody class="body" style="cursor: pointer">
                 </tbody>
             </table>
         </div>
@@ -119,19 +119,21 @@
 
           $('#example tbody').on('click', 'tr', function () {
             var data = table.row( this ).data();
-            var job = data['job'];
-            var date = data['deleted_at'];
-            date = date.toString().match(/([0-9]{4}-[0-9]{2}-[0-9]{2})T(.*)/);
+            if (data['id'] !== null && typeof data['id'] !== "undefined") {
+                var job = data['job'];
+                var date = data['deleted_at'];
+                date = date.toString().match(/([0-9]{4}-[0-9]{2}-[0-9]{2})T(.*)/);
 
-            $('#düzenle').modal('show');
-            $("#userId").val(data['id']);
-            $("#name").val(data['name']);
-            $("#email").val(data['email']);
-            $("#phone").val(data['phone']);
-            $("#tc").val(data['tc']);
-            $("#deleted_at").val(date[1]);
-            $("#delete_not").val(data['delete_not']);
-            $("#job_id").val(job.name);
+                $('#düzenle').modal('show');
+                $("#userId").val(data['id']);
+                $("#name").val(data['name']);
+                $("#email").val(data['email']);
+                $("#phone").val(data['phone']);
+                $("#tc").val(data['tc']);
+                $("#deleted_at").val(date[1]);
+                $("#delete_not").val(data['delete_not']);
+                $("#job_id").val(job.name);
+            }
         });
     });
 </script>

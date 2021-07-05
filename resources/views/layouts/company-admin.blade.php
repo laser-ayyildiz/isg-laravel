@@ -19,7 +19,7 @@
 
 <body id="page-top">
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary" style="min-height: 60px;">
-        <a class="navbar-brand" href="{{ route('company-admin.home') }}"><b>Özgür OSGB</b></a>
+        <a class="navbar-brand" href="{{ route('company-admin.companies') }}"><b>Özgür OSGB</b></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler"
             aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -33,16 +33,6 @@
                 </li>
             </ul>
             <div class="form-inline my-2 my-lg-0" style="list-style: none;">
-                <li class="nav-item active">
-                    <a class="nav-link" href="{{ route('notifications') }}" data-bs-hover-animate="rubberBand"><i
-                            class="fas fa-bell fa-fw" style="color: black"></i></a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('messages') }}" data-bs-hover-animate="rubberBand"> <i
-                            class="fas fa-envelope" style="color: black"></i><span class="sr-only">(current)</span></a>
-                </li>
-
                 <li class="nav-item">
                     <div class="nav-item">
                         <a href="{{ route('profile.index') }}" class="nav-link" title="Profil">

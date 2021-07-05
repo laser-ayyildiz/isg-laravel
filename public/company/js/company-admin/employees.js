@@ -39,20 +39,29 @@ $(document).ready(function () {
 
     $('#example tbody').on('click', 'tr', function (e) {
         var tr = $(this).closest('tr');
-        if (e.target.nodeName !== 'BUTTON' && e.target.nodeName !== 'I') window.location.href = "/company-admin/employee/" + tr.attr('id') + "/company/" + pathArray[3];
+        if (e.target.nodeName !== 'BUTTON' && e.target.nodeName !== 'I') {
+            if (tr.attr('id') !== null && typeof tr.attr('id') !== "undefined") {
+                window.location.href = "/company-admin/employee/" + tr.attr('id') + "/company/" + pathArray[3];
+            }
+        }
         else {
             var name = tr.find('td').first().text();
             $('#empName').html("<b>" + name + '</b> isimli çalışan için dosya yükle');
 
-            $('#addEmpIdentifyFileRequest').on('click', function () {
-                $('#addEmpIdentifyFileForm').attr('action', "/upload-file/" + tr.attr('id'));
-            });
+            if (tr.attr('id') !== null && typeof tr.attr('id') !== "undefined") {
+                $('#addEmpIdentifyFileRequest').on('click', function () {
+                    $('#addEmpIdentifyFileForm').attr('action', "/upload-file/" + tr.attr('id'));
+                });
+            }
+
         }
     });
 
     $('#deletedEmpTable tbody').on('click', 'tr', function (e) {
         var tr = $(this).closest('tr');
-        window.location.href = "/company-admin/employee/" + tr.attr('id') + "/company/" + pathArray[3];
+        if (tr.attr('id') !== null && typeof tr.attr('id') !== 'undefined') {
+            window.location.href = "/company-admin/employee/" + tr.attr('id') + "/company/" + pathArray[3];
+        }
     });
 
     /////////////////////////////////////////////////////////////

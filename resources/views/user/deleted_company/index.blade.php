@@ -72,10 +72,13 @@
                 "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Turkish.json"
                 }
           });
-          $('#example tbody').on('click', 'tr', function (e) {
+            $('#example tbody').on('click', 'tr', function (e) {
                 var data = table.row( this ).data();
-                window.location.href = "/user/employee/" + data['id']+ "/company/" + {{ $company->id }};
-        });
+                if (data['id'] !== null && typeof data['id'] !== "undefined") {
+                    window.location.href = "/user/employee/" + data['id']+ "/company/" + {{ $company->id }};
+                }
+            });
+            
     });
 </script>
 @endpush

@@ -119,8 +119,7 @@
                         <th>İşe Giriş Tarihi</th>
                     </tr>
                 </thead>
-                <tbody>
-
+                <tbody style="cursor: pointer">
                 </tbody>
             </table>
         </div>
@@ -248,18 +247,20 @@
                     }
               });
 
-              $('#example tbody').on('click', 'tr', function () {
+            $('#example tbody').on('click', 'tr', function () {
                 var data = table.row( this ).data();
-                var job = data['job'];
-                $('#düzenle').modal('show');
-                $("#userId").val(data['id']);
-                $("#name").val(data['name']);
-                $("#email").val(data['email']);
-                $("#phone").val(data['phone']);
-                $("#tc").val(data['tc']);
-                $("#recruitment_date").val(data['recruitment_date']);
-                $("#delete_not").val(data['delete_not']);
-                $("#job_id").val(job.id);
+                if (data !== null && typeof data !== "undefined"){
+                    var job = data['job'];
+                    $('#düzenle').modal('show');
+                    $("#userId").val(data['id']);
+                    $("#name").val(data['name']);
+                    $("#email").val(data['email']);
+                    $("#phone").val(data['phone']);
+                    $("#tc").val(data['tc']);
+                    $("#recruitment_date").val(data['recruitment_date']);
+                    $("#delete_not").val(data['delete_not']);
+                    $("#job_id").val(job.id);
+                }
             });
         });
 </script>

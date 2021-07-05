@@ -75,7 +75,9 @@
           });
           $('#example tbody').on('click', 'tr', function (e) {
                 var data = table.row( this ).data();
-                window.location.href = "/admin/employee/"+data['id'];       
+                if (data['id'] !== null && typeof data['id'] !== "undefined") {
+                    window.location.href = "/admin/employee/" + data['id'];
+                }
         });
     });
 </script>

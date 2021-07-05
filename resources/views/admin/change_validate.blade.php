@@ -33,7 +33,7 @@
                         <th>Düzenle/Sil</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody style="cursor: pointer">
                     @forelse ($demands as $key => $demand)
                     <tr>
                         <td>{{ Str::title($demand->company->name) }}</td>

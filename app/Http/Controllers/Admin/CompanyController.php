@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use Carbon\Carbon;
-use App\Models\User;
 use App\Models\CoopCompany;
 use App\Models\CoopEmployee;
 use Illuminate\Http\Request;
@@ -22,7 +21,6 @@ class CompanyController extends Controller
     public function index($id)
     {
         $company = CoopCompany::where('id', $id)->first();
-
         if (empty($company))
             return redirect()->route('admin.deleted_company', ['id' => $id]);
 
@@ -74,13 +72,12 @@ class CompanyController extends Controller
         if (empty($company))
             return redirect()->route('admin.deleted_company', ['id' => $id]);
 
-        $allEmployees = User::whereBetween('job_id', [1, 7])->getQuery();
         $accountants['front'] = FrontAccountant::where('company_id', $id)->first();
         $accountants['out'] = OutAccountant::where('company_id', $id)->first();
-
-        $employees['osgbEmployees'] = UserToCompany::whereHas('user', function ($query) {
+        
+        $employees['osgbEmployees'] = UserToCompany::select('user_id')->with('user')->whereHas('user', function ($query) {
             $query->whereBetween('job_id', [1, 7]);
-        })->where('company_id', $id)->get();
+        })->where('company_id', $id)->groupBy('user_id')->get();
 
         return (view(
             'admin.company.informations.index',
@@ -88,7 +85,6 @@ class CompanyController extends Controller
                 'company' => $company,
                 'employees' => $employees,
                 'accountants' => $accountants,
-                'allEmployees' => $allEmployees,
             ],
         ));
     }
@@ -151,7 +147,6 @@ class CompanyController extends Controller
         $mandatory_files = CompanyToFile::with('file', 'type')->where('company_id', $id)->get();
         $accountants['front'] = FrontAccountant::where('company_id', $id)->first();
         $accountants['out'] = OutAccountant::where('company_id', $id)->first();
-
 
         return (view(
             'admin.deleted_company.index',
@@ -344,7 +339,7 @@ class CompanyController extends Controller
                 ->route('admin.company.informations.acc', ['id' => $company->id])
                 ->with('fail', 'Bir Hata ile Karşılaşıldı!');
         }
-        
+
         DB::commit();
         return redirect()
             ->route('admin.company.informations.acc', ['id' => $company->id])

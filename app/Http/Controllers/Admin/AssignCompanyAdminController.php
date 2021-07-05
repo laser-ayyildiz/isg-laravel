@@ -58,19 +58,34 @@ class AssignCompanyAdminController extends Controller
 
     public static function createRelations($user, CoopCompany $company)
     {
-        if ($company->is_group) {
-            $members = CoopCompany::where('leader_company_id', $company->leader_company_id)->get('id');
-            $relations = [];
-            foreach ($members->toArray() as $member) {
+        if ($company->is_group == 1) {
+            if ($company->group_status == "leader") {
+                $members = CoopCompany::where('leader_company_id', $company->id)->get('id');
+                $relations = [];
+                foreach ($members->toArray() as $member) {
+                    $relations[] = [
+                        'user_id' => $user->id,
+                        'company_id' => $member['id']
+                    ];
+                }
                 $relations[] = [
                     'user_id' => $user->id,
-                    'company_id' => $member['id']
+                    'company_id' => $company->id
                 ];
+                UserToCompany::insert($relations);
             }
-            UserToCompany::insert($relations);
+
+            if ($company->group_status == "member") {
+                UserToCompany::create(
+                    [
+                        'user_id' => $user->id,
+                        'company_id' => $company->id
+                    ]
+                );
+            }
         }
 
-        if (!$company->is_group) {
+        if ($company->is_group == 0) {
             UserToCompany::create(
                 [
                     'user_id' => $user->id,

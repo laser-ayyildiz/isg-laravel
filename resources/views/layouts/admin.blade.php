@@ -14,37 +14,7 @@
     <link rel="stylesheet" href="/fonts/ionicons.min.css">
     <link rel="stylesheet" href="/fonts/fontawesome5-overrides.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
-    <style>
-        .dropdown-menu {
-            position: absolute;
-            background-color: #f9f9f9;
-            min-width: 180px;
-            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-            z-index: 1;
-        }
-
-        .dropdown-menu a {
-            float: none;
-            color: black;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            text-align: left;
-        }
-
-        .dropdown-menu a:hover {
-            background-color: #ddd;
-        }
-
-        .dropdown:hover>.dropdown-menu {
-            display: block;
-        }
-
-        a i {
-            color: black;
-        }
-
-    </style>
+    <link rel="stylesheet" href="/css/admin-navbar.css">
     @stack('styles')
 
 </head>
