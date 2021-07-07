@@ -22,6 +22,7 @@
                                 <option value="2">İSG Eğitimi 2</option>
                                 <option value="3">Sağlık Muayenesi</option>
                                 <option value="4">İlk Yardım Sertifikası</option>
+                                <option value="13">İSG Eğitim Sertifikası</option>
                                 <option value="5">Yangın Eğitim Sertifikası</option>
                                 <option value="6">Mesleki Yeterlilik Sertifikası</option>
                                 <option value="7">Hijyen Eğitim Sertifikası</option>

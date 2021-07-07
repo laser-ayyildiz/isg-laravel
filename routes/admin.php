@@ -18,7 +18,6 @@ Route::prefix('companies')->group(function () {
 Route::prefix('deleted_companies')->group(function () {
     Route::get('/', [DeletedCompanyController::class, 'index'])->name('deleted_companies');
     Route::post('/update/{company}', [DeletedCompanyController::class, 'update'])->name('deleted_companies.update');
-    Route::post('/delete/{company}', [DeletedCompanyController::class, 'delete'])->name('deleted_companies.delete');
 });
 
 ///////////////////////////////OSGB_EMPLOYEES/////////////////////////////////////////

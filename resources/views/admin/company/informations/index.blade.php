@@ -52,6 +52,7 @@
 </div>
 @push('scripts')
 <script src="/company/js/informations.js"></script>
+<script src="/js/core/city-town.js"></script>
 @endpush
 
 @endsection

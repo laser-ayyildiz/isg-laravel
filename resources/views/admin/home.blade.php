@@ -64,7 +64,7 @@
                         <div class="text-uppercase text-info font-weight-bold text-xs mb-1"><span>Toplam Ekipman
                                 sayısı</span>
                         </div>
-                        50
+                        0
                         <div class="row no-gutters align-items-center">
                             <div class="col-auto">
                                 <div class="text-dark font-weight-bold h5 mb-0 mr-3"><span></span>
@@ -122,24 +122,24 @@
             <div class="card-body">
 
                 <h4 class="small font-weight-bold">Çok Tehlikeli<span
-                        class="float-right">%{{ number_format($dangers['very']/$comp_count*100, 1) }}</span></h4>
+                        class="float-right">%{{$dangers['very'] != 0 ? number_format($dangers['very']/$comp_count*100, 1) : 0}}</span></h4>
                 <div class="progress mb-4">
                     <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" aria-valuenow=""
-                        aria-valuemin="0" aria-valuemax="100" style="width: {{ $dangers['very']/$comp_count*100 }}%;">
+                        aria-valuemin="0" aria-valuemax="100" style="width: {{ $dangers['very'] != 0 ? $dangers['very']/$comp_count*100 : 0}}%;">
                         <span class="sr-only"></span></div>
                 </div>
                 <h4 class="small font-weight-bold">Tehlikeli<span
-                        class="float-right">%{{ number_format($dangers['medium']/$comp_count*100, 1) }}</span></h4>
+                        class="float-right">%{{ $dangers['medium'] != 0 ? number_format($dangers['medium']/$comp_count*100, 1) : 0}}</span></h4>
                 <div class="progress mb-4">
                     <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" aria-valuenow=""
-                        aria-valuemin="0" aria-valuemax="100" style="width:{{ $dangers['medium']/$comp_count*100 }}%;">
+                        aria-valuemin="0" aria-valuemax="100" style="width:{{ $dangers['medium'] ? $dangers['medium']/$comp_count*100 : 0}}%;">
                         <span class="sr-only"></span></div>
                 </div>
                 <h4 class="small font-weight-bold">Az Tehlikeli<span class="float-right"></span><span
-                        class="float-right">%{{ number_format($dangers['less']/$comp_count*100, 1) }}</span></h4>
+                        class="float-right">%{{ $dangers['less'] != 0 ? number_format($dangers['less']/$comp_count*100, 1) : 0 }}</span></h4>
                 <div class="progress mb-4">
                     <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" aria-valuenow=""
-                        aria-valuemin="0" aria-valuemax="100" style="width:{{ $dangers['less']/$comp_count*100 }}%;">
+                        aria-valuemin="0" aria-valuemax="100" style="width:{{ $dangers['less'] != 0 ? $dangers['less']/$comp_count*100  : 0}}%;">
                         <span class="sr-only"></span>
                     </div>
                 </div>

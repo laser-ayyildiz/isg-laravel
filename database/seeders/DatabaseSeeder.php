@@ -17,9 +17,9 @@ class DatabaseSeeder extends Seeder
             JobSeeder::class,
             RolePermissionSeeder::class,
             UserSeeder::class,
-            CompanySeeder::class,
-            CoopEmployeeSeeder::class,
-            UserToCompanySeeder::class,
+            //CompanySeeder::class,
+            //CoopEmployeeSeeder::class,
+            //UserToCompanySeeder::class,
             CompanyFileTypeSeeder::class,
             EmployeeEducationTypeSeeder::class,
         ]);

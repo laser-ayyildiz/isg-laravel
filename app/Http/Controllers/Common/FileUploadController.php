@@ -28,6 +28,7 @@ class FileUploadController extends Controller
         '9' => 'Yüksekte Çalışma Eğitimi',
         '10' => 'Yangın Eğitimi',
         '11' => 'Acil Durum Ekip Eğitimi',
+        '13' => 'İSG Eğitim Sertifikası',
     ];
 
     const COMP_FILE_NAMES = [
@@ -47,7 +48,7 @@ class FileUploadController extends Controller
     {
         $request->validate([
             'file' => 'required|file|mimes:csv,txt,xlx,xls,xlsx,odt,odf,pdf,png,jpg,jpeg,doc,docx,ppt,pptx|max:46080',
-            'file_type' => ['required', Rule::in(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'])],
+            'file_type' => ['required', Rule::in(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13'])],
             'name' => 'nullable|string|max:250',
             'file_date' => 'nullable|before_or_equal:' . date('Y-m-d')
         ], [], [

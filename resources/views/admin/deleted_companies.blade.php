@@ -25,7 +25,7 @@
                         <th>Telefon</th>
                         <th>E-mail</th>
                         <th>Silinme Tarihi</th>
-                        <th>Sil/Aktifleştir</th>
+                        <th>Aktifleştir</th>
                     </tr>
                 </thead>
                 <tbody style="cursor: pointer">
@@ -34,7 +34,7 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="sil" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="activate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -44,13 +44,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="deleteForm" action="/admin/deleted_companies/delete/" method="POST">
-                    @csrf
-                    <h3 class="mb-3" id="company_name"></h3>
-                    <button id="deleteRequest" name="deleteRequest" type="submit"
-                        class="btn btn-danger float-left">Tamamen
-                        Sil</button>
-                </form>
+                <h3 class="mb-3" id="company_name"></h3>
                 <form id="activateForm" action="/admin/deleted_companies/update/" method="POST">
                     @csrf
                     <button id="activateRequest" name="activateRequest" type="submit"
@@ -97,7 +91,7 @@
                   {
                     data: null,
                     render: function ( data, type, row ) {
-                        return '<button type="button" id="requestButton" class="btn btn-warning" data-toggle="modal" data-target="#sil">Sil/Aktifleştir</button>';
+                        return '<button type="button" id="requestButton" class="btn btn-warning" data-toggle="modal" data-target="#activate">Aktifleştir</button>';
                     }
                   },
               ],
@@ -122,11 +116,6 @@
                 $('#activateRequest').click(function(){
                     let action = $('#activateForm').attr('action');
                     $('#activateForm').attr('action', action+data['id']);
-                });
-
-                $('#deleteRequest').click(function(){
-                    let action = $('#deleteForm').attr('action');
-                    $('#deleteForm').attr('action', action+data['id']);
                 });
             }
         });

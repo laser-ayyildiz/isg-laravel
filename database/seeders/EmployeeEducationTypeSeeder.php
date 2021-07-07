@@ -88,6 +88,12 @@ class EmployeeEducationTypeSeeder extends Seeder
                     'validity_period_type_2' => null,
                     'validity_period_type_3' => null,
                 ],
+                [
+                    'name' => 'İSG Eğitim Sertifikası',
+                    'validity_period_type_1' => null,
+                    'validity_period_type_2' => null,
+                    'validity_period_type_3' => null,
+                ],
             ]
         );
     }

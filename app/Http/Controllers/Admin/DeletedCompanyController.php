@@ -23,17 +23,6 @@ class DeletedCompanyController extends Controller
         );
     }
 
-    public function delete($id)
-    {
-        try {
-            $company = CoopCompany::withTrashed()->find($id);
-            $company->forceDelete();
-        } catch (\Throwable $th) {
-            return redirect()->route('admin.deleted_companies')->with('fail', 'Bir Hatayla Karşılaşıldı!');
-        }
-        return redirect()->route('admin.deleted_companies')->with('success', 'İşletme Tamamen Kaldırıldı!');
-    }
-
     public function update($id)
     {
         try {
