@@ -44,7 +44,6 @@ class DeleteFilesController extends Controller
             $empToFile->delete();
         } catch (\Throwable $th) {
             DB::rollBack();
-            throw $th;
             return back()->with([
                 'fail' => 'Bir hata ile karşılaşıldı!'
             ]);
@@ -64,7 +63,6 @@ class DeleteFilesController extends Controller
             $file->delete();
         } catch (\Throwable $th) {
             DB::rollBack();
-            throw $th;
             return back()->with('fail', 'Bir Hata ile karşılaşıldı!');
         }
         DB::commit();

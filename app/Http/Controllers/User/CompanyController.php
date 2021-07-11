@@ -14,6 +14,7 @@ use App\Models\UpdateRequest;
 use App\Models\UserToCompany;
 use App\Models\FrontAccountant;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreAccountantRequest;
@@ -335,6 +336,7 @@ class CompanyController extends Controller
     public function addAcc(CoopCompany $company, StoreAccountantRequest $request)
     {
         $request->validated();
+        
         if ($request->front_acc_name === null && $request->out_acc_name === null) {
             return back()->with(
                 [
@@ -343,7 +345,7 @@ class CompanyController extends Controller
                 ]
             );
         }
-
+        DB::beginTransaction();
         if ($request->front_acc_name !== null) {
             try {
                 FrontAccountant::create([
@@ -353,7 +355,7 @@ class CompanyController extends Controller
                     'phone' => $request->front_acc_phone,
                 ]);
             } catch (\Throwable $th) {
-                throw $th;
+                DB::rollBack();
                 return back()->with(
                     [
                         'tab' => 'muhasebe_bilgileri',
@@ -372,6 +374,7 @@ class CompanyController extends Controller
                     'phone' => $request->out_acc_phone,
                 ]);
             } catch (\Throwable $th) {
+                DB::rollBack();
                 return back()->with(
                     [
                         'tab' => 'muhasebe_bilgileri',
@@ -380,7 +383,7 @@ class CompanyController extends Controller
                 );
             }
         }
-
+        DB::commit();
         return back()->with(
             [
                 'tab' => 'muhasebe_bilgileri',
@@ -392,6 +395,7 @@ class CompanyController extends Controller
     public function uploadAcc(CoopCompany $company, StoreAccountantRequest $request)
     {
         $request->validated();
+        DB::beginTransaction();
         try {
             $out_acc = OutAccountant::where('company_id', $company->id)->first();
             $out_acc_demand = [
@@ -410,7 +414,7 @@ class CompanyController extends Controller
                 OutAccountant::create($out_acc_demand);
             }
         } catch (\Throwable $th) {
-            throw $th;
+            DB::rollBack();
             return back()->with([
                 'tab' => 'muhasebe_bilgileri',
                 'fail' => 'Bir Hata ile Karşılaşıldı!'
@@ -435,13 +439,13 @@ class CompanyController extends Controller
                 FrontAccountant::create($front_acc_demand);
             }
         } catch (\Throwable $th) {
-            throw $th;
+            DB::rollBack();
             return back()->with([
                 'tab' => 'muhasebe_bilgileri',
                 'fail' => 'Bir Hata ile Karşılaşıldı!'
             ]);
         }
-
+        DB::commit();
         return back()->with([
             'tab' => 'muhasebe_bilgileri',
             'success' => 'Değişiklikleriniz başarıyla uygulanmıştır!'

@@ -55,6 +55,11 @@ $monthList = ['01' => 'Ocak','02' => 'Şubat','03' => 'Mart','04' => 'Nisan','05
 <div name="modals">
     @include('admin.company.home.modals.zorunlu-dokuman-ekle')
     @include('admin.company.home.modals.aylik-dokuman-ekle')
+    @include('admin.company.home.modals.ekipman-ekle')
+
+    @if ($equipments !== null)
+        @include('admin.company.home.modals.ekipman-dosyasi-ekle')
+    @endif
 </div>
 @push('scripts')
 <script src="/company/js/home.js"></script>

@@ -19,7 +19,6 @@ class ShowFilesController extends Controller
         try {
             return Response::download($path);
         } catch (\Throwable $th) {
-            throw $th;
             return redirect()->back()->with('fail', 'Bir hata ile karşılaşıldı!');
         }
     }

@@ -12,6 +12,10 @@
             <a class="nav-link" id="ycp-tab" data-toggle="tab" href="#yillik_calisma_plani" role="tab"
                 aria-controls="Yıllık Çalışma Planı" aria-selected="false"><b>Yıllık Çalışma Planı</b></a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" id="e-tab" data-toggle="tab" href="#ekipmanlar" role="tab"
+                aria-controls="Ekipmanlar" aria-selected="false"><b>Ekipmanlar</b></a>
+        </li>
     </ul>
 </div>
 <div class="card-body">
@@ -23,5 +27,7 @@
 
         @include('admin.company.home.tabs.yillik-calisma-plani')
         
+        @include('admin.company.home.tabs.ekipmanlar')
+
     </div>
 </div>

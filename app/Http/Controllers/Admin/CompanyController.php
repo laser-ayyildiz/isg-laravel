@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreAccountantRequest;
 use App\Http\Requests\StoreCoopEmployeeRequest;
+use App\Models\Equipment;
 
 class CompanyController extends Controller
 {
@@ -47,6 +48,10 @@ class CompanyController extends Controller
         });
         $mandatory_files = $mandatory_files->whereBetween('file_type', [1, 8])->unique('file_type');
 
+        $equipments = Equipment::where('company_id', $id)->with('file')->get();
+
+        //dd($equipments->first());
+
         $file_names = [
             1 => 'İş Yeri Uzman Sözleşmesi',
             2 => 'İş Yeri Hekim Sözleşmesi',
@@ -67,6 +72,7 @@ class CompanyController extends Controller
                 'file_names' => $file_names,
                 'defter_nushalari' => $defter_nushalari[date('m')] ?? null,
                 'gozlem_raporlari' => $gozlem_raporlari[date('m')] ?? null,
+                'equipments' => $equipments,
             ],
         );
     }
@@ -144,6 +150,9 @@ class CompanyController extends Controller
     public function deletedIndex($id, Request $request)
     {
         $company = CoopCompany::where('id', $id)->onlyTrashed()->first();
+        if (empty($company))
+            abort(404);
+
         if ($request->ajax()) {
             $coopEmployees = CoopEmployee::where('company_id', $id)->withTrashed()->get();
             return DataTables::of($coopEmployees)
@@ -200,6 +209,15 @@ class CompanyController extends Controller
 
     public function assignEmployee(CoopCompany $company, Request $request)
     {
+        $exist = UserToCompany::where('user_id', $request->user)->where('company_id', $company->id)->count();
+        if ($exist >= 1) {
+            return back()->with(
+                [
+                    'fail' => 'Çalışan zaten bu işletmeye atanmış!',
+                    'tab' => 'osgb_calisanlar'
+                ]
+            );
+        }
         try {
             UserToCompany::create([
                 'user_id' => $request->user,

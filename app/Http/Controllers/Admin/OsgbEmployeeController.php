@@ -71,7 +71,6 @@ class OsgbEmployeeController extends Controller
             $user->notify(new CreateOsgbEmployee($user, $password));
         } catch (\Throwable $th) {
             DB::rollBack();
-            throw $th;
             return redirect()->back()->with('fail', 'Mail gönderme işleminde bir sıkıntı yaşıyoruz. Lütfen daha sonra tekrar deneyiniz!');
         }
         return redirect()->back()->with('success', 'Çalışan oluşturuldu. Giriş bilgileri mail olarak gönderildi!');

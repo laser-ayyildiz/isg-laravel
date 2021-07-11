@@ -283,7 +283,6 @@ class FileUploadController extends Controller
             if ($employeeToFiles !== null)
                 EmployeeToFile::insert($employeeToFiles);
         } catch (\Throwable $th) {
-            throw $th;
             DB::rollBack();
             return back()->with(
                 [
@@ -335,7 +334,6 @@ class FileUploadController extends Controller
             ]);
         } catch (\Throwable $th) {
             DB::rollBack();
-            throw $th;
             return back()->with(
                 [
                     'fail' => 'İşleminizi gerçekleştirirken bir hata ile karşılaşıldı.',

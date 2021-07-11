@@ -43,7 +43,6 @@ class ProfileController extends Controller
             $user->profile_photo_path = '/files/profile-pictures/' . $filename;
             $user->save();
         } catch (\Throwable $th) {
-            throw $th;
             DB::rollback();
             return redirect()->route('profile.index')->with('statusFail', 'Hata');
         }
@@ -130,7 +129,6 @@ class ProfileController extends Controller
         try {
             User::where('id', Auth::user()->id)->update($request->except(['_token', 'bilgi_kaydet']));
         } catch (\Throwable $th) {
-            dd($th);
             return redirect()->route('profile.index')->with('statusFail', 'Hata');
         }
         return redirect()->route('profile.index')->with('statusSuccess', 'Profil bilgileriniz başarıyla güncellenmiştir');

@@ -80,7 +80,6 @@ class ChangeValidateController extends Controller
                 CoopCompany::where('id', $demand->company->id)->delete();
                 CoopEmployee::where('company_id', $demand->company->id)->delete();
             } catch (\Throwable $th) {
-                throw $th;
                 DB::rollBack();
                 return redirect()->back()->with('fail', 'İşletme silinirken bir hatayla karşılaşıldı!');
             }

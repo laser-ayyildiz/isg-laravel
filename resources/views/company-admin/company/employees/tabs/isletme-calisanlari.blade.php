@@ -3,6 +3,7 @@
         <table class="table table-striped table-bordered table-hover" id="example">
             <thead class="thead-dark text-center">
                 <tr>
+                    <th>#</th>
                     <th>Adı Soyadı</th>
                     <th>T.C.</th>
                     <th>Telefon</th>
@@ -14,8 +15,9 @@
                 </tr>
             </thead>
             <tbody class="text-center">
-                @forelse ($employees->whereNull('deleted_at')->paginate(15) as $employee)
+                @forelse ($employees->whereNull('deleted_at')->paginate(15) as $key=>$employee)
                 <tr id="{{ $employee->id }}" style="cursor: pointer">
+                    <td>{{ $key+1 }}</td>
                     <td class="name">{{ $employee->name }}</td>
                     <td>{{ $employee->tc }}</td>
                     <td>{{ $employee->phone }}</td>

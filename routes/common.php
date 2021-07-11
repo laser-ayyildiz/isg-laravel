@@ -30,7 +30,15 @@ Route::post('/upload-excel/{company}/employee-list', [UploadEmployeeTableControl
 Route::post('files/{folder}/{file_name}', [ShowFilesController::class, 'download'])->name('download-file');
 Route::get('files/{folder}/{file_name}', [ShowFilesController::class, 'show'])->name('show-file');
 
-////////////////DELETE FILES//////////////////////////////////////////////////////////////////
+////////////////////////DELETE FILES////////////////////////////////
 Route::post('delete-file/{type}/{file}', [DeleteFilesController::class, 'deleteFile'])->name('delete-file');
 Route::post('delete-employee-file/{file}', [DeleteFilesController::class, 'deleteEmpFile'])->name('delete-employee-file');
 Route::post('/delete/mandatory-files/{file}', [DeleteFilesController::class, 'deleteMandatoryFile'])->name('mandatory-file-delete');
+
+////////////////////////EQUIPMENTS////////////////////////////////
+Route::post('/add-equipment/{company}', [EquipmentController::class, 'add'])->name('add-equipment');
+Route::post('/add-equipment-file/{equipment}', [EquipmentController::class, 'addFile'])->name('add-equipment-file');
+
+Route::delete('/delete-equipment/{equipment}', [EquipmentController::class, 'delete'])->name('delete-equipment');
+Route::delete('/delete-equipment-file/{equipmentToFile}', [EquipmentController::class, 'deleteFile'])->name('delete-equipment-file');
+

@@ -64,7 +64,6 @@ class CoopCompanyController extends Controller
                 'katip_kurum_id' => $request->katip_kurum_id,
             ]);
         } catch (\Throwable $th) {
-            throw $th;
             return back()->with('fail', 'İşletme eklenirken bir hata ile karşılaşıldı');
         }
 

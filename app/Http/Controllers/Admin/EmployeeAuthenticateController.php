@@ -36,18 +36,22 @@ class EmployeeAuthenticateController extends Controller
 
     public function employeeAuthenticate(User $user, Request $request)
     {
+        $exist = UserToCompany::where('user_id', $user->id)->where('company_id', $request->company)->count();
+        if ($exist >= 1) {
+            return back()->with(
+                [
+                    'fail' => 'Çalışan zaten bu işletmeye atanmış!',
+                    'tab' => 'osgb_calisanlar'
+                ]
+            );
+        }
         try {
             UserToCompany::create([
                 'user_id' => $user->id,
                 'company_id' => $request->company
             ]);
             return redirect()->route('admin.authentication')->with('success', 'Yetkilendirme Başarıyla Gerçekleştrildi');
-        } catch (\Exception $error) {
-            Exception::create([
-                'user_id' => Auth::id(),
-                'exception' => $error,
-                'function_name' => 'EmployeeAuthenticateController->employeeAuthenticate'
-            ]);
+        } catch (\Throwable $th) {
             return redirect()->route('admin.authentication')->with('fail', 'Bir Hata ile Karşılaşıldı');
         }
     }
