@@ -30,8 +30,7 @@ class CreateCoopCompaniesTable extends Migration
                 ->nullable()
                 ->unique();
             $table->string('vergi_no')
-                ->nullable()
-                ->unique();
+                ->nullable();
             $table->string('vergi_dairesi')
                 ->nullable();
             $table->string('katip_is_yeri_id')

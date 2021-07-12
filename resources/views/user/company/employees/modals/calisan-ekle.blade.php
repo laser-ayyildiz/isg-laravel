@@ -13,11 +13,11 @@
 
                     <div class="row my-2">
                         <div class="col-sm-6">
-                            <label for="empName"><b>Çalışan adı</b></label>
+                            <label for="empName"><b>Çalışan Adı Soyadı</b></label>
                             <input class="form-control" type="text" name="name" required>
                         </div>
                         <div class="col-sm-6">
-                            <label for="empPosition"><b>Pozisyon</b></label>
+                            <label for="empPosition"><b>Görevi</b></label>
                             <input class="form-control" type="text" name="position">
                         </div>
                     </div>

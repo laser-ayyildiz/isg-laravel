@@ -28,7 +28,7 @@ class StoreCoopCompanyRequest extends FormRequest
             'nace_kodu' => 'required|string',
             'mersis_no' => 'bail|nullable||numeric|unique:coop_companies,mersis_no|digits:16',
             'sgk_sicil' => 'bail|required|numeric|unique:coop_companies,sgk_sicil|digits_between:9,26',
-            'vergi_no' => 'bail|required|numeric|unique:coop_companies,vergi_no|digits:10',
+            'vergi_no' => 'bail|required|numeric',
             'vergi_dairesi' => 'required|string',
             'front_acc_name' => 'nullable|string',
             'front_acc_email' => 'nullable|email',

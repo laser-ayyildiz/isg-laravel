@@ -55,7 +55,7 @@
                     </td>
                 </tr>
                 @empty
-                <td colspan="8">
+                <td colspan="9">
                     <h4 class="text-center">
                         <b>
                             Bu işletmeye henüz hiçbir çalışan eklenmedi!

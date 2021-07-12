@@ -37,8 +37,8 @@ Route::post('/delete/mandatory-files/{file}', [DeleteFilesController::class, 'de
 
 ////////////////////////EQUIPMENTS////////////////////////////////
 Route::post('/add-equipment/{company}', [EquipmentController::class, 'add'])->name('add-equipment');
-Route::post('/add-equipment-file/{equipment}', [EquipmentController::class, 'addFile'])->name('add-equipment-file');
+Route::post('/add-equipment-file', [EquipmentController::class, 'addFile'])->name('add-equipment-file');
 
 Route::delete('/delete-equipment/{equipment}', [EquipmentController::class, 'delete'])->name('delete-equipment');
-Route::delete('/delete-equipment-file/{equipmentToFile}', [EquipmentController::class, 'deleteFile'])->name('delete-equipment-file');
+Route::delete('/delete-equipment-file/{file}', [EquipmentController::class, 'deleteFile'])->name('delete-equipment-file');
 

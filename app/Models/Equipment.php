@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Equipment extends Model
 {
@@ -14,6 +13,7 @@ class Equipment extends Model
         'company_id',
         'name',
         'period',
+        'file_id',
         'valid_date',
         'maintained_at',
     ];
@@ -25,6 +25,6 @@ class Equipment extends Model
 
     public function file()
     {
-        return $this->hasMany(EquipmentToFile::class);
+        return $this->belongsTo(File::class);
     }
 }

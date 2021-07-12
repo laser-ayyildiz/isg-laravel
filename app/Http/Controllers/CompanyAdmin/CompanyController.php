@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\CompanyAdmin;
 
+use App\Models\Equipment;
 use App\Models\CoopCompany;
 use App\Models\CoopEmployee;
 use App\Models\CompanyToFile;
@@ -49,6 +50,8 @@ class CompanyController extends Controller
         });
         $mandatory_files = $mandatory_files->whereBetween('file_type', [1, 8])->unique('file_type');
 
+        $equipments = Equipment::where('company_id', $id)->with('file')->get();
+
         $file_names = [
             1 => 'İş Yeri Uzman Sözleşmesi',
             2 => 'İş Yeri Hekim Sözleşmesi',
@@ -60,7 +63,7 @@ class CompanyController extends Controller
             8 => 'Yıl Sonu Değerlendirme Raporu'
         ];
         return view(
-            'admin.company.home.index',
+            'company-admin.company.home.index',
             [
                 'company' => $company,
                 'employees' => $employees,
@@ -69,8 +72,8 @@ class CompanyController extends Controller
                 'file_names' => $file_names,
                 'defter_nushalari' => $defter_nushalari[date('m')] ?? null,
                 'gozlem_raporlari' => $gozlem_raporlari[date('m')] ?? null,
-                'count' => 0
-
+                'count' => 0,
+                'equipments' => $equipments,
             ],
         );
     }

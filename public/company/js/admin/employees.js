@@ -46,7 +46,7 @@ $(document).ready(function () {
             }
         }
         else {
-            var name = tr.find('td').first().text();
+            var name = tr.find('td').eq(1).text();
             $('#deleteEmpName').html("<b>" + name + '</b> isimli çalışanı silmek istediğinize emin misiniz?');
             $('#empName').html("<b>" + name + '</b> isimli çalışan için dosya yükle');
             if (tr.attr('id') !== null && typeof tr.attr('id') !== "undefined") {
@@ -75,7 +75,7 @@ $(document).ready(function () {
         }
 
         else {
-            var name = tr.find('td').first().text();
+            var name = tr.find('td').eq(1).text();
             $('#restoreEmpName').html("<b>" + name + '</b> isimli çalışanı işe geri almak istediğinize emin misiniz?');
             if (tr.attr('id') !== null && typeof tr.attr('id') !== "undefined") {
                 $('#restoreEmpRequest').on('click', function () {

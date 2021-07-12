@@ -3,6 +3,7 @@
         <table class="table table-striped table-bordered table-hover" id="example">
             <thead class="thead-dark text-center">
                 <tr>
+                    <th>#</th>
                     <th>Adı Soyadı</th>
                     <th>T.C.</th>
                     <th>Telefon</th>
@@ -18,8 +19,9 @@
             <tbody class="text-center">
                 @forelse ($employees->whereNull('deleted_at')->filter(function ($item) {
                 return $item->first_edu == 0 || $item->second_edu == 0 || $item->examination == 0;
-                })->paginate(15) as $employee)
+                })->paginate(15) as $key=>$employee)
                 <tr id="{{ $employee->id }}" style="cursor: pointer">
+                    <td>{{ $key+1 }}</td>
                     <td class="name">{{ $employee->name }}</td>
                     <td>{{ $employee->tc }}</td>
                     <td>{{ $employee->phone }}</td>
@@ -64,11 +66,11 @@
                     </td>
                 </tr>
                 @empty
-                <td colspan="10">
+                <td colspan="11">
                     <h4 class="text-center">
                         <b>
                             {{ $employees->whereNull('deleted_at')->count() > 0 ? 'Bütün çalışanların evrakları tam!' : 'Bu işletmeye henüz hiçbir çalışan eklenmedi!' }}
-                            
+
                         </b>
                     </h4>
                 </td>

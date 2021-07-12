@@ -18,6 +18,7 @@ class CreateEquipmentTable extends Migration
             $table->foreignId('company_id')->constrained('coop_companies')->onDelete('cascade')->onUpdate('cascade');
             $table->string('name');
             $table->tinyInteger('period');
+            $table->foreignId('file_id')->nullable()->constrained('files');
             $table->date('maintained_at')->nullable();
             $table->date('valid_date')->nullable();
             $table->timestamps();

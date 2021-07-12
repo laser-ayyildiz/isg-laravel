@@ -8,12 +8,18 @@
             <a class="nav-link" id="ac-tab" data-toggle="tab" href="#aylik_calismalar" role="tab"
                 aria-controls="Aylık Çalışmalar" aria-selected="false"><b>Aylık Çalışmalar</b></a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" id="e-tab" data-toggle="tab" href="#ekipmanlar" role="tab"
+                aria-controls="Ekipmanlar" aria-selected="false"><b>Ekipmanlar</b></a>
+        </li>
     </ul>
 </div>
 <div class="card-body">
     <div class="tab-content" id="myTabContent">
         @include('company-admin.company.home.tabs.zorunlu-dokumanlar')
 
-        @include('company-admin.company.home.tabs.aylik-calismalar')        
+        @include('company-admin.company.home.tabs.aylik-calismalar')
+
+        @include('company-admin.company.home.tabs.ekipmanlar')
     </div>
 </div>

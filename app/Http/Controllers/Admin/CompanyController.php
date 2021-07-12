@@ -48,9 +48,8 @@ class CompanyController extends Controller
         });
         $mandatory_files = $mandatory_files->whereBetween('file_type', [1, 8])->unique('file_type');
 
-        $equipments = Equipment::where('company_id', $id)->with('file')->get();
 
-        //dd($equipments->first());
+        $equipments = Equipment::where('company_id', $id)->with('file')->get();
 
         $file_names = [
             1 => 'İş Yeri Uzman Sözleşmesi',

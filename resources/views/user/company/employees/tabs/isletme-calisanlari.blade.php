@@ -79,7 +79,7 @@
                     </td>
                 </tr>
                 @empty
-                <td colspan="10">
+                <td colspan="11">
                     <h4 class="text-center">
                         <b>
                             Bu işletmeye henüz hiçbir çalışan eklenmedi!

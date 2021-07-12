@@ -1,10 +1,4 @@
 <div class="tab-pane fade show" id="ekipmanlar" role="tabpanel" aria-labelledby="e-tab">
-    <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#addEquipment"
-        data-whatever="@getbootstrap">Yeni Ekipman Ekle</button>
-    @if ($equipments !== null)
-    <button class="btn btn-success mb-3 float-sm-right" data-toggle="modal" data-target="#addEquipmentFile"
-        data-whatever="@getbootstrap">Bakım Dosyası Yükle</button>
-    @endif
     <div class="table-responsive">
         <table class="table table-striped table-bordered">
             <thead class="thead-dark">
@@ -13,7 +7,6 @@
                 <th>Son Bakım Tarihi</th>
                 <th>Geçerlilik</th>
                 <th style="width: 19%">Dosya</th>
-                <th>Sil</th>
             </thead>
             <tbody>
                 @forelse ($equipments as $equipment)
@@ -41,31 +34,13 @@
                             <button class="btn btn-success btn-sm" type="submit">
                                 <i class="fas fa-download"></i></button>
                         </form>
-                        <form
-                            action="{{ route('delete-equipment-file', ['file' => $equipment->file]) }}"
-                            method="POST">
-                            @method('DELETE')
-                            @csrf
-                            <button class="btn btn-danger btn-sm float-left mx-1">
-                                <i class="fas fa-times text-white"></i>
-                            </button>
-                        </form>
                     </td>
                     @else
                     <td>Dosya Yok</td>
                     @endisset
-                    <td class="text-center">
-                        <form action="{{ route('delete-equipment', ['equipment' => $equipment]) }}" method="POST">
-                            @method('DELETE')
-                            @csrf
-                            <button class="btn btn-danger btn-sm float-left mx-1">
-                                Sil</i>
-                            </button>
-                        </form>
-                    </td>
                 </tr>
                 @empty
-                <td class="text-center" colspan="6">
+                <td class="text-center" colspan="5">
                     <b>Henüz ekipman eklenmedi</b>
                 </td>
                 @endempty

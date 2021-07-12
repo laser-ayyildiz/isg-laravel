@@ -45,7 +45,7 @@ $(document).ready(function () {
             }
         }
         else {
-            var name = tr.find('td').first().text();
+            var name = tr.find('td').eq(1).text();
             $('#empName').html("<b>" + name + '</b> isimli çalışan için dosya yükle');
 
             if (tr.attr('id') !== null && typeof tr.attr('id') !== "undefined") {

@@ -33,7 +33,7 @@
                         <h4><b>Vergi No<a style="color:red">*</a></b></h4>
                     </label>
                     <input class="form-control" id="vergi_no" name="vergi_no" type="tel" value="{{ old('vergi_no') }}"
-                        minlength="10" maxlength="10" placeholder="Vergi No" required>
+                        maxlength="35" placeholder="Vergi No" required>
                 </div>
                 <div class="col-6">
                     <label for="vergi_dairesi">
