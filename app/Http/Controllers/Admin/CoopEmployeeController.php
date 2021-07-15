@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Models\CoopEmployee;
+use Illuminate\Http\Request;
 use App\Models\EmployeeToFile;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreCoopEmployeeRequest;
 
 class CoopEmployeeController extends Controller
 {
@@ -45,15 +46,9 @@ class CoopEmployeeController extends Controller
         );
     }
 
-    public function update(CoopEmployee $employee, Request $request)
+    public function update(CoopEmployee $employee, StoreCoopEmployeeRequest $request)
     {
-        $this->validate($request, [
-            'name' => 'required',
-            'email' => 'email|unique:coop_employees,email,' . $employee->id,
-            'tc' => 'required|unique:coop_employees,tc,' . $employee->id . '|digits:11',
-            'recruitment_date' => 'required|before_or_equal:' . date("Y-m-d H:i:s"),
-            'phone' => 'digits:11'
-        ]);
+        $request->validated();
         $demand = array_diff_assoc($request->except(['_token', 'compName']), $employee->toArray());
         if (empty($demand))
             return redirect()->back()->with('fail', 'Hiçbir değişiklik yapmadığınızı fark ettik. Lütfen tekrar deneyin!');

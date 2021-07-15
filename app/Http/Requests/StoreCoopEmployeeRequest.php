@@ -25,9 +25,9 @@ class StoreCoopEmployeeRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'tc' => 'required|unique:coop_employees,tc|numeric|digits:11',
-            'email' => 'email|nullable|unique:coop_employees,email',
+            'name' => 'required|max:250',
+            'tc' => 'required|numeric|digits:11',
+            'email' => 'email|nullable',
             'phone' => 'nullable|numeric|digits:11',
             'recruitment_date' => 'nullable|before_or_equal:' . date("Y-m-d H:i:s"),
         ];

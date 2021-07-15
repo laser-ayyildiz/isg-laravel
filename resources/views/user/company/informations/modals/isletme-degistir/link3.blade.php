@@ -14,14 +14,14 @@
                     <h4><b>Kurum Mersis No</b></h4>
                 </label>
                 <input class="form-control" name="mersis_no" type="tel" value="{{  $company->mersis_no }}"
-                    maxlength="16" placeholder="Mersis No">
+                     placeholder="Mersis No">
             </div>
             <div class="col-6">
                 <label for="sgk_sicil">
                     <h4><b>SGK Sicil No<a style="color:red">*</a></b></h4>
                 </label>
                 <input class="form-control" name="sgk_sicil" type="tel" value="{{  $company->sgk_sicil }}"
-                    minlength="26" maxlength="26" placeholder="SGK Sicil No" required>
+                     placeholder="SGK Sicil No" required>
             </div>
         </div>
         <br>
@@ -30,8 +30,7 @@
                 <label for="vergi_no">
                     <h4><b>Vergi No<a style="color:red">*</a></b></h4>
                 </label>
-                <input class="form-control" name="vergi_no" type="tel" value="{{  $company->vergi_no }}" minlength="10"
-                    maxlength="10" placeholder="Vergi No" required>
+                <input class="form-control" name="vergi_no" type="tel" value="{{  $company->vergi_no }}"  placeholder="Vergi No" required>
             </div>
             <div class="col-6">
                 <label for="vergi_dairesi">
@@ -47,15 +46,13 @@
                 <label for="katip_is_yeri_id">
                     <h4><b>İSG-KATİP İş Yeri ID</b></h4>
                 </label>
-                <input class="form-control" name="katip_is_yeri_id" value="{{  $company->katip_is_yeri_id }}" type="tel"
-                    maxlength="30" placeholder="İSG-KATİP İş Yeri ID">
+                <input class="form-control" name="katip_is_yeri_id" value="{{  $company->katip_is_yeri_id }}" type="tel" placeholder="İSG-KATİP İş Yeri ID">
             </div>
             <div class="col-6">
                 <label for="katip_kurum_id">
                     <h4><b>İSG-KATİP Kurum ID</b></h4>
                 </label>
-                <input class="form-control" name="katip_kurum_id" type="tel" value="{{  $company->katip_kurum_id }}"
-                    maxlength="30" placeholder="İSG-KATİP Kurum ID">
+                <input class="form-control" name="katip_kurum_id" type="tel" value="{{  $company->katip_kurum_id }}" placeholder="İSG-KATİP Kurum ID">
             </div>
         </div>
     </div>

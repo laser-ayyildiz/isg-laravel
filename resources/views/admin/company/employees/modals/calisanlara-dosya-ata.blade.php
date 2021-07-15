@@ -18,7 +18,8 @@
                     <div class="row mt-3">
                         <div class="col-6">
                             <label for="batch_file_type"><b>Dosya Tipi</b></label>
-                            <select name="batch_file_type" id="batch_file_type" class="form-control select-options" required>
+                            <select name="batch_file_type" id="batch_file_type" class="form-control select-options"
+                                required>
                                 <option selected disabled>Dosya Tipini Seçiniz...</option>
                                 <option value="1">İSG Eğitimi 1</option>
                                 <option value="2">İSG Eğitimi 2</option>
@@ -48,14 +49,22 @@
                             value="selectAll">
                         <label class="form-check-label" for="selectAll"><b>Bütün Çalışanlara Ata</b></label>
                     </div>
-                    <div class="row px-3 my-3" id="boxes">
-                        @foreach ($employees->whereNull('deleted_at') as $key=>$employee)
-                        <div class="form-check form-check-inline m-2">
-                            <input class="form-check-input" type="checkbox" name="box{{ $key }}"
-                                id="inlineCheckbox{{ $key }}" value="{{ $employee->id }}">
-                            <label class="form-check-label" for="inlineCheckbox{{ $key }}">{{ $employee->name }}</label>
-                        </div>
-                        @endforeach
+                    <div class="table-responsive-sm px-3 my-3" id="boxes" style="height: 200px; overflow: auto;">
+                        <table class="table table-sm table-striped">
+                            <tbody>
+                                @foreach ($employees->whereNull('deleted_at') as $key=>$employee)
+                                <tr>
+                                    <td style="width: 3%;">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="box{{ $key }}"
+                                                id="inlineCheckbox{{ $key }}" value="{{ $employee->id }}">
+                                        </div>
+                                    </td>
+                                    <td>{{ $employee->name }}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary btn-block mt-4">

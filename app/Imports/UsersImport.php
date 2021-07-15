@@ -57,8 +57,8 @@ class UsersImport implements
     public function rules(): array
     {
         return [
-            '*.email' => ['email', 'unique:coop_employees,email', 'nullable'],
-            '*.tc' => ['required', 'unique:coop_employees,tc', 'digits:11']
+            '*.email' => ['email', 'nullable'],
+            '*.tc' => ['required', 'digits:11']
         ];
     }
 

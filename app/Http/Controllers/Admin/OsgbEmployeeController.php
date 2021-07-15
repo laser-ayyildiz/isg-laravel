@@ -47,12 +47,13 @@ class OsgbEmployeeController extends Controller
             'phone' => 'Telefon No',
             'rec_date' => 'İşe Giriş Tarihi'
         ]);
-        
+
         $chars = "1234567890abcdefghijKLMNOPQRSTuvwxyzABCDEFGHIJklmnopqrstUVWXYZ0987654321+-/*-?=&%!";
         $password = '';
         for ($i = 0; $i < 16; $i++) {
             $password .= $chars[rand() % 72];
         }
+        DB::beginTransaction();
         try {
             $user = User::create([
                 'job_id' => $request->job_id,
@@ -64,6 +65,7 @@ class OsgbEmployeeController extends Controller
                 'password' => Hash::make($password)
             ])->syncRoles('User');
         } catch (\Throwable $th) {
+            DB::rollback();
             return redirect()->back()->with('fail', 'Çalışan kayıt edilirken bir hata ile karşılaşıldı!');
         }
 
@@ -73,26 +75,32 @@ class OsgbEmployeeController extends Controller
             DB::rollBack();
             return redirect()->back()->with('fail', 'Mail gönderme işleminde bir sıkıntı yaşıyoruz. Lütfen daha sonra tekrar deneyiniz!');
         }
+        DB::commit();
         return redirect()->back()->with('success', 'Çalışan oluşturuldu. Giriş bilgileri mail olarak gönderildi!');
     }
 
     public function handle(Request $request)
     {
         $id = $request->input('userId');
+        DB::beginTransaction();
         if ($request->has('deleteRequest')) {
             try {
                 $this->delete($request, $id);
             } catch (\Throwable $th) {
+                DB::rollBack();
                 return redirect()->back()->with('fail', 'İşleminiz gerçekleştrilirken bir hata ile karşılaşıldı!');
             }
+            DB::commit();
             return redirect()->back()->with('success', 'Kullanıcı silinmiştir. Silinen çalışanları Arşiv bölümünde bulabilirsiniz!');
         }
         if ($request->has('changeRequest')) {
             try {
                 $this->change($request, $id);
             } catch (\Throwable $th) {
+                DB::rollBack();
                 return redirect()->back()->with('fail', 'İşleminiz gerçekleştrilirken bir hata ile karşılaşıldı!');
             }
+            DB::commit();
             return redirect()->back()->with('success', 'Değişiklikleriniz başarıyla uygulanmıştır!');
         }
     }

@@ -72,6 +72,7 @@ $ajax = route('user.companies.index');
               "order": [[ 6, "asc" ]],
               columns: [
                   {data: 'name', name: 'name'},
+                  {data: 'sube_kodu', name: 'sube_kodu'},
                   {data: 'type', name: 'type'},
                   {data: 'phone', name: 'phone'},
                   {data: 'email', name: 'email'},

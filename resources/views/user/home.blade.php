@@ -46,7 +46,7 @@
                         <div class="text-uppercase text-info font-weight-bold text-xs mb-1"><span>Toplam Ekipman
                                 sayısı</span>
                         </div>
-                        50
+                        {{ $equipment_count ?? '0' }}
                         <div class="row no-gutters align-items-center">
                             <div class="col-auto">
                                 <div class="text-dark font-weight-bold h5 mb-0 mr-3"><span></span>

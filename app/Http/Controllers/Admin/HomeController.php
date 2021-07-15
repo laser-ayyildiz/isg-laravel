@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
+use App\Models\Equipment;
 use App\Models\CoopCompany;
 use App\Models\CoopEmployee;
 use Illuminate\Http\Request;
@@ -20,19 +21,14 @@ class HomeController extends Controller
     {
         $emp_count = CoopEmployee::count();
         $companies = CoopCompany::select('id', 'name', 'contract_at', 'type', 'danger_type')->orderBy('name')->get();
+        $equipment_count = Equipment::count();
+
         $types = [];
         $month_counts = array_fill(0, 12, 0);
-        $dangers = ['less' => 0, 'medium' => 0, 'very' => 0];
+        $dangers['less'] = $companies->where('danger_type', 1)->count();
+        $dangers['medium'] = $companies->where('danger_type', 2)->count();
+        $dangers['very'] = $companies->where('danger_type', 3)->count();
         foreach ($companies as $company) {
-            if ($company->danger_type == 1)
-                $dangers['less'] += 1;
-
-            if ($company->danger_type == 2)
-                $dangers['medium'] += 1;
-
-            if ($company->danger_type == 3)
-                $dangers['very'] += 1;
-
             array_key_exists($company->type, $types) ? $types[$company->type] += 1 : $types[$company->type] = 1;
             $month = intval(Date('m', strtotime($company->contract_at)));
             $month_counts[$month - 1] += 1;
@@ -56,6 +52,7 @@ class HomeController extends Controller
                 'labels' => $labels,
                 'values' => $values,
                 'dangers' => $dangers,
+                'equipment_count' => $equipment_count
             ]
         );
     }

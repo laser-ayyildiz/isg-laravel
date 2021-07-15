@@ -13,7 +13,8 @@
         <table class="table table-striped table-bordered table-hover data-table" id="example">
             <thead class="thead-dark">
                 <tr>
-                    <th>İşletme Adı</a></th>
+                    <th>İşletme Adı</th>
+                    <th>Şube</th>
                     <th>Sektör</th>
                     <th>Telefon</th>
                     <th>E-mail</th>

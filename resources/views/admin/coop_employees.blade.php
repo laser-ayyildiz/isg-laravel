@@ -131,14 +131,14 @@
                     </div>
                     <div class="row my-4">
                         <div class="col-2">
-                            <label for="position"><b>Pozisyon</b></label>
+                            <label for="position"><b>Görevi</b></label>
                             <input class="form-control" name="position" type="text" value="{{ $employee->position }}">
                             </label>
                         </div>
                         <div class="col-2">
                             <label for="recruitment_date"><b>İşe Giriş Tarihi</b></label>
                             <input class="form-control" name="recruitment_date" type="date"
-                                value="{{ $employee->recruitment_date }}" required>
+                                value="{{ $employee->recruitment_date }}">
                             </label>
                         </div>
                     </div>
@@ -259,7 +259,7 @@
     @if(!$deleted)
     file_date.max = new Date().toISOString().split("T")[0];
     @endif
-    
+
     const goToCompany = (id) => window.location = "/admin/company/" + id;
 
     $('#file_type').on('change', function () {

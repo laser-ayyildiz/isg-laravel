@@ -17,6 +17,7 @@ class StoreCoopCompanyRequest extends FormRequest
         return [
             'type' => 'required',
             'name' => 'required|string',
+            'sube_kodu' => 'nullable|string|max:255',
             'email' => 'required|email',
             'bill_address' => 'required|string',
             'danger_type' => 'required|numeric|between:1,3',
@@ -49,6 +50,7 @@ class StoreCoopCompanyRequest extends FormRequest
         return [
             'type' => 'Sektör',
             'name' => 'Şirket Adı',
+            'sube_kodu' => 'Şube Kodu',
             'email' => 'Email',
             'bill_address' => 'Fatura Adresi',
             'danger_type' => 'Tehlike Sınıfı',

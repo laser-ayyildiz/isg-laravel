@@ -17,6 +17,8 @@
                         <option value="3">Çok Tehlikeli</option>
                     </select>
                 </div>
+                <div class="col-4" id="sube-kodu-div"></div>
+
             </div>
             <div class="row">
                 <div class="col-4">

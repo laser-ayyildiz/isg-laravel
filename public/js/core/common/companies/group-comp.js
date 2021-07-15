@@ -10,7 +10,7 @@ $('input[type=radio][name=isGroup]').change(function() {
             '<div class="form-check">'+
                 '<input class="form-check-input" type="radio" name="company_status" id="leader-company" value="leader" checked>'+
                 '<label class="form-check-label" for="leader-company">Grup Şirketlerin Başındaki İş Yeri</label></div>'
-            ); 
+            );
         $("#leader-company").prop("checked", true);
     }
     if (this.value == 'false') {
@@ -29,8 +29,15 @@ $(document).on('change', 'input[type=radio][name=company_status]', function() {
             '<option value="" disabled selected>İş Yeri Seç</option></select>'
             );
         populateList();
+        $('#sube-kodu-div').append(
+            '<label for="sube-kodu">'+
+            '<h5><b>Şube Kodunu giriniz<a style="color:red">*</a></b></h5></label>'+
+            '<input class="form-control" name="sube_kodu" id="sube-kodu">'+
+            '</input>'
+        )
     }
     if (this.value == 'leader') {
         $("#leader-company-div").empty();
+        $("#sube-kodu-div").empty();
     }
 });

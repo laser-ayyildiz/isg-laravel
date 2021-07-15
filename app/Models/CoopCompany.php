@@ -14,6 +14,7 @@ class CoopCompany extends Model
     protected $fillable = [
         'type',
         'name',
+        'sube_kodu',
         'employer',
         'email',
         'phone',

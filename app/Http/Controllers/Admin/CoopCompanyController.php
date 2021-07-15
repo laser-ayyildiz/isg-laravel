@@ -21,9 +21,9 @@ class CoopCompanyController extends Controller
     {
         $osgbEmployees = User::whereBetween('job_id', [1, 7])->get();
         $group_leaders = CoopCompany::select('id', 'name')->where('group_status', 'leader')->get();
-        
+
         if ($request->ajax()) {
-            $data = CoopCompany::select('id', 'name', 'type', 'phone', 'email', 'city', 'town', 'contract_at');
+            $data = CoopCompany::select('id', 'name', 'sube_kodu', 'type', 'phone', 'email', 'city', 'town', 'contract_at');
             return DataTables::of($data)
                 ->make(true);
         }
@@ -39,10 +39,16 @@ class CoopCompanyController extends Controller
     public function store(StoreCoopCompanyRequest $request)
     {
         $request->validated();
+        if ($request->isGroup == "true" && $request->company_status == 'member' && $request->leader_company_select == null) {
+            return back()->with('fail', 'Grup şirketinin başındaki iş yerini seçmediniz!');
+        }
+
+        DB::beginTransaction();
         try {
             $company = CoopCompany::create([
                 'type' => $request->type,
                 'name' => $request->name,
+                'sube_kodu' => $request->sube_kodu ?? null,
                 'email' => $request->email,
                 'address' => $request->address,
                 'bill_address' => $request->bill_address,
@@ -64,6 +70,7 @@ class CoopCompanyController extends Controller
                 'katip_kurum_id' => $request->katip_kurum_id,
             ]);
         } catch (\Throwable $th) {
+            DB::rollBack();
             return back()->with('fail', 'İşletme eklenirken bir hata ile karşılaşıldı');
         }
 
@@ -98,6 +105,7 @@ class CoopCompanyController extends Controller
             }
             UserToCompany::insert($employees);
         } catch (\Throwable $th) {
+            DB::rollBack();
             return back()->with('fail', 'İşletme Çalışanları eklenirken bir hata ile karşılaşıldı.');
         }
 
@@ -111,6 +119,7 @@ class CoopCompanyController extends Controller
                 );
             }
         } catch (\Throwable $th) {
+            DB::rollBack();
             return back()->with('fail', 'İşletme grubuyla ilgili bir hata ile karşılaşıldı.');
         }
 
@@ -132,27 +141,13 @@ class CoopCompanyController extends Controller
                 ]);
             }
         } catch (\Throwable $th) {
+            DB::rollBack();
             return back()->with('fail', 'İşletmeye ait muhasebeciler eklenirken bir hata ile karşılaşıldı.');
         }
-
+        DB::commit();
         return back()
             ->with('success', 'İşletme başarıyla eklendi. ' .
                 '<a  href="/admin/company/' . $company->id . '">' .
                 Str::title($company->name) . ' İşletmesine Git</a>');
     }
 }
-
-/*
-        $data = CoopCompany::select('id', 'name', 'type', 'phone', 'email', 'city', 'town', 'contract_at')->get();
-        
-        
-        $extra =  DB::select(
-            DB::raw('select * from `coop_companies` where exists (select * from `user_to_companies` where `coop_companies`.`id` = `user_to_companies`.`company_id` and exists (select * from `users` where `user_to_companies`.`user_id` = `users`.`id` and `job_id` = 4 and `users`.`deleted_at` is null)) and `coop_companies`.`deleted_at` is null')
-        );
-        
-        //dd($extra);
-        //dd();
-        $merged = array_merge($data->toArray(), $extra);
-        
-        dd($merged);
-        */

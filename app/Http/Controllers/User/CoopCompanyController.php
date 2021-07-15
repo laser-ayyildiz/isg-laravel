@@ -11,6 +11,7 @@ use App\Models\UserToCompany;
 use App\Models\CompanyToGroup;
 use App\Models\FrontAccountant;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreCoopCompanyRequest;
@@ -45,10 +46,15 @@ class CoopCompanyController extends Controller
     public function store(StoreCoopCompanyRequest $request)
     {
         $request->validated();
+        if ($request->isGroup == "true" && $request->company_status == 'member' && $request->leader_company_select == null) {
+            return back()->with('fail', 'Grup şirketinin başındaki iş yerini seçmediniz!');
+        }
+        DB::beginTransaction();
         try {
             $company = CoopCompany::create([
                 'type' => $request->type,
                 'name' => $request->name,
+                'sube_kodu' => $request->sube_kodu ?? null,
                 'email' => $request->email,
                 'address' => $request->address,
                 'bill_address' => $request->bill_address,
@@ -70,7 +76,7 @@ class CoopCompanyController extends Controller
                 'katip_kurum_id' => $request->katip_kurum_id,
             ]);
         } catch (\Throwable $th) {
-            throw $th;
+            DB::rollBack();
             return back()->with('fail', 'İşletme eklenirken bir hata ile karşılaşıldı');
         }
 
@@ -113,6 +119,7 @@ class CoopCompanyController extends Controller
             }
             UserToCompany::insert($employees);
         } catch (\Throwable $th) {
+            DB::rollBack();
             return back()->with('fail', 'İşletme Çalışanları eklenirken bir hata ile karşılaşıldı.');
         }
 
@@ -126,6 +133,7 @@ class CoopCompanyController extends Controller
                 );
             }
         } catch (\Throwable $th) {
+            DB::rollBack();
             return back()->with('fail', 'İşletme grubuyla ilgili bir hata ile karşılaşıldı.');
         }
 
@@ -147,9 +155,10 @@ class CoopCompanyController extends Controller
                 ]);
             }
         } catch (\Throwable $th) {
+            DB::rollBack();
             return back()->with('fail', 'İşletmeye ait muhasebeciler eklenirken bir hata ile karşılaşıldı.');
         }
-
+        DB::commit();
         return back()
             ->with('success', 'İşletme başarıyla eklendi. ' .
                 '<a  href="/user/company/' . $company->id . '">' .
