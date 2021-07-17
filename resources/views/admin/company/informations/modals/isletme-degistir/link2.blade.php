@@ -18,6 +18,14 @@
                     <option value="3">Çok Tehlikeli</option>
                 </select>
             </div>
+            @isset($company->sube_kodu)
+            <div class="col-sm-4">
+                <label for="sube_kodu">
+                    <h5><b>Şube Adı<a style="color:red">*</a></b></h5>
+                </label>
+                <input class="form-control" name="sube_kodu" value="{{ $company->sube_kodu }}">
+            </div>
+            @endisset
         </div>
         <div class="row mt-3">
             <div class="col-sm-12">

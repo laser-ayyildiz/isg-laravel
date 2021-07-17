@@ -75,6 +75,9 @@
                         <a class="collapse-item" id="acc_item"
                             href="{{ route($role . '.company.informations.acc',['id' => request()->segment(3)]) }}">Muhasebe
                             Bilgileri</a>
+                        <a class="collapse-item" id="grb_item"
+                            href="{{ route($role . '.company.informations.group',['id' => request()->segment(3)]) }}">Grup
+                            Bilgileri</a>
 
                     </div>
                 </div>

@@ -16,7 +16,6 @@
                     <th>İşletme Adı</th>
                     <th>Şube</th>
                     <th>Sektör</th>
-                    <th>Telefon</th>
                     <th>E-mail</th>
                     <th>Şehir</th>
                     <th>İlçe</th>

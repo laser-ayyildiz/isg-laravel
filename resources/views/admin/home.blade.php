@@ -83,7 +83,8 @@
                 <div class="row align-items-center no-gutters">
                     <div class="col mr-2">
                         <button class="btn btn-warning mb-1" data-toggle="modal" data-target="#authenticate"
-                            data-whatever="@getbootstrap">İşveren/vekili Yetkilendir</a></button>
+                            data-whatever="@getbootstrap" id="authenticate-button">İşveren/vekili
+                            Yetkilendir</a></button>
                     </div>
                     <div class="col-auto"><i class="fas fa-user-plus fa-2x text-gray-300"></i></div>
                 </div>
@@ -122,24 +123,30 @@
             <div class="card-body">
 
                 <h4 class="small font-weight-bold">Çok Tehlikeli<span
-                        class="float-right">%{{$dangers['very'] != 0 ? number_format($dangers['very']/$comp_count*100, 1) : 0}}</span></h4>
+                        class="float-right">%{{$dangers['very'] != 0 ? number_format($dangers['very']/$comp_count*100, 1) : 0}}</span>
+                </h4>
                 <div class="progress mb-4">
                     <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" aria-valuenow=""
-                        aria-valuemin="0" aria-valuemax="100" style="width: {{ $dangers['very'] != 0 ? $dangers['very']/$comp_count*100 : 0}}%;">
+                        aria-valuemin="0" aria-valuemax="100"
+                        style="width: {{ $dangers['very'] != 0 ? $dangers['very']/$comp_count*100 : 0}}%;">
                         <span class="sr-only"></span></div>
                 </div>
                 <h4 class="small font-weight-bold">Tehlikeli<span
-                        class="float-right">%{{ $dangers['medium'] != 0 ? number_format($dangers['medium']/$comp_count*100, 1) : 0}}</span></h4>
+                        class="float-right">%{{ $dangers['medium'] != 0 ? number_format($dangers['medium']/$comp_count*100, 1) : 0}}</span>
+                </h4>
                 <div class="progress mb-4">
                     <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" aria-valuenow=""
-                        aria-valuemin="0" aria-valuemax="100" style="width:{{ $dangers['medium'] ? $dangers['medium']/$comp_count*100 : 0}}%;">
+                        aria-valuemin="0" aria-valuemax="100"
+                        style="width:{{ $dangers['medium'] ? $dangers['medium']/$comp_count*100 : 0}}%;">
                         <span class="sr-only"></span></div>
                 </div>
                 <h4 class="small font-weight-bold">Az Tehlikeli<span class="float-right"></span><span
-                        class="float-right">%{{ $dangers['less'] != 0 ? number_format($dangers['less']/$comp_count*100, 1) : 0 }}</span></h4>
+                        class="float-right">%{{ $dangers['less'] != 0 ? number_format($dangers['less']/$comp_count*100, 1) : 0 }}</span>
+                </h4>
                 <div class="progress mb-4">
                     <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" aria-valuenow=""
-                        aria-valuemin="0" aria-valuemax="100" style="width:{{ $dangers['less'] != 0 ? $dangers['less']/$comp_count*100  : 0}}%;">
+                        aria-valuemin="0" aria-valuemax="100"
+                        style="width:{{ $dangers['less'] != 0 ? $dangers['less']/$comp_count*100  : 0}}%;">
                         <span class="sr-only"></span>
                     </div>
                 </div>
@@ -161,13 +168,9 @@
                     @csrf
                     <div class="row mb-4">
                         <div class="col-12">
-                            <label for="company_id"><b>İşletme</b></label>
-                            <select name="company" id="company" class="form-control">
-                                <option selected disabled>Lütfen İşletme Seçiniz</option>
-                                @forelse ($companies as $company )
-                                <option value="{{ $company->id }}">{{ $company->name }}</option>
-                                @empty
-                                @endforelse
+                            <label for="company-select"><b>İşletme</b></label>
+                            <select name="company" id="company-select" class="form-control">
+                                <option value="0" selected>Seçiniz...</option>
                             </select>
                         </div>
                     </div>
@@ -202,13 +205,35 @@
     </div>
 </div>
 @push('scripts')
+<script>
+$(document).ready(function(){
+    var bool = false;
+    $("#authenticate-button").on('click' ,function(){
+        if (!bool) {
+            $.ajax({
+                url: "{{ route('getAllCompanies') }}",
+                type: 'POST',
+                headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}'},
+                dataType: 'json',
+                data: "{}",
+                success: function (data) {
+                    data.forEach(element => {
+                        $("#company-select").append("<option value='"+element.id+"'>"+element.name+"</option>");
+                    });
+                    bool = true;
+                }
+            });
+        }
+    });
+});
+</script>
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
     $('#submit').on('click', function(e) {
         let action = "";
-        action = 'assign-company-admin/' + $('#company').val();
+        action = 'assign-company-admin/' + $('#company-select').val();
         $('#authenticateForm').attr('action', action);
-    })
+    });
 </script>
 <script>
     var options = {

@@ -42,3 +42,6 @@ Route::post('/add-equipment-file', [EquipmentController::class, 'addFile'])->nam
 Route::delete('/delete-equipment/{equipment}', [EquipmentController::class, 'delete'])->name('delete-equipment');
 Route::delete('/delete-equipment-file/{file}', [EquipmentController::class, 'deleteFile'])->name('delete-equipment-file');
 
+////////////////AJAX//////////////////////
+Route::post('/get-all-companies', [AjaxPopulateController::class, 'getAllCompanies'])->name('getAllCompanies');
+Route::post('/get-group-leaders', [AjaxPopulateController::class, 'getGroupLeaders'])->name('getGroupLeaders');

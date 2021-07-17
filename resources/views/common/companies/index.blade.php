@@ -74,7 +74,6 @@ $ajax = route('user.companies.index');
                   {data: 'name', name: 'name'},
                   {data: 'sube_kodu', name: 'sube_kodu'},
                   {data: 'type', name: 'type'},
-                  {data: 'phone', name: 'phone'},
                   {data: 'email', name: 'email'},
                   {data: 'city', name: 'city'},
                   {data: 'town', name: 'town'},
@@ -84,7 +83,6 @@ $ajax = route('user.companies.index');
                     "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Turkish.json"
                 }
           });
-          //console.log(table.context[0].aoData);
           $('#example tbody').on('click', 'tr', function () {
             var data = table.row( this ).data();
             window.location.href="company/"+data['id'];
@@ -92,17 +90,21 @@ $ajax = route('user.companies.index');
     });
 </script>
 <script>
-    function populateList() {
-        var data = @json($group_leaders);
-        for( var i = 0; i<data.length; i++){
-            var id = data[i]['id'];
-            var name = data[i]['name'];
-            $("#leader-company-select").append("<option value='"+id+"'>"+name+"</option>");
+function populateList() {
+    $.ajax({
+        url: "{{ route('getGroupLeaders') }}",
+        type: 'POST',
+        headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}'},
+        dataType: 'json',
+        data: "{}",
+        success: function (data) {
+        data.forEach(element => {
+        $("#leader-company-select").append("<option value='"+element.id+"'>"+element.name+"</option>");
+            });
         }
-    }
+    });
+}
 </script>
-
-
 @endpush
 
 @endsection

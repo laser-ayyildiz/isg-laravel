@@ -320,6 +320,19 @@
                                                     value="{{ $demand->katip_kurum_id }}" required>
                                             </div>
                                             @endif
+
+                                            @if ($demand->sube_kodu !== null)
+                                            <div class="col-sm-4">
+                                                <label for="eski_sube_kodu"><strong>Şube Adı</strong></label>
+                                                <input class="form-control" type="text" name="eski_sube_kodu"
+                                                    value="{{ $demand->company->sube_kodu }}" readonly>
+                                                <label class="mt-1" for="katip_kurum_id" style="color:red"><strong>Yeni
+                                                       Şube Adı&emsp;</strong></label>
+                                                <input class="form-control mb-3" style="border: 2px solid red;"
+                                                    type="text" name="sube_kodu"
+                                                    value="{{ $demand->sube_kodu }}" required>
+                                            </div>
+                                            @endif
                                         </div>
 
                                         {{-- modal footer --}}

@@ -30,6 +30,10 @@ class AssignCompanyAdminController extends Controller
                 'tc' => 'T.C. Kimlik No'
             ]
         );
+        
+        if ($request->company == "-1")
+            return back()->with('fail','İşletme seçmediniz!');
+
         DB::beginTransaction();
         try {
             $this->createUser($company, $request);

@@ -38,6 +38,8 @@
             @include('admin.company.informations.tabs.devlet-bilgileri')
 
             @include('admin.company.informations.tabs.muhasebe-bilgileri')
+
+            @include('admin.company.informations.tabs.grup-bilgileri')
         </div>
     </div>
 </div>
@@ -49,10 +51,34 @@
 
     @include('admin.company.informations.modals.muhasebeci-ekle')
 
+    @include('admin.company.informations.modals.grup-duzenle')
 </div>
 @push('scripts')
 <script src="/company/js/informations.js"></script>
 <script src="/js/core/city-town.js"></script>
+<script src="/js/core/common/companies/group-comp.js"></script>
+<script>
+    function populateList() {
+        $.ajax({
+            url: "{{ route('getGroupLeaders') }}",
+            type: 'POST',
+            headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}'},
+            dataType: 'json',
+            data: "{}",
+            success: function (data) {
+            data.forEach(element => {
+            $("#leader-company-select").append("<option value='"+element.id+"'>"+element.name+"</option>");
+                });
+            }
+        });
+    }
+    $(document).ready(function (){
+        $('#groups tbody').on('click', 'tr', function (e) {
+            if ($(this).closest('tr').attr('id') !== null && typeof $(this).closest('tr').attr('id') !== "undefined")
+                window.location.href = "/admin/company/" + $(this).closest('tr').attr('id');
+        });
+    });
+</script>
 @endpush
 
 @endsection

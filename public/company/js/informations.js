@@ -16,6 +16,9 @@ $(document).ready(function () {
     } else if (pathArray.includes("acc")) {
         $("#mb-tab").addClass("active");
         $("#muhasebe_bilgileri").addClass("active");
+    } else if (pathArray.includes("group")) {
+        $("#grb-tab").addClass("active");
+        $("#grup_bilgileri").addClass("active");
     } else {
         $("#gb-tab").addClass("active");
         $("#genel_bilgiler").addClass("active");
@@ -32,6 +35,10 @@ $(document).ready(function () {
     $("#acc_item").on('click', function (event) {
         event.preventDefault();
         $('#myTab a[href="#muhasebe_bilgileri"]').click();
+    });
+    $("#grb_item").on('click', function (event) {
+        event.preventDefault();
+        $('#myTab a[href="#grup_bilgileri"]').click();
     });
     $("#info_item").on('click', function (event) {
         event.preventDefault();

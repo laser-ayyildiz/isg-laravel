@@ -54,11 +54,12 @@ Route::prefix('/company')->group(function () {
         Route::get('/', [CompanyController::class, 'index'])->name('company');
 
         ///////////////////////////////INFORMATIONS////////////////////////////////////////////
- 
+
         Route::get('/informations', [CompanyController::class, 'showInfo'])->name('company.informations.index');
         Route::get('/informations/osgb', [CompanyController::class, 'showInfo'])->name('company.informations.osgb');
         Route::get('/informations/formal', [CompanyController::class, 'showInfo'])->name('company.informations.formal');
         Route::get('/informations/acc', [CompanyController::class, 'showInfo'])->name('company.informations.acc');
+        Route::get('/informations/group', [CompanyController::class, 'showInfo'])->name('company.informations.group');
 
         ///////////////////////////////EMPLOYEES////////////////////////////////////////////
 
@@ -81,6 +82,7 @@ Route::prefix('/company')->group(function () {
     Route::post('/{company}/deleteEmployee/{employee}', [CompanyController::class, 'deleteEmployee'])->name('company.deleteEmployee');
     Route::post('/{company}/add-accountant', [CompanyController::class, 'addAcc'])->name('company.add-accountant');
     Route::post('/{company}/upload-accountant', [CompanyController::class, 'uploadAcc'])->name('company.upload-accountant');
+    Route::post('/{company}/change-group-informations', [CompanyController::class, 'changeGroup'])->name('company.change-group-informations');
 });
 
 Route::prefix('employee')->group(function () {

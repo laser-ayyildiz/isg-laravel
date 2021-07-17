@@ -16,6 +16,7 @@ $('input[type=radio][name=isGroup]').change(function() {
     if (this.value == 'false') {
         $("#company-status-div").empty();
         $("#leader-company-div").empty();
+        $("#sube-kodu-div").empty();
     }
 });
 
@@ -31,7 +32,7 @@ $(document).on('change', 'input[type=radio][name=company_status]', function() {
         populateList();
         $('#sube-kodu-div').append(
             '<label for="sube-kodu">'+
-            '<h5><b>Şube Kodunu giriniz<a style="color:red">*</a></b></h5></label>'+
+            '<h5><b>Şube Adını giriniz<a style="color:red">*</a></b></h5></label>'+
             '<input class="form-control" name="sube_kodu" id="sube-kodu">'+
             '</input>'
         )

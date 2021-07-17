@@ -89,12 +89,16 @@ class CompanyController extends Controller
             $query->whereBetween('job_id', [1, 7]);
         })->where('company_id', $id)->groupBy('user_id')->get();
 
+        if ($company->is_group == 1)
+            $groupCompanies = CoopCompany::where('leader_company_id', $company->leader_company_id)->select('id', 'name', 'leader_company_id', 'sube_kodu', 'group_status')->get();
+
         return (view(
             'admin.company.informations.index',
             [
                 'company' => $company,
                 'employees' => $employees,
                 'accountants' => $accountants,
+                'groupCompanies' => $groupCompanies ?? [],
             ],
         ));
     }
@@ -174,6 +178,7 @@ class CompanyController extends Controller
 
     public function update(CoopCompany $company, Request $request)
     {
+
         $updatedData = array_diff_assoc($request->toArray(), $company->toArray());
         unset($updatedData['_token']);
         try {
@@ -366,5 +371,52 @@ class CompanyController extends Controller
         return redirect()
             ->route('admin.company.informations.acc', ['id' => $company->id])
             ->with('success', 'Değişiklikleriniz başarıyla uygulanmıştır!');
+    }
+
+    public function changeGroup(CoopCompany $company, Request $request)
+    {
+        if ($request->isGroup === 'true' && $request->company_status === 'member') {
+            if ($request->sube_kodu === null)
+                return back()->with('fail', 'Lütfen Şube Adını Giriniz');
+
+            if ($request->leader_company_select === null)
+                return back()->with('fail', 'Lütfen Üst Şirketi Seçiniz');
+        }
+
+        DB::beginTransaction();
+        $leaderChanged = false;
+        try {
+            if ($company->group_status === 'leader' && ($request->company_status === 'member' || $request->isGroup === 'false')) {
+                CoopCompany::where('leader_company_id', '=', $company->id)
+                    ->where('id','!=',$company->id)
+                    ->update(
+                        [
+                            'leader_company_id' => null,
+                            'is_group' => 0,
+                            'group_status' => null,
+                            'sube_kodu' => null,
+                        ]
+                    );
+                $leaderChanged = true;
+            }
+            //dd($request->isGroup == "true" ? 1 : 0,$leaderChanged);
+            $company->update([
+                'is_group' => $request->isGroup == "true" ? 1 : 0,
+                'sube_kodu' => $request->sube_kodu,
+                'group_status' => $request->company_status,
+                'leader_company_id' => $request->leader_company_select,
+            ]);
+        } catch (\Throwable $th) {
+            DB::rollback();
+            throw $th;
+            return back()->with('fail', 'Bir Hata ile Karşılaşıldı!');
+        }
+
+        DB::commit();
+        if ($leaderChanged) {
+            return back()->with('success', 'Grup bilgileri başarıyla güncellendi. Daha önce bu gruba bağlı şirketlerin grup bağlantıları kaldırıldı.');
+        } else {
+            return back()->with('success', 'Grup bilgileri başarıyla güncellendi');
+        }
     }
 }

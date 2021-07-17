@@ -207,6 +207,7 @@ class CompanyController extends Controller
         $istekler = [
             'type' => $request->type,
             'name' => $request->name,
+            'sube_kodu' => $request->sube_kodu ?? null,
             'email' => $request->email,
             'bill_address' => $request->bill_address,
             'address' => $request->address,

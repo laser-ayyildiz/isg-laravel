@@ -36,4 +36,8 @@ class CoopCompany extends Model
         'group_status',
         'leader_company_id',
     ];
+
+    public function leader(){
+        return $this->belongsTo('App\Models\CoopCompany', 'leader_company_id');
+    }
 }

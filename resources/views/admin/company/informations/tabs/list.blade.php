@@ -18,4 +18,9 @@
             href="#muhasebe_bilgileri" role="tab" aria-controls="Muhasebe Bilgileri" aria-selected="false"><b>Muhasebe
                 Bilgileri</b></a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link" id="grb-tab" data-toggle="tab"
+            href="#grup_bilgileri" role="tab" aria-controls="Grup Bilgileri" aria-selected="false"><b>Grup
+                Bilgileri</b></a>
+    </li>
 </ul>
