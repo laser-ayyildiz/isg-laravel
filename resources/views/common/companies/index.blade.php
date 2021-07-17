@@ -69,7 +69,7 @@ $ajax = route('user.companies.index');
               responsive: true,
               autoWidth: false,
               ajax: "{{ $ajax }}",
-              "order": [[ 6, "asc" ]],
+              "order": [[ 0, "asc" ]],
               columns: [
                   {data: 'name', name: 'name'},
                   {data: 'sube_kodu', name: 'sube_kodu'},

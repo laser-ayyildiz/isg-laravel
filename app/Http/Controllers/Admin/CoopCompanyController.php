@@ -72,9 +72,8 @@ class CoopCompanyController extends Controller
                 'katip_kurum_id' => $request->katip_kurum_id,
             ]);
 
-            if ($request->company_status == 'leader')
+            if ($request->isGroup == "true" && $request->company_status == 'leader')
                 $company->update(['leader_company_id' => $company->id]);
-
         } catch (\Throwable $th) {
             DB::rollBack();
             return back()->with('fail', 'İşletme eklenirken bir hata ile karşılaşıldı');

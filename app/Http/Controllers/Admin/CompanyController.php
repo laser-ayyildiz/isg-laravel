@@ -90,7 +90,9 @@ class CompanyController extends Controller
         })->where('company_id', $id)->groupBy('user_id')->get();
 
         if ($company->is_group == 1)
-            $groupCompanies = CoopCompany::where('leader_company_id', $company->leader_company_id)->select('id', 'name', 'leader_company_id', 'sube_kodu', 'group_status')->get();
+            $groupCompanies = CoopCompany::where('leader_company_id', $company->leader_company_id)->whereNotNull('leader_company_id')
+            ->select('id', 'name', 'leader_company_id', 'sube_kodu', 'group_status')
+            ->get();
 
         return (view(
             'admin.company.informations.index',
@@ -388,7 +390,7 @@ class CompanyController extends Controller
         try {
             if ($company->group_status === 'leader' && ($request->company_status === 'member' || $request->isGroup === 'false')) {
                 CoopCompany::where('leader_company_id', '=', $company->id)
-                    ->where('id','!=',$company->id)
+                    ->where('id', '!=', $company->id)
                     ->update(
                         [
                             'leader_company_id' => null,
@@ -399,12 +401,17 @@ class CompanyController extends Controller
                     );
                 $leaderChanged = true;
             }
-            //dd($request->isGroup == "true" ? 1 : 0,$leaderChanged);
+
+            if ($request->isGroup == "true" && $request->company_status == 'leader') {
+                $sube_kodu = 'MERKEZ';
+                $leader = $company->id;
+            }
+
             $company->update([
                 'is_group' => $request->isGroup == "true" ? 1 : 0,
-                'sube_kodu' => $request->sube_kodu,
+                'sube_kodu' => $request->sube_kodu ?? $sube_kodu ?? null,
                 'group_status' => $request->company_status,
-                'leader_company_id' => $request->leader_company_select,
+                'leader_company_id' => $request->leader_company_select ?? $leader ?? null,
             ]);
         } catch (\Throwable $th) {
             DB::rollback();
