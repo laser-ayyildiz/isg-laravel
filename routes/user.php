@@ -28,7 +28,7 @@ Route::prefix('/company')->group(function () {
         Route::get('/', [CompanyController::class, 'index'])->name('company');
 
         ///////////////////////////////INFORMATIONS////////////////////////////////////////////
- 
+
         Route::get('/informations', [CompanyController::class, 'showInfo'])->name('company.informations.index');
         Route::get('/informations/osgb', [CompanyController::class, 'showInfo'])->name('company.informations.osgb');
         Route::get('/informations/formal', [CompanyController::class, 'showInfo'])->name('company.informations.formal');
@@ -46,6 +46,12 @@ Route::prefix('/company')->group(function () {
         Route::get('/documents/mandatory-files', [CompanyController::class, 'showDocuments'])->name('company.documents.mandatoryFiles');
         Route::get('/documents/notebook-copies', [CompanyController::class, 'showDocuments'])->name('company.documents.notebookCopies');
         Route::get('/documents/observation-reports', [CompanyController::class, 'showDocuments'])->name('company.documents.observationReports');
+
+        /////////////////////////////EMPLOYEE GROUPS//////////////////////////////////////////////
+        Route::get('/employee-groups', [CompanyController::class, 'showEmployeeGroups'])->name('company.employee-groups');
+        Route::get('/employee-groups/isg-duties', [CompanyController::class, 'showEmployeeGroups'])->name('company.employee-groups.isg-duties');
+        Route::get('/employee-groups/emergency-group', [CompanyController::class, 'showEmployeeGroups'])->name('company.employee-groups.emergency-group');
+        Route::get('/employee-groups/risk-group', [CompanyController::class, 'showEmployeeGroups'])->name('company.employee-groups.risk-group');
     });
     Route::get('/deleted/{id}', [CompanyController::class, 'deletedIndex'])->name('deleted_company');
     Route::post('/deleteRequest/{company}/{user}', [CompanyController::class, 'deleteRequest'])->name('company.deleteRequest');

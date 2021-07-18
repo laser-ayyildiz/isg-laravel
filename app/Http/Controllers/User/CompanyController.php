@@ -10,6 +10,7 @@ use App\Models\CoopEmployee;
 use Illuminate\Http\Request;
 use App\Models\CompanyToFile;
 use App\Models\DeleteRequest;
+use App\Models\EmployeeGroup;
 use App\Models\OutAccountant;
 use App\Models\UpdateRequest;
 use App\Models\UserToCompany;
@@ -171,6 +172,25 @@ class CompanyController extends Controller
                 'defter_nushalari' => $defter_nushalari,
                 'gozlem_raporlari' => $gozlem_raporlari,
             ],
+        );
+    }
+
+    public function showEmployeeGroups($id)
+    {
+        $company = CoopCompany::where('id', $id)->first();
+        if (empty($company))
+            return redirect()->route('admin.deleted_company', ['id' => $id]);
+
+        $relations = EmployeeGroup::where('company_id', $id)
+        ->with(['employee','file','osgbEmployee'])
+        ->orderBy('group')->get();
+
+        return view(
+            'admin.company.employee-groups.index',
+            [
+                'company' => $company,
+                'relations' => $relations,
+            ]
         );
     }
 

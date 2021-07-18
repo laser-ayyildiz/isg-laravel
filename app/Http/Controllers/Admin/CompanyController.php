@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreAccountantRequest;
 use App\Http\Requests\StoreCoopEmployeeRequest;
+use App\Models\EmployeeGroup;
 use App\Models\Equipment;
 
 class CompanyController extends Controller
@@ -91,8 +92,8 @@ class CompanyController extends Controller
 
         if ($company->is_group == 1)
             $groupCompanies = CoopCompany::where('leader_company_id', $company->leader_company_id)->whereNotNull('leader_company_id')
-            ->select('id', 'name', 'leader_company_id', 'sube_kodu', 'group_status')
-            ->get();
+                ->select('id', 'name', 'leader_company_id', 'sube_kodu', 'group_status')
+                ->get();
 
         return (view(
             'admin.company.informations.index',
@@ -149,6 +150,25 @@ class CompanyController extends Controller
                 'defter_nushalari' => $defter_nushalari,
                 'gozlem_raporlari' => $gozlem_raporlari,
             ],
+        );
+    }
+
+    public function showEmployeeGroups($id)
+    {
+        $company = CoopCompany::where('id', $id)->first();
+        if (empty($company))
+            return redirect()->route('admin.deleted_company', ['id' => $id]);
+
+        $relations = EmployeeGroup::where('company_id', $id)
+        ->with(['employee','file','osgbEmployee'])
+        ->orderBy('group')->get();
+
+        return view(
+            'admin.company.employee-groups.index',
+            [
+                'company' => $company,
+                'relations' => $relations,
+            ]
         );
     }
 

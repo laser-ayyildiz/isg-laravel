@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\CoopCompany;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\EmployeeGroup;
 use App\Models\OutAccountant;
 use App\Models\UserToCompany;
 use App\Models\CompanyToGroup;
@@ -124,6 +125,27 @@ class CoopCompanyController extends Controller
                     continue;
             }
             UserToCompany::insert($employees);
+            EmployeeGroup::create(
+                [
+                    'osgb_employee_id' => $request->uzman_id,
+                    'company_id' => $company->id,
+                    'group' => 'İSG Görevlendirmesi',
+                ]
+            );
+            EmployeeGroup::create(
+                [
+                    'osgb_employee_id' => $request->hekim_id,
+                    'company_id' => $company->id,
+                    'group' => 'İSG Görevlendirmesi',
+                ],
+            );
+            EmployeeGroup::create(
+                [
+                    'isveren' => $request->employer,
+                    'company_id' => $company->id,
+                    'group' => 'İşveren',
+                ],
+            );
         } catch (\Throwable $th) {
             DB::rollBack();
             return back()->with('fail', 'İşletme Çalışanları eklenirken bir hata ile karşılaşıldı.');

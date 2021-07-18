@@ -13,3 +13,4 @@ uploads/profile-pictures/*
 !uploads/files
 !uploads/monthly-files
 !uploads/equipment-files
+!uploads/assignment-files

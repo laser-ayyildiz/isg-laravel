@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <script type="text/javascript" src="{{ mix('js/app.js') }}"></script>
     <title>@yield('company')Özgür OSGB</title>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -75,9 +76,11 @@
                         <a class="collapse-item" id="acc_item"
                             href="{{ route($role . '.company.informations.acc',['id' => request()->segment(3)]) }}">Muhasebe
                             Bilgileri</a>
+                        @if ($role === 'admin')
                         <a class="collapse-item" id="grb_item"
                             href="{{ route($role . '.company.informations.group',['id' => request()->segment(3)]) }}">Grup
                             Bilgileri</a>
+                        @endif
 
                     </div>
                 </div>
@@ -112,10 +115,9 @@
             <div class="sidebar-heading">
                 Dokümanlar
             </div>
-
             <li class="nav-item">
-                <a class="nav-link" href="" data-toggle="collapse" data-target="#collapseDocs" aria-expanded="true"
-                    aria-controls="collapseDocs">
+                <a class="nav-link {{ request()->segment(4) == "documents" ? 'active' : '' }}" data-toggle="collapse"
+                    href="" data-target="#collapseDocs" aria-expanded="true" aria-controls="collapseDocs">
                     <i class="fas fa-fw fa-folder"></i>
                     <span>İsg Dokümanları</span>
                 </a>
@@ -135,6 +137,35 @@
                 </div>
             </li>
 
+            @if ($role !== 'company-admin')
+            <hr class="sidebar-divider">
+            <div class="sidebar-heading">
+                Görevlendirme
+            </div>
+            <li class="nav-item">
+                <a class="nav-link {{ request()->segment(4) == "employee-groups" ? 'active' : '' }}" href=""
+                    data-toggle="collapse" data-target="#collapseEmployeeGroups" aria-expanded="true"
+                    aria-controls="collapseEmployeeGroups">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>Çalışan Grupları</span>
+                </a>
+                <div id="collapseEmployeeGroups" class="collapse" aria-labelledby="headingPages"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Çalışan Grupları</h6>
+                        <a class="collapse-item" id="duty_item"
+                            href="{{ route($role . '.company.employee-groups.isg-duties',['id' => request()->segment(3)]) }}">İSG
+                            Görev Şeması</a>
+                        <a class="collapse-item" id="emergency_group_item"
+                            href="{{ route($role . '.company.employee-groups.emergency-group',['id' => request()->segment(3)]) }}">Acil
+                            Durum Ekipleri</a>
+                        <a class="collapse-item" id="risk_group_item"
+                            href="{{ route($role . '.company.employee-groups.risk-group',['id' => request()->segment(3)]) }}">Risk
+                            Değerlendirme Ekibi</a>
+                    </div>
+                </div>
+            </li>
+            @endif
             <hr class="sidebar-divider d-none d-md-block">
 
             <div class="text-center d-none d-md-inline">
@@ -206,6 +237,8 @@
             $("#collapseEmployees").addClass("show");
         else if (pathArray.includes("documents"))
             $("#collapseDocs").addClass("show");
+        else if (pathArray.includes("employee-groups"))
+            $("#collapseEmployeeGroups").addClass("show");
     </script>
     @stack('scripts')
 </body>

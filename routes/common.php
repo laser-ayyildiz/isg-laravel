@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Common;
 
+use App\Models\EmployeeGroup;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/redirect', [RedirectController::class, 'index'])->name('redirect');
@@ -45,3 +46,11 @@ Route::delete('/delete-equipment-file/{file}', [EquipmentController::class, 'del
 ////////////////AJAX//////////////////////
 Route::post('/get-all-companies', [AjaxPopulateController::class, 'getAllCompanies'])->name('getAllCompanies');
 Route::post('/get-group-leaders', [AjaxPopulateController::class, 'getGroupLeaders'])->name('getGroupLeaders');
+Route::post('/get-company-employees/{company}', [AjaxPopulateController::class, 'getCompanyEmployees'])->name('get-company-employees');
+Route::post('/get-osgb-employees/{job_id}', [AjaxPopulateController::class, 'getOsgbEmployees'])->name('get-osgb-employees');
+
+////////////////EMPLOYEE GROUP//////////////////////
+Route::post('/company/{company}/add-employee-group', [EmployeeGroupController::class, 'add'])->name('add-employee-group');
+Route::post('/company/{company}/add-assignment-file/{row_id}', [EmployeeGroupController::class, 'addFile'])->name('add-assignment-file');
+Route::post('/company/{company}/delete-assignment-file/{row_id}', [EmployeeGroupController::class, 'deleteFile'])->name('delete-assignment-file');
+

@@ -13,7 +13,6 @@ class EditCoopEmployeesTable extends Migration
      */
     public function up()
     {
-        //$table->dropUnique('users_email_unique');
         Schema::table('coop_employees', function (Blueprint $table) {
             $table->dropUnique('coop_employees_tc_unique');
         });
