@@ -42,6 +42,9 @@ $(document).ready(function () {
         $('#myTab a[href="#risk_degerlendirme_ekibi"]').click();
     });
 
+    if (pathArray.includes("company-admin")) {
+        return false;
+    }
     const empSelects =
         [
             '4',
@@ -140,10 +143,13 @@ $(document).ready(function () {
         var name = tr.find('td').eq(1).text();
         $('#selected_employee_name').html("<b>" + name + '</b> isimli çalışan için atama dosyası yükle');
         $('#selected_employee_name_delete_file').html("<b>" + name + '</b> isimli çalışanın atama dosyasını sil');
+        $('#selected_employee_name_delete').html("<b>" + name + '</b> isimli çalışanı silmek istediğinize emin misiniz?');
         if (tr.attr('id') !== null && typeof tr.attr('id') !== "undefined") {
             $('#addFileForm').attr('action', "/company/" + pathArray[3] + "/add-assignment-file/" + tr.attr('id'));
 
             $('#deleteFileForm').attr('action', "/company/" + pathArray[3] + "/delete-assignment-file/" + tr.attr('id'));
+
+            $('#deleteForm').attr('action', "/company/" + pathArray[3] + "/delete-employee-group/" + tr.attr('id'));
         }
     });
 });

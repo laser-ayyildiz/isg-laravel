@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Common;
 use App\Models\File;
 use App\Models\CoopCompany;
 use Illuminate\Http\Request;
+use App\Models\CompanyToFile;
 use App\Models\EmployeeGroup;
-use Illuminate\Validation\Rule;
+use App\Models\UserToCompany;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class EmployeeGroupController extends Controller
 {
@@ -90,7 +92,7 @@ class EmployeeGroupController extends Controller
         if (isset($request->file) && !empty($request->file)) {
             try {
                 $fileModel = new File;
-                $fileModel->name = $company->id . '_' . $request->employee . '_' . $demand['sub_group'] ?? self::GROUP_NAMES[$request->employee_type] . '_' . date('Y-m-d_His') . '.' .  $request->file->getClientOriginalExtension();
+                $fileModel->name = $company->id . '_' . $request->employee . '_' . ($demand['sub_group'] ?? self::GROUP_NAMES[$request->employee_type] ?? '-') . '_' . date('Y-m-d_His') . '.' . $request->file->getClientOriginalExtension();
                 $filePath = $request->file('file')->storeAs('uploads/assignment-files', $fileModel->name, 'public');
 
                 $fileModel->file_path = '/storage/' . $filePath;
@@ -114,6 +116,30 @@ class EmployeeGroupController extends Controller
         return back()->with('success', $new->group . ' ataması başarıyla yapıldı!');
     }
 
+    public function delete(CoopCompany $company, $row_id)
+    {
+        $auth = UserToCompany::where(['user_id' => Auth::user()->id, 'company_id' => $company->id])->count();
+        if ($auth < 1 && !Auth::user()->hasRole('Admin'))
+            abort(403);
+
+        $relation = EmployeeGroup::where('id', $row_id)->first();
+        if ($relation === null)
+            return back()->with('fail', 'Atama Bulunamadı!');
+
+        DB::beginTransaction();
+        try {
+            if ($relation->assignment_file_id !== null)
+                File::find($relation->assignment_file_id)->delete();
+
+            $relation->delete();
+        } catch (\Throwable $th) {
+            DB::rollback();
+            return back()->with('success', 'Bir Hata ile Karşılaşıldı!');
+        }
+        DB::commit();
+        return back()->with('success', 'Atama Başarıyla Silindi!');
+    }
+
     public function addFile(CoopCompany $company, $row_id, Request $request)
     {
         $request->validate([
@@ -133,7 +159,7 @@ class EmployeeGroupController extends Controller
         DB::beginTransaction();
         try {
             $fileModel = new File;
-            $fileModel->name = $company->id . '_' . $emp_id . '_' . $empGroup->group . '_' . date('Y-m-d_His') . '.' .  $request->file->getClientOriginalExtension();
+            $fileModel->name = $company->id . '_' . $emp_id . '_' . ($empGroup->sub_group ?? $empGroup->group  ?? '-') . '_' . date('Y-m-d_His') . '.' . $request->file->getClientOriginalExtension();
             $filePath = $request->file('file')->storeAs('uploads/assignment-files', $fileModel->name, 'public');
 
             $fileModel->file_path = '/storage/' . $filePath;
@@ -168,5 +194,51 @@ class EmployeeGroupController extends Controller
 
         DB::commit();
         return back()->with('success', 'Dosya Başarıyla Silindi!');
+    }
+
+    public function riskGroupFile(CoopCompany $company, Request $request)
+    {
+        $request->validate([
+            'file' => 'nullable|file|mimes:csv,txt,xlx,xls,xlsx,odt,odf,pdf,png,jpg,jpeg,doc,docx,ppt,pptx|max:46080',
+        ], [], [
+            'file' => 'Risk Değerlendirme Ekibi Raporu',
+        ]);
+
+        DB::beginTransaction();
+        try {
+            $fileModel = new File;
+            $fileModel->name = $company->id . '_' . 'Risk Değerlendirme Ekibi Raporu' . '_' . date('Y-m-d_His') . '.' . $request->file->getClientOriginalExtension();
+            $filePath = $request->file('file')->storeAs('uploads/assignment-files', $fileModel->name, 'public');
+
+            $fileModel->file_path = '/storage/' . $filePath;
+            $fileModel->save();
+            CompanyToFile::create([
+                'file_type' => 11,
+                'company_id' => $company->id,
+                'file_id' => $fileModel->id,
+                'assigned_at' => date('Y-m-d H:i:s'),
+            ]);
+        } catch (\Throwable $th) {
+            DB::rollback();
+            return back()->with('fail', 'Bir Hata ile karşılaşıldı');
+        }
+
+        DB::commit();
+        return back()->with('success', 'Dosya Başarıyla Yüklendi');
+    }
+
+    public function riskFileDelete(CoopCompany $company, File $file)
+    {
+        DB::beginTransaction();
+        try {
+            $file->delete();
+            CompanyToFile::where('file_id', $file->id)->where('company_id', $company->id)->delete();
+        } catch (\Throwable $th) {
+            DB::rollback();
+            return back()->with('fail', 'Dosya Silinirken bir hata ile karşılaşıldı');
+        }
+
+        DB::commit();
+        return back()->with('success', 'Dosya Başarıyla Silindi');
     }
 }

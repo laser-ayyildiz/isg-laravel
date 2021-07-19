@@ -24,32 +24,17 @@
 
 <div class="card shadow-lg">
     <div class="card-header tab-card-header text-center bg-light text-dark border">
-        @include('user.company.employee-groups.tabs.list')
+        @include('company-admin.company.employee-groups.tabs.list')
     </div>
     <div class="card-body">
         <div class="tab-content" id="myTabContent">
-            @include('user.company.employee-groups.tabs.isg-gorevlendirme-tablosu')
+            @include('company-admin.company.employee-groups.tabs.isg-gorevlendirme-tablosu')
 
-            @include('user.company.employee-groups.tabs.acil-durum-ekibi')
+            @include('company-admin.company.employee-groups.tabs.acil-durum-ekibi')
 
-            @include('user.company.employee-groups.tabs.risk-degerlendirme-ekibi')
+            @include('company-admin.company.employee-groups.tabs.risk-degerlendirme-ekibi')
         </div>
     </div>
-</div>
-<div name="modals">
-    @include('user.company.employee-groups.modals.isg-gorevli-ata')
-
-    @include('user.company.employee-groups.modals.atama-dosyasi-ekle')
-
-    @include('user.company.employee-groups.modals.atama-dosyasi-sil')
-
-    @empty($riskFile)
-    @include('user.company.employee-groups.modals.risk-grubu-dosyası')
-    @endempty
-
-    @if ($relations !== null)
-    @include('user.company.employee-groups.modals.atama-sil')
-    @endif
 </div>
 @push('scripts')
 <script src='/company/js/employee-groups.js'></script>

@@ -1,6 +1,4 @@
 @extends('layouts.company')
-@section('title'){{ Str::title($company->name) }} - @endsection
-@section('home'){{ route('admin.home') }} @endsection
 @section('company'){{ Str::of($company->name)->upper()->limit(20) }} @endsection
 @section('content')
 @php

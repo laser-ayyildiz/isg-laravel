@@ -116,7 +116,7 @@
                 Dokümanlar
             </div>
             <li class="nav-item">
-                <a class="nav-link {{ request()->segment(4) == "documents" ? 'active' : '' }}" data-toggle="collapse"
+                <a class="nav-link {{ request()->segment(4) == "documents" ? 'active' : '' }} collapsed" data-toggle="collapse"
                     href="" data-target="#collapseDocs" aria-expanded="true" aria-controls="collapseDocs">
                     <i class="fas fa-fw fa-folder"></i>
                     <span>İsg Dokümanları</span>
@@ -137,16 +137,15 @@
                 </div>
             </li>
 
-            @if ($role !== 'company-admin')
             <hr class="sidebar-divider">
             <div class="sidebar-heading">
                 Görevlendirme
             </div>
             <li class="nav-item">
-                <a class="nav-link {{ request()->segment(4) == "employee-groups" ? 'active' : '' }}" href=""
+                <a class="nav-link {{ request()->segment(4) == "employee-groups" ? 'active' : '' }} collapsed" href=""
                     data-toggle="collapse" data-target="#collapseEmployeeGroups" aria-expanded="true"
                     aria-controls="collapseEmployeeGroups">
-                    <i class="fas fa-fw fa-folder"></i>
+                    <i class="fas fa-fw fa-hands-helping"></i>
                     <span>Çalışan Grupları</span>
                 </a>
                 <div id="collapseEmployeeGroups" class="collapse" aria-labelledby="headingPages"
@@ -165,7 +164,6 @@
                     </div>
                 </div>
             </li>
-            @endif
             <hr class="sidebar-divider d-none d-md-block">
 
             <div class="text-center d-none d-md-inline">

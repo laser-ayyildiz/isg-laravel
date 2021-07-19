@@ -84,5 +84,12 @@ class CompanyFileTypeSeeder extends Seeder
             'validity_period_type_2' => 1,
             'validity_period_type_3' => 1,
         ]);
+
+        CompanyFileType::create([
+            'file_name' => 'Risk Değerlendirme Ekibi Dosyası',
+            'validity_period_type_1' => null,
+            'validity_period_type_2' => null,
+            'validity_period_type_3' => null,
+        ]);
     }
 }

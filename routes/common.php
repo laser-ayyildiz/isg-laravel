@@ -51,6 +51,8 @@ Route::post('/get-osgb-employees/{job_id}', [AjaxPopulateController::class, 'get
 
 ////////////////EMPLOYEE GROUP//////////////////////
 Route::post('/company/{company}/add-employee-group', [EmployeeGroupController::class, 'add'])->name('add-employee-group');
+Route::delete('/company/{company}/delete-employee-group/{row_id}', [EmployeeGroupController::class, 'delete'])->name('delete-employee-group');
 Route::post('/company/{company}/add-assignment-file/{row_id}', [EmployeeGroupController::class, 'addFile'])->name('add-assignment-file');
 Route::post('/company/{company}/delete-assignment-file/{row_id}', [EmployeeGroupController::class, 'deleteFile'])->name('delete-assignment-file');
-
+Route::post('/company/{company}/risk-group-file-add', [EmployeeGroupController::class, 'riskGroupFile'])->name('risk-group-file-add');
+Route::post('/company/{company}/risk-group-file-delete/{file}', [EmployeeGroupController::class, 'riskFileDelete'])->name('risk-group-file-delete');

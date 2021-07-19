@@ -1,19 +1,19 @@
 <div class="tab-pane fade show" id="genel_bilgiler" role="tabpanel"
     aria-labelledby="gb-tab">
-    <button class="btn btn-danger mx-1 float-right" data-toggle="modal" data-target="#areYouSure" id="changeCompanyBtn"
+    <button class="btn btn-danger mx-1 float-sm-right" data-toggle="modal" data-target="#areYouSure" id="changeCompanyBtn"
         data-whatever="@getbootstrap">İşletmeyi Sil</button>
-    <button class="btn btn-warning mx-1 float-right" data-toggle="modal" data-target="#changeCompany"
+    <button class="btn btn-warning mx-1 float-sm-right" data-toggle="modal" data-target="#changeCompany"
         id="changeCompanyBtn" data-whatever="@getbootstrap">İşletme
         Bilgilerini Değiştir</button>
     <div class="form-row">
-        <div class="form-group col-lg-3">
+        <div class="form-group col-xl-3">
             <label for="comp_type_show">
                 <h5><b>Sektör</b></h5>
             </label>
             <input class="form-control" id="comp_type_show" name="comp_type_show" required value="{{$company->type}}">
             </select>
         </div>
-        <div class="form-group col-lg-4">
+        <div class="form-group col-xl-4">
             <label for="is_veren_show">
                 <h5><b>İşveren Ad Soyad</b></h5>
             </label>

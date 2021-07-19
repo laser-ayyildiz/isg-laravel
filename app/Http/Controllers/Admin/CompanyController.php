@@ -163,11 +163,13 @@ class CompanyController extends Controller
         ->with(['employee','file','osgbEmployee'])
         ->orderBy('group')->get();
 
+        $riskFile = CompanyToFile::where('company_id', $id)->where('file_type', 11)->get();
         return view(
             'admin.company.employee-groups.index',
             [
                 'company' => $company,
                 'relations' => $relations,
+                'riskFile' => $riskFile->last(),
             ]
         );
     }

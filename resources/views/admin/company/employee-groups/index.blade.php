@@ -1,7 +1,4 @@
 @extends('layouts.company')
-@section('title'){{ Str::title($company->name) }} - @endsection
-@section('home'){{ route('admin.home') }} @endsection
-@section('company.href'){{ route('admin.company.informations.index',['id' => $company->id]) }} @endsection
 @section('company'){{ Str::of($company->name)->upper()->limit(20) }} @endsection
 @section('content')
 
@@ -46,6 +43,13 @@
 
     @include('admin.company.employee-groups.modals.atama-dosyasi-sil')
 
+    @empty($riskFile)
+    @include('admin.company.employee-groups.modals.risk-grubu-dosyası')
+    @endempty
+
+    @if ($relations !== null)
+    @include('admin.company.employee-groups.modals.atama-sil')
+    @endif
 </div>
 @push('scripts')
 <script src='/company/js/employee-groups.js'></script>

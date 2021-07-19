@@ -7,7 +7,8 @@
             <thead class="thead-dark">
                 <th>Görev</th>
                 <th>Ad Soyad</th>
-                <th>Atama Dosyası</th>
+                <th class="text-center">Atama Dosyası</th>
+                <th style="width: 5%">Sil</th>
             </thead>
             <tbody>
                 @forelse ($relations->whereNotNull('osgb_employee_id') as $user)
@@ -33,17 +34,22 @@
                             <i class="fas fa-times"></i></button>
                     </td>
                     @else
-                    <td>
-                        <span class="text-danger">Atama Dosyası Eksik</span>
-                        <button class="btn btn-primary btn-sm float-sm-right" data-toggle="modal"
+                    <td class="text-center">
+                        <button class="btn btn-primary btn-sm float-sm-center m-1" data-toggle="modal"
                             data-target="#addFileModal" data-whatever="@getbootstrap" id="addFileBtn">
                             <i class="fas fa-plus"></i></button>
+                        <span class="text-danger">Atama Dosyası Eksik</span>
                     </td>
                     @endif
+                    <td>
+                        <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal"
+                            data-whatever="@getbootstrap" id="deleteBtn">
+                            <i class="fas fa-times"></i></button>
+                    </td>
                 </tr>
                 @empty
                 <tr>
-                    <td class="text-center" colspan="3">Hekim veya Uzman ataması yapılmadı</td>
+                    <td class="text-center" colspan="4">Hekim veya Uzman ataması yapılmadı</td>
                 </tr>
                 @endforelse
 
@@ -72,17 +78,22 @@
                             <i class="fas fa-times"></i></button>
                     </td>
                     @else
-                    <td>
-                        <span class="text-danger">Atama Dosyası Eksik</span>
-                        <button class="btn btn-primary btn-sm float-sm-right" data-toggle="modal"
+                    <td class="text-center">
+                        <button class="btn btn-primary btn-sm float-sm-center" data-toggle="modal"
                             data-target="#addFileModal" data-whatever="@getbootstrap" id="addFileBtn">
                             <i class="fas fa-plus"></i></button>
+                        <span class="text-danger">Atama Dosyası Eksik</span>
                     </td>
                     @endif
+                    <td>
+                        <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal"
+                            data-whatever="@getbootstrap" id="deleteBtn">
+                            <i class="fas fa-times"></i></button>
+                    </td>
                 </tr>
                 @else
                 <tr>
-                    <td class="text-center" colspan="3">İşveren bulunamadı!</td>
+                    <td class="text-center" colspan="4">İşveren bulunamadı!</td>
                 </tr>
                 @endif
             </tbody>
@@ -97,7 +108,8 @@
             <thead class="thead-dark">
                 <th>Görev</th>
                 <th>Ad Soyad</th>
-                <th>Atama Dosyası</th>
+                <th class="text-center">Atama Dosyası</th>
+                <th style="width: 5%">Sil</th>
             </thead>
             <tbody>
                 @forelse ($relations->where('group', 'Çalışan Temsilcisi') as $employee)
@@ -124,23 +136,28 @@
                             <i class="fas fa-times"></i></button>
                     </td>
                     @else
-                    <td>
-                        <span class="text-danger">Atama Dosyası Eksik</span>
-                        <button class="btn btn-primary btn-sm float-sm-right" data-toggle="modal"
+                    <td class="text-center">
+                        <button class="btn btn-primary btn-sm float-sm-center" data-toggle="modal"
                             data-target="#addFileModal" data-whatever="@getbootstrap" id="addFileBtn">
                             <i class="fas fa-plus"></i></button>
+                        <span class="text-danger">Atama Dosyası Eksik</span>
                     </td>
                     @endif
+                    <td>
+                        <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal"
+                            data-whatever="@getbootstrap" id="deleteBtn">
+                            <i class="fas fa-times"></i></button>
+                    </td>
                 </tr>
                 @else
                 <tr>
-                    <td class="text-center" colspan="3">Ataması Yapılan Çalışan Silinmiş Olabilir. Lütfen Kontrol
+                    <td class="text-center" colspan="4">Ataması Yapılan Çalışan Silinmiş Olabilir. Lütfen Kontrol
                         Ediniz!</td>
                 </tr>
                 @endif
                 @empty
                 <tr>
-                    <td class="text-center" colspan="3">Çalışan Temsilcisi atanmadı</td>
+                    <td class="text-center" colspan="4">Çalışan Temsilcisi atanmadı</td>
                 </tr>
                 @endforelse
             </tbody>

@@ -5,7 +5,6 @@
                 <th>Görev</th>
                 <th>Ad Soyad</th>
                 <th class="text-center">Atama Dosyası</th>
-                <th style="width: 5%">Sil</th>
             </thead>
             <tbody>
                 @php
@@ -34,34 +33,22 @@
                             <button class="btn btn-success btn-sm" type="submit">
                                 <i class="fas fa-download"></i></button>
                         </form>
-
-                        <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteFileModal"
-                            data-whatever="@getbootstrap" id="deleteFileBtn">
-                            <i class="fas fa-times"></i></button>
                     </td>
                     @else
                     <td class="text-center">
-                        <button class="btn btn-primary btn-sm float-sm-center" data-toggle="modal"
-                            data-target="#addFileModal" data-whatever="@getbootstrap" id="addFileBtn">
-                            <i class="fas fa-plus"></i></button>
                         <span class="text-danger">Atama Dosyası Eksik</span>
                     </td>
                     @endif
-                    <td>
-                        <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal"
-                            data-whatever="@getbootstrap" id="deleteBtn">
-                            <i class="fas fa-times"></i></button>
-                    </td>
                 </tr>
                 @else
                 <tr>
-                    <td class="text-center" colspan="4">Ataması Yapılan Çalışan Silinmiş Olabilir. Lütfen Kontrol
+                    <td class="text-center" colspan="3">Ataması Yapılan Çalışan Silinmiş Olabilir. Lütfen Kontrol
                         Ediniz!</td>
                 </tr>
                 @endif
                 @empty
                 <tr>
-                    <td class="text-center" colspan="4">Acil Durum Ekibi için atama yapılmadı</td>
+                    <td class="text-center" colspan="3">Acil Durum Ekibi için atama yapılmadı</td>
                 </tr>
                 @endforelse
             </tbody>

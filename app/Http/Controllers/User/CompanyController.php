@@ -177,19 +177,27 @@ class CompanyController extends Controller
 
     public function showEmployeeGroups($id)
     {
+        $relation = UserToCompany::where('company_id', $id)->where('user_id', Auth::id())->count();
+        if ($relation < 1)
+            abort(403);
+
+        ////////////////////////////////////////////////////////////////////////////
+
         $company = CoopCompany::where('id', $id)->first();
         if (empty($company))
-            return redirect()->route('admin.deleted_company', ['id' => $id]);
+            return redirect()->route('user.deleted_company', ['id' => $id]);
 
         $relations = EmployeeGroup::where('company_id', $id)
         ->with(['employee','file','osgbEmployee'])
         ->orderBy('group')->get();
 
+        $riskFile = CompanyToFile::where('company_id', $id)->where('file_type', 11)->get();
         return view(
-            'admin.company.employee-groups.index',
+            'user.company.employee-groups.index',
             [
                 'company' => $company,
                 'relations' => $relations,
+                'riskFile' => $riskFile->last(),
             ]
         );
     }
