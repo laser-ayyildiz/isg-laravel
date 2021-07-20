@@ -65,6 +65,11 @@
                                 class="fas fa-user-edit mr-1"></i>Yetkilendir</a>
                     </div>
                 </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{ route('admin.assigned-company-admins') }}"><i class="fas fa-handshake"></i>
+                        İşverenler
+                    </a>
+                </li>
 
             </ul>
             <div class="form-inline my-2 my-lg-0" style="list-style: none;">

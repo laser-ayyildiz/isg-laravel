@@ -12,6 +12,17 @@ use App\Notifications\CreateCompanyAdmin;
 
 class AssignCompanyAdminController extends Controller
 {
+    public function index()
+    {
+        $companyAdmins = UserToCompany::with('user','company')->whereHas('user', function ($query) {
+            return $query->with('roles')->whereHas("roles", function ($user) {
+                $user->where("name", "CompanyAdmin");
+            });
+        })->get();
+
+        return view("admin.assigned-company-admins", ["companyAdmins" => $companyAdmins]);
+    }
+
     public function assign(CoopCompany $company, Request $request)
     {
         $this->validate(
@@ -30,9 +41,9 @@ class AssignCompanyAdminController extends Controller
                 'tc' => 'T.C. Kimlik No'
             ]
         );
-        
+
         if ($request->company == "-1")
-            return back()->with('fail','İşletme seçmediniz!');
+            return back()->with('fail', 'İşletme seçmediniz!');
 
         DB::beginTransaction();
         try {

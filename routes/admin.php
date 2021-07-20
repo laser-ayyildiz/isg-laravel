@@ -106,3 +106,5 @@ Route::get('/settings', function () {
 })->name('settings');
 
 Route::post('assign-company-admin/{company}', [AssignCompanyAdminController::class, 'assign'])->name('assign-company-admin');
+
+Route::get('assigned-company-admins', [AssignCompanyAdminController::class, 'index'])->name('assigned-company-admins');
