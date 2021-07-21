@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Common;
 
-use App\Models\EmployeeGroup;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/redirect', [RedirectController::class, 'index'])->name('redirect');
@@ -25,7 +24,6 @@ Route::prefix('upload-file')->group(function () {
     Route::post('/batch-file/{company}', [FileUploadController::class, 'empBatchFileUpload'])->name('batch-file-upload');
     Route::post('monthly-files/{company}', [FileUploadController::class, 'monthlyFilesUpload'])->name('monthly-file-upload');
 });
-Route::post('/upload-excel/{company}/employee-list', [UploadEmployeeTableController::class, 'store'])->name('store-excel');
 
 ////////////////////////SHOW FILES////////////////////////////////
 Route::post('files/{folder}/{file_name}', [ShowFilesController::class, 'download'])->name('download-file');
@@ -56,3 +54,7 @@ Route::post('/company/{company}/add-assignment-file/{row_id}', [EmployeeGroupCon
 Route::post('/company/{company}/delete-assignment-file/{row_id}', [EmployeeGroupController::class, 'deleteFile'])->name('delete-assignment-file');
 Route::post('/company/{company}/risk-group-file-add', [EmployeeGroupController::class, 'riskGroupFile'])->name('risk-group-file-add');
 Route::post('/company/{company}/risk-group-file-delete/{file}', [EmployeeGroupController::class, 'riskFileDelete'])->name('risk-group-file-delete');
+
+//////////////EXCEL//////////////////////
+Route::post('/export-coop-employees/company/{company}', [DownloadEmployeeTableController::class, 'export'])->name('export-coop-employees');
+Route::post('/upload-excel/{company}/employee-list', [UploadEmployeeTableController::class, 'store'])->name('store-excel');

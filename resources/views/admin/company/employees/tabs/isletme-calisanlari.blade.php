@@ -1,19 +1,18 @@
 <div class="tab-pane fade show" id="isletme_calisanlar" role="tabpanel" aria-labelledby="ic-tab">
-    <div class="mb-3">
-        <button class="btn btn-primary" data-toggle="modal" data-target="#addEmployee"
+    <div class="float-sm-left mb-3">
+        <button class="btn btn-primary m-1" data-toggle="modal" data-target="#addEmployee"
             data-whatever="@getbootstrap">Yeni
             Çalışan Ekle</button>
-        <button class="btn btn-info ml-1" id="empListBtn" data-toggle="modal" data-target="#empList"
+        <button class="btn btn-info m-1" id="empListBtn" data-toggle="modal" data-target="#empList"
             data-whatever="@getbootstrap">Çalışan Listesi Yükle</button>
-
-        <div class="float-right">
-            @if ($employees->count() > 0)
-            <button class="btn btn-secondary" id="batchFileBtn" data-toggle="modal" data-target="#addBatchFile"
-                data-whatever="@getbootstrap">Toplu Eğitim Dosyası Atama</button>
-            @endif
-            <button class="btn btn-warning mx-1" data-toggle="modal" data-target="#addEmployerAcc"
-                data-whatever="@getbootstrap">İşveren/vekili için hesap oluştur</button>
-        </div>
+    </div>
+    <div class="float-sm-right mb-3">
+        @if ($employees->count() > 0)
+        <button class="btn btn-secondary m-1" id="batchFileBtn" data-toggle="modal" data-target="#addBatchFile"
+            data-whatever="@getbootstrap">Toplu Eğitim Dosyası Atama</button>
+        @endif
+        <button class="btn btn-warning m-1" data-toggle="modal" data-target="#addEmployerAcc"
+            data-whatever="@getbootstrap">İşveren/vekili için hesap oluştur</button>
     </div>
 
     <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
@@ -43,16 +42,16 @@
                     <td>{{ $employee->recruitment_date }}</td>
                     @php
                     if ($employee->files->where('file_type', 1)->last() !== null) {
-                        $date = new DateTime($employee->files->where('file_type', 1)->last()->valid_date);
-                        $valid_date_1 = $date->modify('-1 month')->format('Y-m-d') > date("Y-m-d");
+                    $date = new DateTime($employee->files->where('file_type', 1)->last()->valid_date);
+                    $valid_date_1 = $date->modify('-1 month')->format('Y-m-d') > date("Y-m-d");
                     }
                     if ($employee->files->where('file_type', 2)->last() !== null) {
-                        $date = new DateTime($employee->files->where('file_type', 2)->last()->valid_date);
-                        $valid_date_2 = $date->modify('-1 month')->format('Y-m-d') > date("Y-m-d");
+                    $date = new DateTime($employee->files->where('file_type', 2)->last()->valid_date);
+                    $valid_date_2 = $date->modify('-1 month')->format('Y-m-d') > date("Y-m-d");
                     }
                     if ($employee->files->where('file_type', 3)->last() !== null) {
-                        $date = new DateTime($employee->files->where('file_type', 3)->last()->valid_date);
-                        $valid_date_2 = $date->modify('-1 month')->format('Y-m-d') > date("Y-m-d");
+                    $date = new DateTime($employee->files->where('file_type', 3)->last()->valid_date);
+                    $valid_date_2 = $date->modify('-1 month')->format('Y-m-d') > date("Y-m-d");
                     }
                     @endphp
                     <td colspan="1">
@@ -91,6 +90,14 @@
                 @endforelse
             </tbody>
         </table>
-        <div class="float-right">{{ $employees->whereNull('deleted_at')->paginate(15)->links() }}</div>
+        @if ($employees->whereNull('deleted_at')->count() > 0)
+        <div class="float-sm-left">
+            <form action="{{ route('export-coop-employees',['company' => $company]) }}" method="post">
+                @csrf
+                <button class="btn btn-warning m-1">Çalışan Excel Tablosu Oluştur</button>
+            </form>
+        </div>
+        @endif
+        <div class="float-sm-right m-1">{{ $employees->whereNull('deleted_at')->paginate(15)->links() }}</div>
     </div>
 </div>
