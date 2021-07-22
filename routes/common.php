@@ -58,3 +58,7 @@ Route::post('/company/{company}/risk-group-file-delete/{file}', [EmployeeGroupCo
 //////////////EXCEL//////////////////////
 Route::post('/export-coop-employees/company/{company}', [DownloadEmployeeTableController::class, 'export'])->name('export-coop-employees');
 Route::post('/upload-excel/{company}/employee-list', [UploadEmployeeTableController::class, 'store'])->name('store-excel');
+
+//////////////REPORTS//////////////////////
+Route::post('/create-report/company/{company}/{type}', [CreateRiskGroupReportController::class, 'create'])->name('create-report');
+

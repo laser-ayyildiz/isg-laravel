@@ -13,7 +13,7 @@ class DownloadEmployeeTableController extends Controller
 {
     public function export(CoopCompany $company)
     {
-        if (!Auth::user()->hasRole('admin'))
+        if (!Auth::user()->hasRole('Admin'))
             if (UserToCompany::where(['user_id' => Auth::id(), 'company_id' => $company->id])->count() < 1)
                 abort(403);
 

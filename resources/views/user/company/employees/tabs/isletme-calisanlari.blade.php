@@ -98,3 +98,4 @@
         @endif
         <div class="float-sm-right m-1">{{ $employees->whereNull('deleted_at')->paginate(15)->links() }}</div>
     </div>
+</div>

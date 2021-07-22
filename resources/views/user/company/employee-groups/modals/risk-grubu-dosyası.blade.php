@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header bg-light">
-                <h5 class="modal-title" id="exampleModalLabel"><b>Yeni Atama</b></h5>
+                <h5 class="modal-title" id="exampleModalLabel"><b>Yeni Rapor Yükle</b></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

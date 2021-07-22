@@ -2,6 +2,8 @@
     @empty($riskFile)
     <button class="btn btn-primary float-md-left mb-2" data-toggle="modal" data-target="#riskGroupFileModal"
         data-whatever="@getbootstrap">Risk Değerlendirme Ekibi Dosyası Ekle</button>
+    <button class="btn btn-success float-md-left mx-2 mb-2" data-toggle="modal" data-target="#createRiskGroupFileModal"
+        data-whatever="@getbootstrap">Rapor Oluştur</button>
     @endempty
     @isset($riskFile)
     <button class="btn btn-success float-md-left mb-2"
@@ -13,7 +15,9 @@
         @csrf
         <button class="btn btn-warning" type="submit">Dosyayı İndir</button>
     </form>
-    <form class="float-md-right mb-2" action="{{ route('risk-group-file-delete', ['company' => $company, 'file' => $riskFile->file]) }}" method="post" onSubmit="return confirm('Dosyayı Silmek İstediğinize Emin misiniz?')">
+    <form class="float-md-right mb-2"
+        action="{{ route('risk-group-file-delete', ['company' => $company, 'file' => $riskFile->file]) }}" method="post"
+        onSubmit="return confirm('Dosyayı Silmek İstediğinize Emin misiniz?')">
         @csrf
         <button class="btn btn-danger" type="submit">Dosyayı Sil</button>
     </form>

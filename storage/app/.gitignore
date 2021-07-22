@@ -2,3 +2,5 @@
 !public/
 !.gitignore
 !backup/
+!templates/
+!templates/*

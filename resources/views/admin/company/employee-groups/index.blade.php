@@ -45,6 +45,8 @@
 
     @empty($riskFile)
     @include('admin.company.employee-groups.modals.risk-grubu-dosyası')
+    @include('admin.company.employee-groups.modals.create-risk-group-report')
+
     @endempty
 
     @if ($relations !== null)

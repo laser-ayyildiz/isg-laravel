@@ -22,6 +22,7 @@
         "livewire/livewire": "^2.0",
         "maatwebsite/excel": "^3.1",
         "phpoffice/phpspreadsheet": "^1.17",
+        "phpoffice/phpword": "^0.18.2",
         "spatie/laravel-permission": "^4.0",
         "torann/hashids": "^3.0",
         "yajra/laravel-datatables-oracle": "^9.17"
