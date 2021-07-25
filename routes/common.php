@@ -8,7 +8,13 @@ Route::get('/redirect', [RedirectController::class, 'index'])->name('redirect');
 
 Route::get('/messages', [MessageController::class, 'index'])->name('messages');
 
+//////////////NOTIFICATIONS//////////////////////
 Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications');
+Route::post('/notification/read/{id}', [NotificationController::class, 'read'])->name('notifications.read');
+Route::delete('/notification/delete/{id}', [NotificationController::class, 'delete'])->name('notifications.delete');
+Route::post('/notification/read-all', [NotificationController::class, 'readAll'])->name('notifications.read-all');
+Route::delete('/notification/delete-all', [NotificationController::class, 'deleteAll'])->name('notifications.delete-all');
+
 
 Route::prefix('/profile')->group(function () {
     Route::get('/', [ProfileController::class, 'index'])->name('profile.index');

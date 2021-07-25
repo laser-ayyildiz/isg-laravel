@@ -40,32 +40,18 @@
                     <td>{{ $employee->tc }}</td>
                     <td>{{ $employee->phone }}</td>
                     <td>{{ $employee->recruitment_date }}</td>
-                    @php
-                    if ($employee->files->where('file_type', 1)->last() !== null) {
-                    $date = new DateTime($employee->files->where('file_type', 1)->last()->valid_date);
-                    $valid_date_1 = $date->modify('-1 month')->format('Y-m-d') > date("Y-m-d");
-                    }
-                    if ($employee->files->where('file_type', 2)->last() !== null) {
-                    $date = new DateTime($employee->files->where('file_type', 2)->last()->valid_date);
-                    $valid_date_2 = $date->modify('-1 month')->format('Y-m-d') > date("Y-m-d");
-                    }
-                    if ($employee->files->where('file_type', 3)->last() !== null) {
-                    $date = new DateTime($employee->files->where('file_type', 3)->last()->valid_date);
-                    $valid_date_2 = $date->modify('-1 month')->format('Y-m-d') > date("Y-m-d");
-                    }
-                    @endphp
                     <td colspan="1">
                         <span>
-                            <i class="{{ $employee->first_edu && ($valid_date_1 ?? true) ? 'fas fa-check mx-3' : 'fas fa-times mx-3' }}"
-                                style="{{ $employee->first_edu && ($valid_date_1 ?? true) ? 'color: green' : 'color: red' }}"></i>
+                            <i class="{{ $employee->first_edu ? 'fas fa-check mx-3' : 'fas fa-times mx-3' }}"
+                                style="{{ $employee->first_edu ? 'color: green' : 'color: red' }}"></i>
                         </span></td>
                     <td colspan="1"><span>
-                            <i class="{{ $employee->second_edu && ($valid_date_2 ?? true) ? 'fas fa-check mx-3' : 'fas fa-times mx-3' }}"
-                                style="{{ $employee->second_edu && ($valid_date_2 ?? true) ? 'color: green' : 'color: red' }}"></i>
+                            <i class="{{ $employee->second_edu ? 'fas fa-check mx-3' : 'fas fa-times mx-3' }}"
+                                style="{{ $employee->second_edu ? 'color: green' : 'color: red' }}"></i>
                         </span></td>
                     <td colspan="1"><span>
-                            <i class="{{ $employee->examination && ($valid_date_3 ?? true) ? 'fas fa-check mx-3' : 'fas fa-times mx-3' }}"
-                                style="{{ $employee->examination && ($valid_date_3 ?? true) ? 'color: green' : 'color: red' }}"></i>
+                            <i class="{{ $employee->examination ? 'fas fa-check mx-3' : 'fas fa-times mx-3' }}"
+                                style="{{ $employee->examination ? 'color: green' : 'color: red' }}"></i>
                         </span></td>
                     <td class="table-danger"><button class="btn btn-sm btn-danger" data-toggle="modal"
                             data-target="#deleteEmpModal" data-whatever="@getbootstrap"><i

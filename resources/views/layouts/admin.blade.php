@@ -73,9 +73,10 @@
 
             </ul>
             <div class="form-inline my-2 my-lg-0" style="list-style: none;">
-                <li class="nav-item active">
-                    <a class="nav-link" href="{{ route('notifications') }}" data-bs-hover-animate="rubberBand"><i
-                            class="fas fa-bell fa-fw" style="color:black "></i></a>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('notifications') }}"><i class="fas fa-bell"
+                            style="color:black "></i><span
+                            class="badge badge-counter badge-danger">{{ $unseen_notifications }}</span></a>
                 </li>
 
                 <li class="nav-item">

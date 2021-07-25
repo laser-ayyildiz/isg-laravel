@@ -28,15 +28,20 @@
         <div class="collapse navbar-collapse" id="navbarToggler">
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                 <li class="nav-item active">
-                    <a class="nav-link" href="{{ route('user.companies.index') }}"><i
-                        class="fas fa-building mr-1" style="color: black"></i>İşletme Listesi</a>
+                    <a class="nav-link" href="{{ route('user.companies.index') }}"><i class="fas fa-building mr-1"
+                            style="color: black"></i>İşletme Listesi</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="{{ route('user.deleted_companies') }}"><i
-                        class="fas fa-eraser mr-1" style="color: black"></i>Arşiv</a>
+                    <a class="nav-link" href="{{ route('user.deleted_companies') }}"><i class="fas fa-eraser mr-1"
+                            style="color: black"></i>Arşiv</a>
                 </li>
             </ul>
             <div class="form-inline my-2 my-lg-0" style="list-style: none;">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('notifications') }}"><i class="fas fa-bell"
+                            style="color:black "></i><span
+                            class="badge badge-counter badge-danger">{{ $unseen_notifications }}</span></a>
+                </li>
                 <li class="nav-item">
                     <div class="nav-item">
                         <a href="{{ route('profile.index') }}" class="nav-link" title="Profil">

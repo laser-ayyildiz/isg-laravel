@@ -182,6 +182,7 @@ return [
         Torann\Hashids\HashidsServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
+        App\Providers\ComposerServiceProvider::class,
     ],
 
     /*

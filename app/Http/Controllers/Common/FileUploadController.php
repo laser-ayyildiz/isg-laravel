@@ -65,6 +65,7 @@ class FileUploadController extends Controller
         /////////////////////////////////////////////////////////////////////////////////
 
         $period = null;
+        $valid_date = null;
 
         if ($employee->company->danger_type == 1) {
             $period = EmployeeEducationType::where('id', $request->file_type)->first('validity_period_type_1')->validity_period_type_1;
@@ -93,17 +94,16 @@ class FileUploadController extends Controller
             $fileModel->save();
 
             /////////////////////////////////////////////////////////////////////////////////
-
-            if ($request->file_type == '1') {
-                $employee->first_edu = 1;
-                $employee->save();
-            } else if ($request->file_type == '2') {
-                $employee->second_edu = 1;
-                $employee->save();
-            } else if ($request->file_type == '3') {
-                $employee->examination = 1;
-                $employee->save();
+            if ($valid_date > date('Y-m-d')) {
+                if ($request->file_type == '1') {
+                    $employee->first_edu = 1;
+                } else if ($request->file_type == '2') {
+                    $employee->second_edu = 1;
+                } else if ($request->file_type == '3') {
+                    $employee->examination = 1;
+                }
             }
+            $employee->save();
 
             /////////////////////////////////////////////////////////////////////////////////
 

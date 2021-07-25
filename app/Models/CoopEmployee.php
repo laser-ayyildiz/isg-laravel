@@ -18,6 +18,9 @@ class CoopEmployee extends Model
         'tc',
         'position',
         'recruitment_date',
+        'first_edu',
+        'second_edu',
+        'examination'
     ];
 
     public function company()
