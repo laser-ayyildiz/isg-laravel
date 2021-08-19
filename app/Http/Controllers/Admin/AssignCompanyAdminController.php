@@ -18,9 +18,41 @@ class AssignCompanyAdminController extends Controller
             return $query->with('roles')->whereHas("roles", function ($user) {
                 $user->where("name", "CompanyAdmin");
             });
-        })->get();
+        })->get()->unique('company_id');
 
         return view("admin.assigned-company-admins", ["companyAdmins" => $companyAdmins]);
+    }
+
+    public function getAllCompanyAdmins()
+    {
+        return json_encode(User::whereHas("roles", function ($user) {
+            $user->select('name')->where("name", "CompanyAdmin");
+        })->select('id','name', 'email')->get());
+    }
+
+    public function delete(User $user)
+    {
+        DB::beginTransaction();
+        try {
+            $user->delete();
+            UserToCompany::where('user_id', $user->id)->delete();
+        } catch (\Throwable $th) {
+            DB::rollback();
+            return back()->with('fail', 'Kullanıcı silinirken bir hata ile karşılaşıldı');
+        }
+        DB::commit();
+        return back()->with('success', 'Kullanıcı başarıyla silindi');
+    }
+
+    public function deleteRelation(UserToCompany $relation)
+    {
+        try {
+            $relation->delete();
+        } catch (\Throwable $th) {
+            return back()->with('fail', 'İlişki silinirken bir hata ile karşılaşıldı');
+        }
+
+        return back()->with('success', 'İlişki başarıyla silindi');
     }
 
     public function assign(CoopCompany $company, Request $request)

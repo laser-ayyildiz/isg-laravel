@@ -60,7 +60,7 @@ class ValidDateControl extends Command
         $bar->start();
         foreach ($employees as $employee) {
             $arr[$employee->id] = ['first_edu' => 0, 'second_edu' => 0, 'examination' => 0];
-            foreach ($employee->files as $file) {
+            foreach ($employee->files->whereIn('file_type', [1, 2, 3]) as $file) {
                 $date = new DateTime($file->valid_date);
                 $valid_date = $date->modify('-1 month')->format('Y-m-d') > date("Y-m-d");
                 $type = $file_types[$file->file_type];
@@ -101,7 +101,6 @@ class ValidDateControl extends Command
                     }
                 } catch (\Throwable $th) {
                     $this->error('Update Failed id=' . $key);
-                    throw $th;
                     continue;
                 }
                 sleep(1);

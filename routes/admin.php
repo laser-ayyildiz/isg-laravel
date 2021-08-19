@@ -105,6 +105,9 @@ Route::get('/settings', function () {
     return view('admin/settings');
 })->name('settings');
 
+///////////////////////////////COMPANY_ADMIN/////////////////////////////////////////
 Route::post('assign-company-admin/{company}', [AssignCompanyAdminController::class, 'assign'])->name('assign-company-admin');
-
 Route::get('assigned-company-admins', [AssignCompanyAdminController::class, 'index'])->name('assigned-company-admins');
+Route::delete('/delete-company-admin/{user}', [AssignCompanyAdminController::class, 'delete'])->name('delete-company-admin');
+Route::delete('/delete-company-admin-relation/{relation}', [AssignCompanyAdminController::class, 'deleteRelation'])->name('delete-company-admin-relation');
+Route::post('/get-all-company-admins', [AssignCompanyAdminController::class, 'getAllCompanyAdmins'])->name('get-all-company-admins');

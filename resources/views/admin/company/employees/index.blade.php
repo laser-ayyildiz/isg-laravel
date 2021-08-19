@@ -60,8 +60,21 @@
     @include('admin.company.employees.modals.calisan-geri-al')
 
 </div>
+@push('styles')
+{{-- dataTable --}}
+<link href="/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+
+@endpush
 
 @push('scripts')
+<script src="/js/core/common/companies/modal-validation.js"></script>
+<script src="/js/core/common/companies/group-comp.js"></script>
+<script src="/js/core/city-town.js"></script>
+{{-- dataTable --}}
+<script src="/js/jquery.dataTables.min.js"></script>
+<script src="/js/dataTables.bootstrap5.min.js"></script>
+<script src="/js/jquery.validate.js"></script>
+
 <script src="/company/js/admin/employees.js"></script>
 @endpush
 

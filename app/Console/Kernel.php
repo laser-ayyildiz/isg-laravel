@@ -26,7 +26,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('database:backup')->dailyAt('02:00');
         $schedule->command('control:valid_date')->dailyAt('03:00');
-        $schedule->command('php artisan queue:work --stop-when-empty')->dailyAt('06:00');
+        $schedule->command('queue:work --stop-when-empty')->dailyAt('06:00');
     }
 
     /**

@@ -50,7 +50,6 @@ class NotificationController extends Controller
         try {
             DB::table('notifications')->where('notifiable_id', Auth::id())->delete();
         } catch (\Throwable $th) {
-            throw $th;
             return back()->with('fail', 'Bir hata ile karşılaşıldı!');
         }
         return back()->with('success', 'Tüm bildirimler silindi!');

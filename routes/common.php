@@ -52,6 +52,7 @@ Route::post('/get-all-companies', [AjaxPopulateController::class, 'getAllCompani
 Route::post('/get-group-leaders', [AjaxPopulateController::class, 'getGroupLeaders'])->name('getGroupLeaders');
 Route::post('/get-company-employees/{company}', [AjaxPopulateController::class, 'getCompanyEmployees'])->name('get-company-employees');
 Route::post('/get-osgb-employees/{job_id}', [AjaxPopulateController::class, 'getOsgbEmployees'])->name('get-osgb-employees');
+Route::get('/get-company-employees-with-files/{company}', [AjaxPopulateController::class, 'getCompanyEmployeesWithFiles'])->name('get-company-employees-with-files');
 
 ////////////////EMPLOYEE GROUP//////////////////////
 Route::post('/company/{company}/add-employee-group', [EmployeeGroupController::class, 'add'])->name('add-employee-group');
