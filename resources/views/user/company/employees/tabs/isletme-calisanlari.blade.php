@@ -7,14 +7,12 @@
             data-whatever="@getbootstrap">Çalışan Listesi Yükle</button>
     </div>
     <div class="float-sm-right mb-3">
-        @if ($employees->count() > 0)
-        <button class="btn btn-secondary m-1" id="batchFileBtn" data-toggle="modal" data-target="#addBatchFile"
+        <button class="btn btn-secondary m-1 d-none" id="batchFileBtn" data-toggle="modal" data-target="#addBatchFile"
             data-whatever="@getbootstrap">Toplu Eğitim Dosyası Atama</button>
-        @endif
     </div>
 
     <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
-        <table class="table table-striped table-bordered table-hover" id="example">
+        <table class="table table-striped table-bordered table-hover" id="allEmps">
             <thead class="thead-dark text-center">
                 <tr>
                     <th>#</th>
@@ -30,58 +28,14 @@
                     <th>Özlük Dosyası</th>
                 </tr>
             </thead>
-            <tbody class="text-center">
-                @forelse ($employees->whereNull('deleted_at')->paginate(15) as $key=>$employee)
-                <tr id="{{ $employee->id }}" style="cursor: pointer">
-                    <td>{{ $key+1 }}</td>
-                    <td class="name">{{ $employee->name }}</td>
-                    <td>{{ $employee->tc }}</td>
-                    <td>{{ $employee->phone }}</td>
-                    <td>{{ $employee->recruitment_date }}</td>
-                    <td colspan="1">
-                        <span>
-                            <i class="{{ $employee->first_edu ? 'fas fa-check mx-3' : 'fas fa-times mx-3' }}"
-                                style="{{ $employee->first_edu ? 'color: green' : 'color: red' }}"></i>
-                        </span></td>
-                    <td colspan="1"><span>
-                            <i class="{{ $employee->second_edu ? 'fas fa-check mx-3' : 'fas fa-times mx-3' }}"
-                                style="{{ $employee->second_edu ? 'color: green' : 'color: red' }}"></i>
-                        </span></td>
-                    <td colspan="1"><span>
-                            <i class="{{ $employee->examination ? 'fas fa-check mx-3' : 'fas fa-times mx-3' }}"
-                                style="{{ $employee->examination ? 'color: green' : 'color: red' }}"></i>
-                        </span></td>
-                    <td class="table-danger"><button class="btn btn-sm btn-danger" data-toggle="modal"
-                            data-target="#deleteEmpModal" data-whatever="@getbootstrap"><i
-                                class="fas fa-trash"></i></button>
-                    </td>
-                    <td class="table-primary"><button class="btn btn-sm btn-primary" data-toggle="modal"
-                            data-target="#addEmpFile" data-whatever="@getbootstrap"><i class="fas fa-plus"></i></button>
-                    </td>
-                    <td class="table-warning"><button class="btn btn-sm btn-warning" data-toggle="modal"
-                            data-target="#addEmpIdentifyFile" data-whatever="@getbootstrap"><i
-                                class="fas fa-folder-plus"></i></button>
-                    </td>
-                </tr>
-                @empty
-                <td colspan="11">
-                    <h4 class="text-center">
-                        <b>
-                            Bu işletmeye henüz hiçbir çalışan eklenmedi!
-                        </b>
-                    </h4>
-                </td>
-                @endforelse
+            <tbody class="text-center" style="cursor: pointer;">
             </tbody>
         </table>
-        @if ($employees->whereNull('deleted_at')->count() > 0)
-        <div class="float-sm-left">
-            <form action="{{ route('export-coop-employees',['company' => $company]) }}" method="post">
-                @csrf
-                <button class="btn btn-warning m-1">Çalışan Excel Tablosu Oluştur</button>
-            </form>
-        </div>
-        @endif
-        <div class="float-sm-right m-1">{{ $employees->whereNull('deleted_at')->paginate(15)->links() }}</div>
+    </div>
+    <div class="float-sm-left">
+        <form action="{{ route('export-coop-employees',['company' => $company]) }}" method="post">
+            @csrf
+            <button class="btn btn-warning m-1">Çalışan Excel Tablosu Oluştur</button>
+        </form>
     </div>
 </div>

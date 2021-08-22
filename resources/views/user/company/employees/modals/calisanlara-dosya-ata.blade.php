@@ -51,18 +51,7 @@
                     </div>
                     <div class="table-responsive-sm px-3 my-3" id="boxes" style="height: 200px; overflow: auto;">
                         <table class="table table-sm table-striped">
-                            <tbody>
-                                @foreach ($employees->whereNull('deleted_at') as $key=>$employee)
-                                <tr>
-                                    <td style="width: 3%;">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="box{{ $key }}"
-                                                id="inlineCheckbox{{ $key }}" value="{{ $employee->id }}">
-                                        </div>
-                                    </td>
-                                    <td>{{ $employee->name }}</td>
-                                </tr>
-                                @endforeach
+                            <tbody id="batchFileTable">
                             </tbody>
                         </table>
                     </div>

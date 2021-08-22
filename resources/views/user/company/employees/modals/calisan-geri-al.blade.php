@@ -8,7 +8,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="/user/employee/restore/" method="POST" id="restoreEmpForm">
+                <form action="" method="POST" id="restoreEmpForm">
                     @csrf
                     <div class="row my-2">
                         <h5 id="restoreEmpName" class="mx-2"></h5>

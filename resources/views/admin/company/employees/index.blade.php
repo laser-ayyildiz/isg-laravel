@@ -75,7 +75,7 @@
 <script src="/js/dataTables.bootstrap5.min.js"></script>
 <script src="/js/jquery.validate.js"></script>
 
-<script src="/company/js/admin/employees.js"></script>
+<script type="module" src="/company/js/admin/employees.js"></script>
 @endpush
 
 @endsection

@@ -56,8 +56,17 @@
 
 </div>
 
+@push('styles')
+{{-- dataTable --}}
+<link href="/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+@endpush
+
 @push('scripts')
-<script src="/company/js/user/employees.js"></script>
+{{-- dataTable --}}
+<script src="/js/jquery.dataTables.min.js"></script>
+<script src="/js/dataTables.bootstrap5.min.js"></script>
+<script src="/js/jquery.validate.js"></script>
+<script type="module" src="/company/js/user/employees.js"></script>
 @endpush
 
 @endsection

@@ -36,11 +36,29 @@ class AjaxPopulateController extends Controller
         return json_encode(User::where('job_id', $job_id)->select('id', 'name')->get());
     }
 
-    public function getCompanyEmployeesWithFiles(CoopCompany $company)
+    public function getCompanyEmployeesWithFiles(CoopCompany $company, $type)
     {
-        return CoopEmployee:: where('company_id', $company->id)
-            ->select('id', 'name', 'tc', 'phone', 'recruitment_date', 'first_edu', 'second_edu', 'examination')
-            ->get();
+        if ($type == "deleted") {
+            return CoopEmployee::where('company_id', $company->id)
+                ->select('id', 'name', 'tc', 'phone', 'position', 'deleted_at')
+                ->onlyTrashed()
+                ->get();
+        } else if ($type == "active") {
+            return CoopEmployee::where('company_id', $company->id)
+                ->select('id', 'name', 'tc', 'phone', 'recruitment_date', 'first_edu', 'second_edu', 'examination')
+                ->get();
+        } else if ($type == "missing-docs") {
+            return CoopEmployee::where('company_id', $company->id)
+                ->where(function ($query) {
+                    $query->where('first_edu', 0)
+                        ->orWhere('second_edu', 0)
+                        ->orWhere('examination', 0);
+                })
+                ->select('id', 'name', 'tc', 'phone', 'recruitment_date', 'first_edu', 'second_edu', 'examination')
+                ->get();
+        } else {
+            return null;
+        }
     }
 
     public function getCompanyEmployeesOnlyTrashed(CoopCompany $company)

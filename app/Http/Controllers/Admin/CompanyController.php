@@ -113,20 +113,10 @@ class CompanyController extends Controller
         if (empty($company))
             return redirect()->route('admin.deleted_company', ['id' => $id]);
 
-        $deletedEmployees = [];
-
-        $employees = CoopEmployee::where('company_id', $id)
-            ->with('files')
-            ->orderBy('name')
-            ->withTrashed()
-            ->get();
-
         return view(
             'admin.company.employees.index',
             [
-                'company' => $company,
-                'employees' => $employees,
-                'deletedEmployees' => $deletedEmployees,
+                'company' => $company
             ],
         );
     }
@@ -160,8 +150,8 @@ class CompanyController extends Controller
             return redirect()->route('admin.deleted_company', ['id' => $id]);
 
         $relations = EmployeeGroup::where('company_id', $id)
-        ->with(['employee','file','osgbEmployee'])
-        ->orderBy('group')->get();
+            ->with(['employee', 'file', 'osgbEmployee'])
+            ->orderBy('group')->get();
 
         $riskFile = CompanyToFile::where('company_id', $id)->where('file_type', 11)->get();
         return view(
