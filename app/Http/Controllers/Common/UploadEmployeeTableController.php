@@ -11,9 +11,9 @@ class UploadEmployeeTableController extends Controller
 {
     public function store(Request $request, CoopCompany $company)
     {
-        $this->validate($request,[
+        $this->validate($request, [
             'employee-list' => 'required|file|mimes:xlx,xls,xlsx|max:46080'
-        ],[],[
+        ], [], [
             'employee-list' => 'Çalışan Listesi'
         ]);
         try {
@@ -26,21 +26,26 @@ class UploadEmployeeTableController extends Controller
             if ($import->failures()->isNotEmpty()) {
                 return back()->withFailures($import->failures());
             }
+        } catch (\TypeError $e) {
+            return back()->with(
+                [
+                    'fail' => 'Excel formatınızda bir hata ile karşılaşıyoruz. Tarihlerin doğru formatta olduğundan emin olunuz. Lütfen dosyanızı kontrol ediniz!',
+                ]
+            );
         } catch (\Throwable $th) {
+
             return back()->with(
                 [
                     'fail' => 'Bir hata ile karşılaşıldı. Lütfen excel tablonuzu kontrol edin!',
-                    'tab' => 'isletme_calisanlar'
                 ]
             );
         }
         return back()->with(
             [
                 'success' => 'Çalışanlar başarıyla güncellendi. Yanlış bilgiler bulunan satırlar eklenmedi.' .
-                    '<li>Tekrarlanan TC kimlik numaralı veya tekrarlanan email adresli kullanıcılar eklenmedi.</li>' .
+                    '<li>Tekrarlanan TC kimlik numaralı çalışanlar eklenmedi.</li>' .
                     '<li>T.C Kimlik Numarası 11 hane olmayan kullanıcılar eklenmedi.</li>' .
-                    '<li>Hata olduğunu düşünüyorsanız lütfen öncelikle excel tablonuzu kontrol ediniz!</li>',
-                'tab' => 'isletme_calisanlar'
+                    '<li>Hata olduğunu düşünüyorsanız lütfen öncelikle excel tablonuzu kontrol ediniz!</li>'
             ]
         );
     }

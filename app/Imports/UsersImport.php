@@ -29,10 +29,15 @@ class UsersImport implements
     use Importable, SkipsErrors, SkipsFailures, RegistersEventListeners;
 
     public $company_id;
+    private $employees;
 
     public function __construct($company_id)
     {
         $this->company_id = $company_id;
+        $this->employees =
+            CoopEmployee::where('company_id', $company_id)
+            ->pluck('tc')
+            ->toArray();
     }
 
     /**
@@ -43,6 +48,9 @@ class UsersImport implements
 
     public function model(array $row)
     {
+        if (in_array($row['tc'], $this->employees))
+            return null;
+
         return new CoopEmployee([
             'name' => $row['ad_soyad'],
             'tc' => $row["tc"],
