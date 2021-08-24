@@ -225,7 +225,6 @@ class CompanyController extends Controller
         $istekler = [
             'type' => $request->type,
             'name' => $request->name,
-            'sube_kodu' => $request->sube_kodu ?? null,
             'email' => $request->email,
             'bill_address' => $request->bill_address,
             'address' => $request->address,
@@ -242,6 +241,7 @@ class CompanyController extends Controller
             'katip_is_yeri_id' => $request->katip_is_yeri_id,
             'katip_kurum_id' => $request->katip_kurum_id,
             'remi_freq' => $request->remi_freq,
+            'danger_type' => $request->danger_type,
         ];
 
         $changedData = array_diff_assoc($istekler, $company->getAttributes());

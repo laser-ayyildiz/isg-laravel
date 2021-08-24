@@ -17,6 +17,7 @@ export function getEmps(activeTabId) {
                 },
             ],
             order: [[1, "asc"]],
+            pageLength: 100,
             processing: true,
             DT_RowId: true,
             responsive: true,

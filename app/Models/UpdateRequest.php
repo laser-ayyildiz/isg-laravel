@@ -21,6 +21,7 @@ class UpdateRequest extends Model
         'address',
         'city',
         'town',
+        'danger_type',
         'remi_freq',
         'nace_kodu',
         'mersis_no',
@@ -29,7 +30,7 @@ class UpdateRequest extends Model
         'vergi_dairesi',
         'katip_is_yeri_id',
         'katip_kurum_id',
-        'contract_at'
+        'contract_at',
     ];
 
     public function user()

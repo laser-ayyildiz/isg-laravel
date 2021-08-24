@@ -15,7 +15,9 @@
     {{ session('warning') }}
 </div>
 @endif
-
+@php
+$danger_types = ["1" => "Az Tehlikeli", "2" => "Tehlikeli", "3" => "Çok Tehlikeli"];
+@endphp
 <div class="card shadow-lg">
     <div class="card-header bg-light">
         <h1 class="text-dark mb-1" style="text-align: center;"><b>Onay Bekleyen Değişiklikler</b></h1>
@@ -75,6 +77,22 @@
                                                 @endif
                                             </div>
                                         </div>
+                                        @if ($demand->danger_type !== null)
+                                        <div class="row mt-3">
+                                            <div class="col-sm-4">
+                                                <label for="eski_tehlike_sinifi"><strong>Eski Tehlike
+                                                        Sınıfı</strong></label>
+                                                <input class="form-control" type="text" name="eski_tehlike_sinifi"
+                                                    value="{{$danger_types[$demand->company->danger_type]  }}" readonly>
+
+                                                <label class="mt-1" for="danger_type" style="color:red"><strong>Yeni
+                                                        Tehlike Sınıfı&emsp;</strong></label>
+                                                <input class="form-control" style="border: 2px solid red;" type="text"
+                                                    placeholder="Tehlike Sınıfı" name="danger_type"
+                                                    value="{{$danger_types[$demand->danger_type] }}" required>
+                                            </div>
+                                        </div>
+                                        @endif
 
                                         @if ($demand->email !== null)
                                         <div class="row mt-3">
@@ -327,10 +345,10 @@
                                                 <input class="form-control" type="text" name="eski_sube_kodu"
                                                     value="{{ $demand->company->sube_kodu }}" readonly>
                                                 <label class="mt-1" for="katip_kurum_id" style="color:red"><strong>Yeni
-                                                       Şube Adı&emsp;</strong></label>
+                                                        Şube Adı&emsp;</strong></label>
                                                 <input class="form-control mb-3" style="border: 2px solid red;"
-                                                    type="text" name="sube_kodu"
-                                                    value="{{ $demand->sube_kodu }}" required>
+                                                    type="text" name="sube_kodu" value="{{ $demand->sube_kodu }}"
+                                                    required>
                                             </div>
                                             @endif
                                         </div>
