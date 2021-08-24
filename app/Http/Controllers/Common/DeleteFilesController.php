@@ -11,7 +11,7 @@ use App\Http\Controllers\Controller;
 
 class DeleteFilesController extends Controller
 {
-    public function deleteEmpFile(File $file)
+    public function deleteEmpFile(File $file, CoopEmployee $employee)
     {
 
         $types = [
@@ -21,11 +21,17 @@ class DeleteFilesController extends Controller
         ];
         DB::beginTransaction();
         try {
-            $file->delete();
-            $empToFile = EmployeeToFile::where('file_id', $file->id)->with('employee')->first();
+            if (EmployeeToFile::where('file_id', $file->id)->count() == 1)
+                $file->delete();
+
+            $empToFile =
+                EmployeeToFile::where('file_id', $file->id)
+                ->where('employee_id', $employee->id)
+                ->with('employee')->first();
+
             if (in_array($empToFile->file_type, [1, 2, 3])) {
                 $isValid = false;
-                $sameFiles = EmployeeToFile::where('file_type', $empToFile->file_type)->where('file_id','!=' ,$file->id)->where('employee_id', $empToFile->employee->id)->get();
+                $sameFiles = EmployeeToFile::where('file_type', $empToFile->file_type)->where('file_id', '!=', $file->id)->where('employee_id', $empToFile->employee->id)->get();
 
                 if ($sameFiles->count() < 1) {
                     CoopEmployee::where('id', $empToFile->employee->id)->update([$types[$empToFile->file_type] => 0]);

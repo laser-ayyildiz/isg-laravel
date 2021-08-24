@@ -78,7 +78,8 @@
                                     </button>
                                 </form>
                                 @if ($file->file_type == 8)
-                                <form action="{{ route('delete-employee-file',['file' => $file->file]) }}"
+                                <form
+                                    action="{{ route('delete-employee-file',['file' => $file->file, 'employee' => $employee]) }}"
                                     method="post">
                                     @csrf
                                     <button type="submit" class="btn btn-danger btn-sm float-left ml-1">

@@ -37,7 +37,7 @@ Route::get('files/{folder}/{file_name}', [ShowFilesController::class, 'show'])->
 
 ////////////////////////DELETE FILES////////////////////////////////
 Route::post('delete-file/{type}/{file}', [DeleteFilesController::class, 'deleteFile'])->name('delete-file');
-Route::post('delete-employee-file/{file}', [DeleteFilesController::class, 'deleteEmpFile'])->name('delete-employee-file');
+Route::post('delete-employee-file/{file}/employee/{employee}', [DeleteFilesController::class, 'deleteEmpFile'])->name('delete-employee-file');
 Route::post('/delete/mandatory-files/{file}', [DeleteFilesController::class, 'deleteMandatoryFile'])->name('mandatory-file-delete');
 
 ////////////////////////EQUIPMENTS////////////////////////////////

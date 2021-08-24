@@ -103,11 +103,9 @@ $(document).ready(function () {
                         );
                     });
                     $("#restoreEmpRequest").on("click", function () {
-                        action = "";
-                        action = $("#restoreEmpForm").attr("action");
                         $("#restoreEmpForm").attr(
                             "action",
-                            action + tr.attr("id")
+                            "/admin/employee/restore/" + tr.attr("id")
                         );
                     });
                 }
